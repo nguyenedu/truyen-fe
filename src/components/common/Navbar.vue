@@ -45,7 +45,7 @@ const toggleUserMenu = (event) => {
 </script>
 
 <template>
-  <nav class="bg-gradient-to-r from-sky-500 via-blue-600 to-cyan-600 shadow-lg sticky top-0 z-50">
+  <nav class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
@@ -56,26 +56,31 @@ const toggleUserMenu = (event) => {
 
         <!-- Search Bar -->
         <div class="flex-1 max-w-md mx-4">
-          <form @submit.prevent="handleSearch" class="relative">
+          <div class="relative">
             <InputText
               v-model="searchKeyword"
+              @keyup.enter="handleSearch"
               placeholder="Tìm kiếm truyện..."
-              class="w-full pr-10"
+              class="w-full !pr-10"
             />
             <Button
-              type="submit"
+              @click="handleSearch"
               icon="pi pi-search"
               text
               rounded
-              class="absolute right-1 top-1/2 -translate-y-1/2"
+              class="!absolute !right-1 !top-1/2 !-translate-y-1/2 !text-gray-500"
             />
-          </form>
+          </div>
         </div>
 
         <!-- Navigation Links -->
         <div class="flex items-center gap-2">
           <router-link to="/">
             <Button label="Trang chủ" text class="text-white hover:bg-white/10" />
+          </router-link>
+          
+          <router-link to="/browse">
+            <Button label="Khám phá" text class="text-white hover:bg-white/10" />
           </router-link>
           
           <template v-if="authStore.isAuthenticated">
@@ -105,7 +110,7 @@ const toggleUserMenu = (event) => {
               <Button label="Đăng nhập" outlined class="!text-white !border-white hover:!bg-white/10" />
             </router-link>
             <router-link to="/register">
-              <Button label="Đăng ký" class="!bg-white !text-sky-600 hover:!bg-gray-100" />
+              <Button label="Đăng ký" class="!bg-white !text-indigo-600 hover:!bg-gray-100" />
             </router-link>
           </template>
         </div>

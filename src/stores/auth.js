@@ -71,9 +71,18 @@ export const useAuthStore = defineStore('auth', () => {
         const savedToken = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
 
-        if (savedToken && savedUser) {
+        // Validate before parsing
+        if (savedToken && savedToken !== 'undefined' && savedToken !== 'null') {
             token.value = savedToken;
-            user.value = JSON.parse(savedUser);
+        }
+
+        if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
+            try {
+                user.value = JSON.parse(savedUser);
+            } catch (error) {
+                console.error('Failed to parse user data from localStorage:', error);
+                localStorage.removeItem('user');
+            }
         }
     };
 

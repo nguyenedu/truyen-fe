@@ -57,7 +57,7 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-400 via-blue-500 to-cyan-500 p-4">
+  <div class="min-h-screen flex items-center justify-center bg-white p-4">
     <div class="w-full max-w-md">
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
         <!-- Header -->

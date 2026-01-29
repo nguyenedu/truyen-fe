@@ -38,3 +38,23 @@ export const getLatestStories = (page = 0, size = 12) => {
         params: { page, size }
     });
 };
+
+// Filter stories with multiple criteria
+export const filterStories = (filters = {}) => {
+    const params = {
+        page: filters.page || 0,
+        size: filters.size || 12,
+        sort: filters.sort || 'id,desc'
+    };
+
+    // Add optional filters
+    if (filters.keyword) params.keyword = filters.keyword;
+    if (filters.authorId) params.authorId = filters.authorId;
+    if (filters.status) params.status = filters.status;
+    if (filters.minChapters) params.minChapters = filters.minChapters;
+    if (filters.maxChapters) params.maxChapters = filters.maxChapters;
+    if (filters.startDate) params.startDate = filters.startDate;
+    if (filters.endDate) params.endDate = filters.endDate;
+
+    return axios.get('/api/stories/filter', { params });
+};

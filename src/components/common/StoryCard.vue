@@ -11,14 +11,25 @@ const props = defineProps({
 });
 
 const formattedViews = computed(() => {
-  const views = props.story.viewCount || 0;
+  const views = props.story.totalViews || props.story.viewCount || 0;
   if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
   if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
   return views;
 });
 
+const chapterCount = computed(() => {
+  return props.story.totalChapters || props.story.chapterCount || 0;
+});
+
 const primaryCategory = computed(() => {
-  return props.story.categories?.[0]?.name || 'Chưa phân loại';
+  if (Array.isArray(props.story.categories)) {
+    return props.story.categories[0] || 'Chưa phân loại';
+  }
+  return 'Chưa phân loại';
+});
+
+const authorName = computed(() => {
+  return props.story.authorName || props.story.author?.name || 'Tác giả ẩn danh';
 });
 </script>
 
@@ -46,17 +57,18 @@ const primaryCategory = computed(() => {
             {{ story.title }}
           </h3>
           <p class="text-sm text-gray-600 dark:text-gray-400 truncate">
-            {{ story.author?.name || 'Tác giả ẩn danh' }}
+            <i class="pi pi-user text-xs mr-1"></i>
+            {{ authorName }}
           </p>
           
-          <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 pt-2">
+          <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
             <span class="flex items-center gap-1">
               <i class="pi pi-eye"></i>
               {{ formattedViews }}
             </span>
             <span class="flex items-center gap-1">
               <i class="pi pi-book"></i>
-              {{ story.chapterCount || 0 }}
+              {{ chapterCount }}
             </span>
           </div>
         </div>
@@ -69,6 +81,7 @@ const primaryCategory = computed(() => {
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

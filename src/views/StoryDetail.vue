@@ -1,19 +1,30 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 import Navbar from '@/components/common/Navbar.vue';
+import RatingSection from '@/components/story/RatingSection.vue';
+import CommentSection from '@/components/story/CommentSection.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import Chip from 'primevue/chip';
 import ProgressSpinner from 'primevue/progressspinner';
-import { storyAPI } from '@/api/story';
-import { chapterAPI } from '@/api/chapter';
+import { useToast } from 'primevue/usetoast';
+import { getStoryById } from '@/api/story';
+import { getChaptersByStoryId } from '@/api/chapter';
+import { checkFavorite, addFavorite, removeFavorite, getFavoriteCount } from '@/api/favorite';
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
+const toast = useToast();
+
 const story = ref(null);
 const chapters = ref([]);
 const loading = ref(true);
+const isFavorited = ref(false);
+const favoriteCount = ref(0);
+const favoriteLoading = ref(false);
 
 onMounted(async () => {
   const storyId = route.params.id;
@@ -21,18 +32,86 @@ onMounted(async () => {
   try {
     loading.value = true;
     const [storyRes, chaptersRes] = await Promise.all([
-      storyAPI.getStoryById(storyId),
-      chapterAPI.getChaptersByStory(storyId, 0, 100),
+      getStoryById(storyId),
+      getChaptersByStoryId(storyId),
     ]);
     
     story.value = storyRes.data.data;
-    chapters.value = chaptersRes.data.data.content;
+    chapters.value = chaptersRes?.data?.data?.content || chaptersRes?.data?.data || [];
+    
+    // Load favorite status and count
+    await loadFavoriteStatus();
   } catch (error) {
     console.error('Error loading story:', error);
   } finally {
     loading.value = false;
   }
 });
+
+const loadFavoriteStatus = async () => {
+  if (!authStore.isAuthenticated) return;
+  
+  try {
+    const [statusRes, countRes] = await Promise.all([
+      checkFavorite(route.params.id),
+      getFavoriteCount(route.params.id),
+    ]);
+    
+    isFavorited.value = statusRes.data.data;
+    favoriteCount.value = countRes.data.data;
+  } catch (error) {
+    console.error('Error loading favorite status:', error);
+  }
+};
+
+const toggleFavorite = async () => {
+  if (!authStore.isAuthenticated) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Chưa đăng nhập',
+      detail: 'Vui lòng đăng nhập để thêm vào yêu thích',
+      life: 3000
+    });
+    router.push('/login');
+    return;
+  }
+  
+  try {
+    favoriteLoading.value = true;
+    
+    if (isFavorited.value) {
+      await removeFavorite(route.params.id);
+      isFavorited.value = false;
+      favoriteCount.value = Math.max(0, favoriteCount.value - 1);
+      toast.add({
+        severity: 'success',
+        summary: 'Đã xóa',
+        detail: 'Đã xóa khỏi danh sách yêu thích',
+        life: 3000
+      });
+    } else {
+      await addFavorite(route.params.id);
+      isFavorited.value = true;
+      favoriteCount.value += 1;
+      toast.add({
+        severity: 'success',
+        summary: 'Đã thêm',
+        detail: 'Đã thêm vào danh sách yêu thích',
+        life: 3000
+      });
+    }
+  } catch (error) {
+    console.error('Error toggling favorite:', error);
+    toast.add({
+      severity: 'error',
+      summary: 'Lỗi',
+      detail: error.response?.data?.message || 'Có lỗi xảy ra',
+      life: 3000
+    });
+  } finally {
+    favoriteLoading.value = false;
+  }
+};
 
 const readChapter = (chapterId) => {
   router.push({ name: 'ReadChapter', params: { storyId: story.value.id, chapterId } });
@@ -64,35 +143,50 @@ const readChapter = (chapterId) => {
             {{ story.title }}
           </h1>
           <p class="text-lg text-gray-600 dark:text-gray-400">
-            Tác giả: <strong>{{ story.author?.name || 'Ẩn danh' }}</strong>
+            Tác giả: <strong>{{ story.authorName || 'Ẩn danh' }}</strong>
           </p>
           
           <div class="flex flex-wrap gap-2">
-            <Tag icon="pi pi-eye" :value="`${story.viewCount || 0} lượt xem`" />
-            <Tag icon="pi pi-book" :value="`${story.chapterCount || 0} chương`" severity="info" />
+            <Tag icon="pi pi-eye" :value="`${story.totalViews || 0} lượt xem`" />
+            <Tag icon="pi pi-book" :value="`${story.totalChapters || 0} chương`" severity="info" />
             <Tag 
-              :icon="story.status === 'completed' ? 'pi pi-check' : 'pi pi-pencil'"
-              :value="story.status === 'completed' ? 'Hoàn thành' : 'Đang tiến hành'"
-              :severity="story.status === 'completed' ? 'success' : 'warning'"
+              :icon="story.status === 'COMPLETED' ? 'pi pi-check' : 'pi pi-pencil'"
+              :value="story.status === 'COMPLETED' ? 'Hoàn thành' : 'Đang tiến hành'"
+              :severity="story.status === 'COMPLETED' ? 'success' : 'warning'"
+            />
+            <Tag 
+              icon="pi pi-heart-fill" 
+              :value="`${favoriteCount} yêu thích`" 
+              severity="danger"
             />
           </div>
           
           <div v-if="story.categories?.length" class="flex flex-wrap gap-2">
-            <router-link
-              v-for="category in story.categories"
-              :key="category.id"
-              :to="`/category/${category.id}`"
-            >
-              <Chip :label="category.name" class="cursor-pointer" />
-            </router-link>
+            <Chip 
+              v-for="(category, index) in story.categories" 
+              :key="index"
+              :label="category" 
+              class="cursor-pointer" 
+            />
           </div>
           
-          <div class="pt-2">
+          <div class="flex gap-3 pt-2">
             <Button
               v-if="chapters.length"
               @click="readChapter(chapters[0].id)"
               label="Đọc từ đầu"
               icon="pi pi-book"
+              size="large"
+              class="!bg-indigo-600 hover:!bg-indigo-700"
+            />
+            
+            <Button
+              @click="toggleFavorite"
+              :label="isFavorited ? 'Bỏ yêu thích' : 'Yêu thích'"
+              :icon="isFavorited ? 'pi pi-heart-fill' : 'pi pi-heart'"
+              :loading="favoriteLoading"
+              :outlined="!isFavorited"
+              :severity="isFavorited ? 'danger' : 'secondary'"
               size="large"
             />
           </div>
@@ -108,7 +202,7 @@ const readChapter = (chapterId) => {
       </div>
       
       <!-- Chapters List -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow mb-8">
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
           Danh sách chương ({{ chapters.length }})
         </h2>
@@ -118,22 +212,30 @@ const readChapter = (chapterId) => {
         </div>
         
         <div v-else class="space-y-2">
-          <Button
+          <div
             v-for="chapter in chapters"
             :key="chapter.id"
             @click="readChapter(chapter.id)"
-            :label="`Chương ${chapter.chapterNumber}: ${chapter.title}`"
-            text
-            class="w-full !justify-between"
+            class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors border border-transparent hover:border-indigo-500"
           >
-            <template #default>
-              <span class="font-medium">Chương {{ chapter.chapterNumber }}: {{ chapter.title }}</span>
-              <span class="text-sm text-gray-500">
-                {{ new Date(chapter.createdAt).toLocaleDateString('vi-VN') }}
-              </span>
-            </template>
-          </Button>
+            <span class="font-medium text-gray-900 dark:text-white">
+              Chương {{ chapter.chapterNumber }}: {{ chapter.title }}
+            </span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">
+              {{ new Date(chapter.createdAt).toLocaleDateString('vi-VN') }}
+            </span>
+          </div>
         </div>
+      </div>
+      
+      <!-- Rating Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow mb-8">
+        <RatingSection :storyId="story.id" />
+      </div>
+      
+      <!-- Comment Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+        <CommentSection :storyId="story.id" />
       </div>
     </div>
   </div>
