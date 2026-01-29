@@ -80,7 +80,7 @@ const toggleUserMenu = (event) => {
           </router-link>
           
           <router-link to="/browse">
-            <Button label="Khám phá" text class="text-white hover:bg-white/10" />
+            <Button label="Tìm Truyện" text class="text-white hover:bg-white/10" />
           </router-link>
           
           <template v-if="authStore.isAuthenticated">
