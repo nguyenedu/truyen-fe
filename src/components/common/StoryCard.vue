@@ -43,6 +43,10 @@ const authorName = computed(() => {
             :alt="story.title"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
+          
+          <!-- Custom badge slot (for trending rank, etc) -->
+          <slot name="badge"></slot>
+          
           <Tag 
             :value="primaryCategory" 
             severity="info"

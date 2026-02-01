@@ -8,7 +8,7 @@ import Chip from 'primevue/chip';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import ProgressSpinner from 'primevue/progressspinner';
-import { getStories } from '@/api/story';
+import { getStories, getHotStories } from '@/api/story';
 import { getCategories } from '@/api/category';
 import { getReadingHistory } from '@/api/history';
 
@@ -18,6 +18,7 @@ const authStore = useAuthStore();
 const stories = ref([]);
 const categories = ref([]);
 const recentReading = ref([]);
+const trendingStories = ref([]);
 const loading = ref(true);
 const error = ref('');
 
@@ -28,6 +29,7 @@ onMounted(async () => {
     const promises = [
       getStories(0, 24), // Lấy 24 truyện
       getCategories(0, 20),
+      getHotStories(12), // 12 truyện trending
     ];
     
     // Load reading history if logged in
@@ -40,9 +42,10 @@ onMounted(async () => {
     // Safe check for response data
     stories.value = results[0]?.data?.data?.content || [];
     categories.value = results[1]?.data?.data?.content || [];
+    trendingStories.value = results[2]?.data || [];
     
-    if (authStore.isAuthenticated && results[2]) {
-      recentReading.value = results[2]?.data?.data?.content || [];
+    if (authStore.isAuthenticated && results[3]) {
+      recentReading.value = results[3]?.data?.data?.content || [];
     }
   } catch (err) {
     console.error('Error loading home data:', err);
@@ -167,6 +170,36 @@ const formatDate = (dateString) => {
                 </div>
               </template>
             </Card>
+          </div>
+        </section>
+
+        <!-- Trending Stories -->
+        <section v-if="trendingStories.length > 0" class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            <i class="pi pi-chart-line text-red-500"></i>
+            🔥 Truyện Trending
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <StoryCard
+              v-for="(trending, index) in trendingStories"
+              :key="trending.storyId"
+              :story="{
+                id: trending.storyId,
+                title: trending.title,
+                image: trending.image,
+                totalViews: trending.totalViews,
+                totalChapters: trending.totalChapters,
+                author: { name: trending.authorName },
+                categories: trending.categories
+              }"
+            >
+              <!-- Trending Badge -->
+              <template #badge>
+                <div class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
+                  #{{ index + 1 }}
+                </div>
+              </template>
+            </StoryCard>
           </div>
         </section>
 
