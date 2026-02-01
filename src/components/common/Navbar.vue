@@ -38,7 +38,7 @@ const handleSearch = () => {
 
 async function handleLogout() {
   await authStore.logout();
-  router.push({ name: 'Login' });
+  router.push({ name: '' });
 }
 
 const toggleUserMenu = (event) => {
