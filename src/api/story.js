@@ -26,7 +26,7 @@ export const getStoriesByCategory = (categoryId, page = 0, size = 10) => {
 export const getHotStories = (limit = 12) => {
     return axios.get('/api/trending', {
         params: {
-            type: 'DAILY',
+            type: 'WEEKLY',
             limit
         }
     });

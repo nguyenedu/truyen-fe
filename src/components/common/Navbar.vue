@@ -2,12 +2,14 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useTheme } from '@/composables/useTheme';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Menu from 'primevue/menu';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const { isDark, toggleTheme } = useTheme();
 
 const searchKeyword = ref('');
 const userMenu = ref();
@@ -75,6 +77,16 @@ const toggleUserMenu = (event) => {
 
         <!-- Navigation Links -->
         <div class="flex items-center gap-2">
+          <!-- Theme Toggle -->
+          <Button
+            @click="toggleTheme"
+            :icon="isDark ? 'pi pi-sun' : 'pi pi-moon'"
+            text
+            rounded
+            class="text-white hover:bg-white/10"
+            v-tooltip.bottom="isDark ? 'Chế độ sáng' : 'Chế độ tối'"
+          />
+          
           <router-link to="/">
             <Button label="Trang chủ" text class="text-white hover:bg-white/10" />
           </router-link>

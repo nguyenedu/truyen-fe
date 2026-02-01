@@ -35,9 +35,9 @@ const authorName = computed(() => {
 
 <template>
   <router-link :to="`/story/${story.id}`" class="block group">
-    <Card class="h-full hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
+    <Card class="h-full hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1 overflow-hidden">
       <template #header>
-        <div class="relative overflow-hidden aspect-[3/4]">
+        <div class="relative overflow-hidden aspect-[2/3]">
           <img 
             :src="story.image || 'https://via.placeholder.com/300x400?text=No+Image'" 
             :alt="story.title"
@@ -50,28 +50,28 @@ const authorName = computed(() => {
           <Tag 
             :value="primaryCategory" 
             severity="info"
-            class="absolute top-2 right-2"
+            class="absolute top-1 right-1 text-xs"
           />
         </div>
       </template>
       
       <template #content>
-        <div class="space-y-2">
-          <h3 class="font-bold text-gray-900 dark:text-white line-clamp-2 min-h-[3rem]">
+        <div class="space-y-0.5 -mt-3">
+          <h3 class="font-bold text-sm text-gray-900 dark:text-white line-clamp-2">
             {{ story.title }}
           </h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400 truncate">
+          <p class="text-xs text-gray-600 dark:text-gray-400 truncate">
             <i class="pi pi-user text-xs mr-1"></i>
             {{ authorName }}
           </p>
           
-          <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-0.5 border-t border-gray-200 dark:border-gray-700">
             <span class="flex items-center gap-1">
-              <i class="pi pi-eye"></i>
+              <i class="pi pi-eye text-xs"></i>
               {{ formattedViews }}
             </span>
             <span class="flex items-center gap-1">
-              <i class="pi pi-book"></i>
+              <i class="pi pi-book text-xs"></i>
               {{ chapterCount }}
             </span>
           </div>
@@ -88,5 +88,15 @@ const authorName = computed(() => {
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Override PrimeVue Card padding */
+:deep(.p-card-body) {
+  padding: 0;
+}
+
+:deep(.p-card-content) {
+  padding: 0.5rem;
+  padding-top: 0.25rem;
 }
 </style>
