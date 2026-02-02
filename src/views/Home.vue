@@ -144,7 +144,7 @@ const formatDate = (dateString) => {
               <template #content>
                 <div class="space-y-3">
                   <h3 
-                    class="font-bold text-lg text-gray-900 dark:text-white line-clamp-1 cursor-pointer hover:text-indigo-600"
+                    class="font-bold text-lg text-gray-900 dark:text-gray-600 line-clamp-1 cursor-pointer hover:text-indigo-600"
                     @click="viewStory(history.storyId)"
                   >
                     {{ history.storyTitle }}
