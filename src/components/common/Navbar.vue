@@ -52,7 +52,6 @@ const toggleUserMenu = (event) => {
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-2 text-white hover:opacity-90 transition-opacity">
-          <span class="text-2xl">📚</span>
           <span class="text-xl font-bold hidden sm:inline">Truyện Online</span>
         </router-link>
 
