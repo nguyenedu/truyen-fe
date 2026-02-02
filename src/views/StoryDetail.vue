@@ -242,5 +242,4 @@ const readChapter = (chapterId) => {
 </template>
 
 <style scoped>
-/* TailwindCSS handles all styling */
 </style>
