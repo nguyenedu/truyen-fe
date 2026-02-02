@@ -82,24 +82,24 @@ const toggleUserMenu = (event) => {
               :icon="isDark ? 'pi pi-sun' : 'pi pi-moon'"
               text
               rounded
-              class="!text-white dark:!text-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-700"
+              class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
               v-tooltip.bottom="isDark ? 'Chế độ sáng' : 'Chế độ tối'"
           />
 
           <router-link to="/">
-            <Button label="Trang chủ" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700" />
+            <Button label="Trang chủ" text />
           </router-link>
 
           <router-link to="/browse">
-            <Button label="Tìm Truyện" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700" />
+            <Button label="Tìm Truyện" text />
           </router-link>
 
           <template v-if="authStore.isAuthenticated">
             <router-link to="/favorites">
-              <Button label="Yêu thích" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700 hidden sm:inline-flex" />
+              <Button label="Yêu thích" text class="hidden sm:inline-flex" />
             </router-link>
             <router-link to="/history">
-              <Button label="Lịch sử" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700 hidden sm:inline-flex" />
+              <Button label="Lịch sử" text class="hidden sm:inline-flex" />
             </router-link>
 
             <!-- User Menu -->
@@ -118,7 +118,7 @@ const toggleUserMenu = (event) => {
 
           <template v-else>
             <router-link to="/login">
-              <Button label="Đăng nhập" outlined class="!text-indigo-600 dark:!text-indigo-400 !border-indigo-600 dark:!border-indigo-400 hover:!bg-indigo-50 dark:hover:!bg-indigo-900/30" />
+              <Button label="Đăng nhập" outlined />
             </router-link>
             <router-link to="/register">
               <Button label="Đăng ký" class="!bg-indigo-600 dark:!bg-indigo-500 !text-white hover:!bg-indigo-700 dark:hover:!bg-indigo-600" />
@@ -132,4 +132,41 @@ const toggleUserMenu = (event) => {
 
 <style scoped>
 /* Custom styles for PrimeVue components in navbar */
+
+/* Override Button text color - áp dụng cho tất cả button text trong navbar */
+:deep(.p-button.p-button-text) {
+  color: white !important;
+}
+
+:deep(.p-button.p-button-text:hover) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark mode support */
+:deep(.dark .p-button.p-button-text) {
+  color: rgb(209, 213, 219) !important; /* gray-300 */
+}
+
+:deep(.dark .p-button.p-button-text:hover) {
+  background-color: rgb(55, 65, 81) !important; /* gray-700 */
+}
+
+/* Button outlined (Đăng nhập) */
+:deep(.p-button.p-button-outlined) {
+  color: rgb(79, 70, 229) !important; /* indigo-600 */
+  border-color: rgb(79, 70, 229) !important;
+}
+
+:deep(.p-button.p-button-outlined:hover) {
+  background-color: rgb(238, 242, 255) !important; /* indigo-50 */
+}
+
+:deep(.dark .p-button.p-button-outlined) {
+  color: rgb(129, 140, 248) !important; /* indigo-400 */
+  border-color: rgb(129, 140, 248) !important;
+}
+
+:deep(.dark .p-button.p-button-outlined:hover) {
+  background-color: rgba(79, 70, 229, 0.3) !important;
+}
 </style>
