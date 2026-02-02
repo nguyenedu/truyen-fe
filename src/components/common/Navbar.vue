@@ -47,11 +47,11 @@ const toggleUserMenu = (event) => {
 </script>
 
 <template>
-  <nav class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 shadow-lg sticky top-0 z-50">
+  <nav class="bg-white dark:bg-gray-800 shadow-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
-        <router-link to="/" class="flex items-center gap-2 text-white hover:opacity-90 transition-opacity">
+        <router-link to="/" class="flex items-center gap-2 text-white dark:text-white hover:text-gray-100 dark:hover:text-gray-100 transition-colors">
           <span class="text-xl font-bold hidden sm:inline">Truyện Online</span>
         </router-link>
 
@@ -59,17 +59,17 @@ const toggleUserMenu = (event) => {
         <div class="flex-1 max-w-md mx-4">
           <div class="relative">
             <InputText
-              v-model="searchKeyword"
-              @keyup.enter="handleSearch"
-              placeholder="Tìm kiếm truyện..."
-              class="w-full !pr-10"
+                v-model="searchKeyword"
+                @keyup.enter="handleSearch"
+                placeholder="Tìm kiếm truyện..."
+                class="w-full !pr-10"
             />
             <Button
-              @click="handleSearch"
-              icon="pi pi-search"
-              text
-              rounded
-              class="!absolute !right-1 !top-1/2 !-translate-y-1/2 !text-gray-500"
+                @click="handleSearch"
+                icon="pi pi-search"
+                text
+                rounded
+                class="!absolute !right-1 !top-1/2 !-translate-y-1/2 !text-gray-500"
             />
           </div>
         </div>
@@ -78,50 +78,50 @@ const toggleUserMenu = (event) => {
         <div class="flex items-center gap-2">
           <!-- Theme Toggle -->
           <Button
-            @click="toggleTheme"
-            :icon="isDark ? 'pi pi-sun' : 'pi pi-moon'"
-            text
-            rounded
-            class="text-white hover:bg-white/10"
-            v-tooltip.bottom="isDark ? 'Chế độ sáng' : 'Chế độ tối'"
+              @click="toggleTheme"
+              :icon="isDark ? 'pi pi-sun' : 'pi pi-moon'"
+              text
+              rounded
+              class="!text-white dark:!text-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-700"
+              v-tooltip.bottom="isDark ? 'Chế độ sáng' : 'Chế độ tối'"
           />
-          
+
           <router-link to="/">
-            <Button label="Trang chủ" text class="text-white hover:bg-white/10" />
+            <Button label="Trang chủ" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700" />
           </router-link>
-          
+
           <router-link to="/browse">
-            <Button label="Tìm Truyện" text class="text-white hover:bg-white/10" />
+            <Button label="Tìm Truyện" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700" />
           </router-link>
-          
+
           <template v-if="authStore.isAuthenticated">
             <router-link to="/favorites">
-              <Button label="Yêu thích" text class="text-white hover:bg-white/10 hidden sm:inline-flex" />
+              <Button label="Yêu thích" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700 hidden sm:inline-flex" />
             </router-link>
             <router-link to="/history">
-              <Button label="Lịch sử" text class="text-white hover:bg-white/10 hidden sm:inline-flex" />
+              <Button label="Lịch sử" text class="!text-white dark:!text-gray-300 hover:!bg-white/10 dark:hover:!bg-gray-700 hidden sm:inline-flex" />
             </router-link>
-            
+
             <!-- User Menu -->
             <Button
-              type="button"
-              @click="toggleUserMenu"
-              class="!bg-white/20 hover:!bg-white/30 !border-0"
-              rounded
+                type="button"
+                @click="toggleUserMenu"
+                class="!bg-indigo-100 dark:!bg-indigo-900 hover:!bg-indigo-200 dark:hover:!bg-indigo-800 !border-0"
+                rounded
             >
-              <span class="font-semibold text-white">
+              <span class="font-semibold text-indigo-700 dark:text-indigo-200">
                 {{ authStore.user?.username?.charAt(0).toUpperCase() }}
               </span>
             </Button>
             <Menu ref="userMenu" :model="userMenuItems" popup />
           </template>
-          
+
           <template v-else>
             <router-link to="/login">
-              <Button label="Đăng nhập" outlined class="!text-white !border-white hover:!bg-white/10" />
+              <Button label="Đăng nhập" outlined class="!text-indigo-600 dark:!text-indigo-400 !border-indigo-600 dark:!border-indigo-400 hover:!bg-indigo-50 dark:hover:!bg-indigo-900/30" />
             </router-link>
             <router-link to="/register">
-              <Button label="Đăng ký" class="!bg-white !text-indigo-600 hover:!bg-gray-100" />
+              <Button label="Đăng ký" class="!bg-indigo-600 dark:!bg-indigo-500 !text-white hover:!bg-indigo-700 dark:hover:!bg-indigo-600" />
             </router-link>
           </template>
         </div>
