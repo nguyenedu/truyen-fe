@@ -254,5 +254,4 @@ const ratingText = computed(() => {
 </template>
 
 <style scoped>
-/* Custom styles */
 </style>
