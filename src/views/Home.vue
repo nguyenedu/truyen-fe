@@ -112,8 +112,8 @@ const formatDate = (dateString) => {
         <!-- Continue Reading Section -->
         <section v-if="recentReading.length > 0" class="mb-12">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-              <i class="pi pi-history text-indigo-500"></i>
+            <h2 class="text-2xl font-bold !text-gray-900 dark:!text-white">
+              <i class="pi pi-history !text-indigo-500"></i>
               Đọc gần đây
             </h2>
             <Button

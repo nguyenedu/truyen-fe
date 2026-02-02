@@ -195,5 +195,4 @@ const backToStory = () => {
 </template>
 
 <style scoped>
-/* Custom styles for better reading experience */
 </style>

@@ -73,7 +73,7 @@ const goToStory = (id) => {
   text-align: right;
 }
 
-/* Dark mode */
+
 .dark .trending-item {
   background: #1f2937;
   border-color: #374151;
