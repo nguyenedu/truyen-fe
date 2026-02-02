@@ -23,6 +23,7 @@ const pageSize = ref(24);
 // Filter options
 const keyword = ref('');
 const selectedStatus = ref(null);
+const selectedCategory = ref(null);
 const selectedSort = ref({ label: 'Mới nhất', value: 'createdAt,desc' });
 const minChapters = ref(null);
 const maxChapters = ref(null);
@@ -32,6 +33,20 @@ const statusOptions = [
   { label: 'Đang tiến hành', value: 'ONGOING' },
   { label: 'Hoàn thành', value: 'COMPLETED' },
   { label: 'Tạm dừng', value: 'PAUSED' }
+];
+
+const categoryOptions = [
+  { label: 'Tiên Hiệp', value: 'Tiên Hiệp' },
+  { label: 'Huyền Huyễn', value: 'Huyền Huyễn' },
+  { label: 'Đô Thị', value: 'Đô Thị' },
+  { label: 'Kiếm Hiệp', value: 'Kiếm Hiệp' },
+  { label: 'Ngôn Tình', value: 'Ngôn Tình' },
+  { label: 'Trinh Thám', value: 'Trinh Thám' },
+  { label: 'Khoa Huyễn', value: 'Khoa Huyễn' },
+  { label: 'Đam Mỹ', value: 'Đam Mỹ' },
+  { label: 'Trọng Sinh', value: 'Trọng Sinh' },
+  { label: 'Hệ Thống', value: 'Hệ Thống' },
+  { label: 'Võ Hiệp', value: 'Võ Hiệp'}
 ];
 
 const sortOptions = [
@@ -48,7 +63,7 @@ onMounted(async () => {
   await loadStories();
 });
 
-watch([selectedStatus, selectedSort], () => {
+watch([selectedStatus, selectedSort, selectedCategory], () => {
   currentPage.value = 0;
   loadStories();
 });
@@ -65,6 +80,7 @@ const loadStories = async () => {
     
     if (keyword.value) filters.keyword = keyword.value;
     if (selectedStatus.value) filters.status = selectedStatus.value;
+    if (selectedCategory.value) filters.category = selectedCategory.value;
     if (minChapters.value) filters.minChapters = minChapters.value;
     if (maxChapters.value) filters.maxChapters = maxChapters.value;
     
@@ -90,6 +106,7 @@ const handleSearch = () => {
 const handleReset = () => {
   keyword.value = '';
   selectedStatus.value = null;
+  selectedCategory.value = null;
   selectedSort.value = { label: 'Mới nhất', value: 'createdAt,desc' };
   minChapters.value = null;
   maxChapters.value = null;
@@ -144,7 +161,22 @@ const onPageChange = (event) => {
               class="w-full"
             />
           </div>
-          
+
+          <!-- Category Filter -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Thể loại
+            </label>
+            <Dropdown
+              v-model="selectedCategory"
+              :options="categoryOptions"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Chọn thể loại"
+              class="w-full"
+            />
+          </div>
+
           <!-- Sort -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
