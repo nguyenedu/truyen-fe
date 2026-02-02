@@ -27,7 +27,7 @@ onMounted(async () => {
     loading.value = true;
     
     const promises = [
-      getStories(0, 24), // Lấy 24 truyện
+      getStories(0, 24), // 24 truyện
       getCategories(0, 20),
       getHotStories(12), // 12 truyện trending
     ];
