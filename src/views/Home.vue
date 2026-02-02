@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Navbar from '@/components/common/Navbar.vue';
@@ -52,6 +52,14 @@ onMounted(async () => {
     error.value = 'Không thể tải dữ liệu. Vui lòng thử lại sau.';
   } finally {
     loading.value = false;
+  }
+});
+
+// Watch for authentication changes - clear reading history when user logs out
+watch(() => authStore.isAuthenticated, (newValue) => {
+  if (!newValue) {
+    // User logged out - clear reading history
+    recentReading.value = [];
   }
 });
 

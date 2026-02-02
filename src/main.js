@@ -9,12 +9,20 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+import Tooltip from 'primevue/tooltip';
 import 'primeicons/primeicons.css';
+import { useAuthStore } from './stores/auth';
 
 const app = createApp(App);
 const pinia = createPinia();
 
 app.use(pinia);
+
+// Initialize auth state BEFORE router
+const authStore = useAuthStore();
+authStore.checkAuth();
+
+// Now initialize router
 app.use(router);
 
 // Use Aura preset (same as admin-fe)
@@ -31,9 +39,7 @@ app.use(PrimeVue, {
 app.use(ToastService);
 app.use(ConfirmationService);
 
-// Initialize auth state
-import { useAuthStore } from './stores/auth';
-const authStore = useAuthStore();
-authStore.checkAuth();
+// Add directives
+app.directive('tooltip', Tooltip);
 
 app.mount('#app');
