@@ -197,7 +197,8 @@ const formatDate = (dateString) => {
                 image: trending.image,
                 totalViews: trending.totalViews,
                 totalChapters: trending.totalChapters,
-                author: { name: trending.authorName },
+                authorName: trending.authorName,
+                authorId: trending.authorId,
                 categories: trending.categories
               }"
             >

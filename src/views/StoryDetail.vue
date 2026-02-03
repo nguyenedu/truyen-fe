@@ -143,7 +143,13 @@ const readChapter = (chapterId) => {
             {{ story.title }}
           </h1>
           <p class="text-lg text-slate-500">
-            Tác giả: <strong class="text-slate-700">{{ story.authorName || 'Ẩn danh' }}</strong>
+            Tác giả: 
+            <router-link 
+              :to="`/author/${story.authorId}`" 
+              class="font-bold text-slate-700 hover:text-indigo-600 transition-colors"
+            >
+              {{ story.authorName || 'Ẩn danh' }}
+            </router-link>
           </p>
           
           <div class="flex flex-wrap gap-2">

@@ -31,13 +31,17 @@ const primaryCategory = computed(() => {
 const authorName = computed(() => {
   return props.story.authorName || props.story.author?.name || 'Tác giả ẩn danh';
 });
+
+const authorId = computed(() => {
+  return props.story.authorId || props.story.author?.id;
+});
 </script>
 
 <template>
-  <router-link :to="`/story/${story.id}`" class="block group">
+  <div class="h-full group">
     <Card class="h-full hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1 overflow-hidden">
       <template #header>
-        <div class="relative overflow-hidden aspect-[2/3]">
+        <router-link :to="`/story/${story.id}`" class="block relative overflow-hidden aspect-[2/3]">
           <img
               :src="story.image || 'https://via.placeholder.com/300x400?text=No+Image'"
               :alt="story.title"
@@ -52,33 +56,41 @@ const authorName = computed(() => {
               severity="info"
               class="absolute top-1 right-1 text-xs"
           />
-        </div>
+        </router-link>
       </template>
 
       <template #content>
         <div class="space-y-1">
-          <h3 class="font-bold text-sm text-slate-800 min-h-[2.5rem] leading-tight">
-            {{ story.title }}
-          </h3>
-          <p class="text-xs text-slate-500 truncate">
+          <router-link :to="`/story/${story.id}`" class="block">
+            <h3 class="font-bold text-sm text-slate-800 min-h-[2.5rem] leading-tight hover:text-indigo-600 transition-colors">
+              {{ story.title }}
+            </h3>
+          </router-link>
+          
+          <router-link 
+            :to="`/author/${authorId}`" 
+            class="text-xs text-slate-500 truncate block hover:text-indigo-600 transition-colors"
+          >
             <i class="pi pi-user text-xs mr-1"></i>
             {{ authorName }}
-          </p>
+          </router-link>
 
-          <div class="flex items-center justify-between text-xs text-slate-400 pt-1 border-t border-slate-100">
-            <span class="flex items-center gap-1">
-              <i class="pi pi-eye text-xs"></i>
-              {{ formattedViews }}
-            </span>
-            <span class="flex items-center gap-1">
-              <i class="pi pi-book text-xs"></i>
-              {{ chapterCount }}
-            </span>
-          </div>
+          <router-link :to="`/story/${story.id}`" class="block">
+            <div class="flex items-center justify-between text-xs text-slate-400 pt-1 border-t border-slate-100">
+              <span class="flex items-center gap-1">
+                <i class="pi pi-eye text-xs"></i>
+                {{ formattedViews }}
+              </span>
+              <span class="flex items-center gap-1">
+                <i class="pi pi-book text-xs"></i>
+                {{ chapterCount }}
+              </span>
+            </div>
+          </router-link>
         </div>
       </template>
     </Card>
-  </router-link>
+  </div>
 </template>
 
 <style scoped>

@@ -62,6 +62,11 @@ const routes = [
         component: () => import('@/views/History.vue'),
         meta: { requiresAuth: true },
     },
+    {
+        path: '/author/:id',
+        name: 'Author',
+        component: () => import('@/views/Author.vue'),
+    },
 ];
 
 const router = createRouter({
