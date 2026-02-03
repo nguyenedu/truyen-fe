@@ -50,7 +50,6 @@ const fetchCategories = async () => {
     try {
         const response = await getCategories(0, 50);
         const data = response.data.data;
-        // The backend returns a List directly, not a Page with .content
         const categoryList = Array.isArray(data) ? data : (data.content || []);
         categoryOptions.value = categoryList.map(c => ({
             label: c.name,
