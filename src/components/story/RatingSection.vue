@@ -184,14 +184,14 @@ const ratingText = computed(() => {
     </div>
 
     <!-- My Rating Display -->
-    <div v-if="myRating && !showRatingDialog" class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg mb-4">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="font-semibold">Đánh giá của bạn:</span>
-          <Rating :modelValue="myRating.rating" readonly :cancel="false" class="text-yellow-500" />
+    <div v-if="myRating && !showRatingDialog" class="bg-indigo-500/10 border border-indigo-500/30 p-5 rounded-2xl mb-6 backdrop-blur-sm shadow-lg">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span class="font-bold text-indigo-400 uppercase tracking-wider text-xs">Đánh giá của bạn:</span>
+          <Rating :modelValue="myRating.rating" readonly :cancel="false" class="text-yellow-400" />
         </div>
       </div>
-      <p v-if="myRating.review" class="text-gray-700 dark:text-gray-300">
+      <p v-if="myRating.review" class="text-gray-200 leading-relaxed font-medium">
         {{ myRating.review }}
       </p>
     </div>

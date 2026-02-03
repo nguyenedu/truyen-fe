@@ -14,3 +14,15 @@ export const registerApi = (userData) => {
 export const logoutApi = () => {
     return axios.post('/api/auth/logout');
 };
+
+export const updateUserApi = (id, formData) => {
+    return axios.put(`/api/users/${id}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};
+
+export const getCurrentUserApi = () => {
+    return axios.get('/api/users/me');
+};
