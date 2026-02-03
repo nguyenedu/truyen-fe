@@ -21,8 +21,6 @@ export const useAuthStore = defineStore('auth', () => {
 
             console.log('📥 Login response:', data);
 
-            // Backend trả về: { token, tokenType, userId, username, email, role }
-            // Cần tạo user object từ các field này
             token.value = data.token;
             user.value = {
                 id: data.userId,
@@ -31,11 +29,8 @@ export const useAuthStore = defineStore('auth', () => {
                 role: data.role
             };
 
-            // Persist vào localStorage
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(user.value));
-
-            console.log('✅ Login successful - User saved:', user.value);
 
             return { success: true, data };
         } catch (error) {
@@ -66,29 +61,19 @@ export const useAuthStore = defineStore('auth', () => {
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
-            // Clear state
+
             token.value = null;
             user.value = null;
 
-            // Clear localStorage
+
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }
     };
 
     const checkAuth = () => {
-        // Khôi phục auth state từ localStorage
         const savedToken = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
-
-        console.log('🔍 CheckAuth - savedToken:', savedToken ? 'EXISTS' : 'NULL');
-        console.log('🔍 CheckAuth - savedUser:', savedUser);
-
-        // Validate before parsing
-        if (savedToken && savedToken !== 'undefined' && savedToken !== 'null') {
-            token.value = savedToken;
-            console.log('✅ Token restored');
-        }
 
         if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
             try {
