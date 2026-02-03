@@ -26,7 +26,6 @@ const myReview = ref('');
 const showRatingDialog = ref(false);
 const loading = ref(false);
 
-// Story rating info
 const averageRating = ref(0);
 const totalRatings = ref(0);
 

@@ -21,7 +21,6 @@ export function useTheme() {
 
     const initTheme = () => {
         if (!initialized.value) {
-            // Force light mode as default - remove this after first load if needed
             isDark.value = false;
             localStorage.setItem('theme', 'light');
             updateTheme();
