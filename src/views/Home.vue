@@ -94,7 +94,7 @@ const formatDate = (dateString) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -107,12 +107,12 @@ const formatDate = (dateString) => {
       <!-- Loading State -->
       <div v-if="loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
-        <p class="mt-4 text-gray-600 dark:text-gray-400">Đang tải dữ liệu...</p>
+        <p class="mt-4 text-gray-600">Đang tải dữ liệu...</p>
       </div>
 
       <!-- Error State -->
       <div v-else-if="error" class="text-center py-20">
-        <p class="text-red-600 dark:text-red-400">{{ error }}</p>
+        <p class="text-red-600">{{ error }}</p>
       </div>
 
       <!-- Content -->
@@ -120,8 +120,8 @@ const formatDate = (dateString) => {
         <!-- Continue Reading Section -->
         <section v-if="recentReading.length > 0" class="mb-12">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold !text-gray-900 dark:!text-white">
-              <i class="pi pi-history !text-indigo-500"></i>
+            <h2 class="text-2xl font-black text-slate-800">
+              <i class="pi pi-history text-indigo-500 mr-2"></i>
               Đọc gần đây
             </h2>
             <Button
@@ -152,13 +152,13 @@ const formatDate = (dateString) => {
               <template #content>
                 <div class="space-y-3">
                   <h3 
-                    class="font-bold text-lg text-gray-900 dark:text-gray-600 line-clamp-1 cursor-pointer hover:text-indigo-600"
+                    class="font-bold text-lg text-slate-800 line-clamp-1 cursor-pointer hover:text-indigo-600 transition-colors"
                     @click="viewStory(history.storyId)"
                   >
                     {{ history.storyTitle }}
                   </h3>
                   
-                  <div class="text-sm text-gray-600 dark:text-gray-400">
+                  <div class="text-sm text-slate-500">
                     <p class="mb-1">
                       <i class="pi pi-book mr-2"></i>
                       Chương {{ history.chapterNumber }}: {{ history.chapterTitle }}
@@ -183,7 +183,7 @@ const formatDate = (dateString) => {
 
         <!-- Trending Stories -->
         <section v-if="trendingStories.length > 0" class="mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
             <i class="pi pi-chart-line text-red-500"></i>
             🔥 Truyện Trending
           </h2>
@@ -211,9 +211,11 @@ const formatDate = (dateString) => {
           </div>
         </section>
 
-        <!-- Categories -->
         <section v-if="categories.length" class="mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Thể loại</h2>
+          <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+            <i class="pi pi-tag text-emerald-500"></i>
+            Thể loại
+          </h2>
           <div class="flex flex-wrap gap-3">
             <router-link
               v-for="category in categories"
@@ -222,15 +224,14 @@ const formatDate = (dateString) => {
             >
               <Chip 
                 :label="category.name" 
-                class="cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors"
+                class="cursor-pointer !bg-white !text-slate-600 hover:!bg-indigo-50 hover:!text-indigo-600 !border !border-slate-100 transition-all font-semibold"
               />
             </router-link>
           </div>
         </section>
 
-        <!-- All Stories -->
         <section v-if="stories.length" class="mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
             <i class="pi pi-book text-indigo-500"></i>
             Danh sách truyện
           </h2>

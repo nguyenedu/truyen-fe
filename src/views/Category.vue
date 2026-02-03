@@ -49,31 +49,32 @@ const onPageChange = (event) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div v-if="loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
-        <p class="mt-4 text-gray-600 dark:text-gray-400">Đang tải...</p>
+        <p class="mt-4 text-slate-500">Đang tải...</p>
       </div>
       
       <div v-else>
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div class="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
+          <h1 class="text-4xl font-black text-slate-800 mb-3 tracking-tighter">
             {{ category?.name || 'Thể loại' }}
           </h1>
-          <p v-if="category?.description" class="text-gray-600 dark:text-gray-400 mb-4">
+          <p v-if="category?.description" class="text-slate-500 text-lg mb-4 max-w-2xl">
             {{ category.description }}
           </p>
-          <p class="text-gray-600 dark:text-gray-400">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-bold">
+            <i class="pi pi-book"></i>
             {{ totalRecords }} truyện
-          </p>
+          </div>
         </div>
         
-        <div v-if="stories.length === 0" class="text-center py-20">
-          <i class="pi pi-book text-6xl text-gray-400 mb-4"></i>
-          <p class="text-gray-600 dark:text-gray-400">Chưa có truyện nào trong thể loại này</p>
+        <div v-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+          <i class="pi pi-book-open text-6xl text-slate-200 mb-4"></i>
+          <p class="text-slate-400 font-medium">Chưa có truyện nào trong thể loại này</p>
         </div>
         
         <div v-else>

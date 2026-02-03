@@ -54,6 +54,7 @@ export const filterStories = (filters = {}) => {
     if (filters.maxChapters) params.maxChapters = filters.maxChapters;
     if (filters.startDate) params.startDate = filters.startDate;
     if (filters.endDate) params.endDate = filters.endDate;
+    if (filters.categoryIds) params.categoryIds = filters.categoryIds;
 
     return axios.get('/api/stories/filter', { params });
 };

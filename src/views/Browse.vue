@@ -5,11 +5,13 @@ import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
+import MultiSelect from 'primevue/multiselect';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { filterStories } from '@/api/story';
+import { getCategories } from '@/api/category';
 
 const route = useRoute();
 const router = useRouter();
@@ -23,7 +25,8 @@ const pageSize = ref(24);
 // Filter options
 const keyword = ref('');
 const selectedStatus = ref(null);
-const selectedCategory = ref(null);
+const selectedCategories = ref([]);
+const categoryOptions = ref([]);
 const selectedSort = ref({ label: 'Mới nhất', value: 'createdAt,desc' });
 const minChapters = ref(null);
 const maxChapters = ref(null);
@@ -35,19 +38,28 @@ const statusOptions = [
   { label: 'Tạm dừng', value: 'PAUSED' }
 ];
 
-const categoryOptions = [
-  { label: 'Tiên Hiệp', value: 'Tiên Hiệp' },
-  { label: 'Huyền Huyễn', value: 'Huyền Huyễn' },
-  { label: 'Đô Thị', value: 'Đô Thị' },
-  { label: 'Kiếm Hiệp', value: 'Kiếm Hiệp' },
-  { label: 'Ngôn Tình', value: 'Ngôn Tình' },
-  { label: 'Trinh Thám', value: 'Trinh Thám' },
-  { label: 'Khoa Huyễn', value: 'Khoa Huyễn' },
-  { label: 'Đam Mỹ', value: 'Đam Mỹ' },
-  { label: 'Trọng Sinh', value: 'Trọng Sinh' },
-  { label: 'Hệ Thống', value: 'Hệ Thống' },
-  { label: 'Võ Hiệp', value: 'Võ Hiệp'}
-];
+
+onMounted(async () => {
+  await Promise.all([
+    fetchCategories(),
+    loadStories()
+  ]);
+});
+
+const fetchCategories = async () => {
+    try {
+        const response = await getCategories(0, 50);
+        const data = response.data.data;
+        // The backend returns a List directly, not a Page with .content
+        const categoryList = Array.isArray(data) ? data : (data.content || []);
+        categoryOptions.value = categoryList.map(c => ({
+            label: c.name,
+            value: c.id
+        }));
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+};
 
 const sortOptions = [
   { label: 'Mới nhất', value: 'createdAt,desc' },
@@ -63,7 +75,7 @@ onMounted(async () => {
   await loadStories();
 });
 
-watch([selectedStatus, selectedSort, selectedCategory], () => {
+watch([selectedStatus, selectedSort, selectedCategories], () => {
   currentPage.value = 0;
   loadStories();
 });
@@ -80,7 +92,9 @@ const loadStories = async () => {
     
     if (keyword.value) filters.keyword = keyword.value;
     if (selectedStatus.value) filters.status = selectedStatus.value;
-    if (selectedCategory.value) filters.category = selectedCategory.value;
+    if (selectedCategories.value && selectedCategories.value.length > 0) {
+        filters.categoryIds = selectedCategories.value;
+    }
     if (minChapters.value) filters.minChapters = minChapters.value;
     if (maxChapters.value) filters.maxChapters = maxChapters.value;
     
@@ -106,7 +120,7 @@ const handleSearch = () => {
 const handleReset = () => {
   keyword.value = '';
   selectedStatus.value = null;
-  selectedCategory.value = null;
+  selectedCategories.value = [];
   selectedSort.value = { label: 'Mới nhất', value: 'createdAt,desc' };
   minChapters.value = null;
   maxChapters.value = null;
@@ -122,21 +136,21 @@ const onPageChange = (event) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-        <i class="pi pi-filter text-indigo-500"></i>
+      <h1 class="text-4xl font-black text-slate-800 mb-8 tracking-tighter">
+        <i class="pi pi-filter text-indigo-500 mr-2"></i>
         Tìm kiếm nâng cao
       </h1>
       
       <!-- Filter Panel -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <!-- Keyword Search -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
               Tìm kiếm
             </label>
             <InputText
@@ -149,7 +163,7 @@ const onPageChange = (event) => {
           
           <!-- Status Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
               Trạng thái
             </label>
             <Dropdown
@@ -164,22 +178,23 @@ const onPageChange = (event) => {
 
           <!-- Category Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
               Thể loại
             </label>
-            <Dropdown
-              v-model="selectedCategory"
+            <MultiSelect
+              v-model="selectedCategories"
               :options="categoryOptions"
               optionLabel="label"
               optionValue="value"
-              placeholder="Chọn thể loại"
+              placeholder="Chọn các thể loại"
+              :maxSelectedLabels="2"
               class="w-full"
             />
           </div>
 
           <!-- Sort -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
               Sắp xếp
             </label>
             <Dropdown
@@ -193,7 +208,7 @@ const onPageChange = (event) => {
           
           <!-- Min Chapters -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
               Số chương tối thiểu
             </label>
             <InputNumber
@@ -206,7 +221,7 @@ const onPageChange = (event) => {
           
           <!-- Max Chapters -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
               Số chương tối đa
             </label>
             <InputNumber
@@ -237,9 +252,9 @@ const onPageChange = (event) => {
       </div>
       
       <!-- Results -->
-      <div class="mb-4">
-        <p class="text-gray-600 dark:text-gray-400">
-          Tìm thấy <span class="font-bold text-indigo-600">{{ totalRecords }}</span> truyện
+      <div class="mb-6">
+        <p class="text-slate-500 font-medium">
+          Tìm thấy <span class="text-indigo-600 font-black">{{ totalRecords }}</span> truyện
         </p>
       </div>
       
@@ -249,9 +264,9 @@ const onPageChange = (event) => {
       </div>
       
       <!-- No Results -->
-      <div v-else-if="stories.length === 0" class="text-center py-20">
-        <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
-        <p class="text-gray-600 dark:text-gray-400">Không tìm thấy truyện nào</p>
+      <div v-else-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+        <i class="pi pi-inbox text-6xl text-slate-200 mb-4"></i>
+        <p class="text-slate-400 font-medium">Không tìm thấy truyện nào</p>
       </div>
       
       <!-- Stories Grid -->

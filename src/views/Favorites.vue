@@ -92,39 +92,39 @@ const onPageChange = (event) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+      <div class="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
+        <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">
           Truyện yêu thích
         </h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <p class="text-slate-500 font-medium">
           Danh sách {{ totalRecords }} truyện bạn đã yêu thích
         </p>
       </div>
       
       <div v-if="loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
-        <p class="mt-4 text-gray-600 dark:text-gray-400">Đang tải...</p>
+        <p class="mt-4 text-slate-500">Đang tải...</p>
       </div>
       
-      <div v-else-if="favorites.length === 0" class="text-center py-20">
+      <div v-else-if="favorites.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
         <div class="mb-6">
-          <i class="pi pi-heart text-6xl text-gray-300"></i>
+          <i class="pi pi-heart text-6xl text-slate-200 opacity-50"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 class="text-2xl font-black text-slate-800 mb-4 tracking-tighter">
           Chưa có truyện yêu thích
         </h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-6">
+        <p class="text-slate-400 mb-6 font-medium">
           Hãy thêm truyện vào danh sách yêu thích để đọc sau
         </p>
         <Button
           label="Khám phá truyện"
           icon="pi pi-search"
-          @click="router.push('/')"
-          size="large"
+          @click="router.push('/browse')"
+          class="!bg-indigo-600 hover:!bg-indigo-700 px-8 py-3 rounded-xl font-bold"
         />
       </div>
       

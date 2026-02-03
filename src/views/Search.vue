@@ -58,33 +58,35 @@ const onPageChange = (event) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-        Kết quả tìm kiếm: "{{ keyword }}"
-      </h1>
-      <p v-if="!loading && totalRecords > 0" class="text-gray-600 dark:text-gray-400 mb-8">
-        Tìm thấy {{ totalRecords }} truyện
-      </p>
+      <div class="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
+        <h1 class="text-3xl font-black text-slate-800 mb-2 tracking-tighter">
+          Kết quả tìm kiếm: "{{ keyword }}"
+        </h1>
+        <p v-if="!loading && totalRecords > 0" class="text-slate-500 font-medium">
+          Tìm thấy <span class="text-indigo-600 font-black">{{ totalRecords }}</span> truyện
+        </p>
+      </div>
       
       <div v-if="loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
-        <p class="mt-4 text-gray-600 dark:text-gray-400">Đang tìm kiếm...</p>
+        <p class="mt-4 text-slate-500 font-medium">Đang tìm kiếm...</p>
       </div>
       
-      <div v-else-if="!keyword" class="text-center py-20">
-        <i class="pi pi-search text-6xl text-gray-400 mb-4"></i>
-        <p class="text-gray-600 dark:text-gray-400">Nhập từ khóa để tìm kiếm truyện</p>
+      <div v-else-if="!keyword" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+        <i class="pi pi-search text-6xl text-slate-200 mb-4"></i>
+        <p class="text-slate-400 font-medium">Nhập từ khóa để tìm kiếm truyện</p>
       </div>
       
-      <div v-else-if="stories.length === 0" class="text-center py-20">
-        <i class="pi pi-search text-6xl text-gray-400 mb-4"></i>
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+      <div v-else-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+        <i class="pi pi-search text-6xl text-slate-200 mb-4"></i>
+        <h2 class="text-xl font-black text-slate-800 mb-2">
           Không tìm thấy kết quả
         </h2>
-        <p class="text-gray-600 dark:text-gray-400">
+        <p class="text-slate-400 font-medium">
           Không tìm thấy truyện nào với từ khóa "{{ keyword }}"
         </p>
       </div>

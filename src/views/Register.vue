@@ -57,20 +57,20 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-white p-4">
+  <div class="min-h-screen flex items-center justify-center bg-[#f1f5f9] p-4">
     <div class="w-full max-w-md">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+      <div class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-10">
         <!-- Header -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Đăng ký</h1>
-          <p class="text-gray-600 dark:text-gray-400">Tạo tài khoản để bắt đầu đọc truyện</p>
+        <div class="text-center mb-10">
+          <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">Đăng ký</h1>
+          <p class="text-slate-500 font-medium">Tạo tài khoản để bắt đầu đọc truyện</p>
         </div>
 
         <!-- Form -->
         <form @submit.prevent="handleRegister" class="space-y-6">
           <!-- Username -->
           <div class="flex flex-col gap-2">
-            <label for="username" class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <label for="username" class="text-sm font-bold text-slate-500 uppercase tracking-wider">
               Tên đăng nhập
             </label>
             <InputText
@@ -85,7 +85,7 @@ const handleRegister = async () => {
 
           <!-- Email -->
           <div class="flex flex-col gap-2">
-            <label for="email" class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <label for="email" class="text-sm font-bold text-slate-500 uppercase tracking-wider">
               Email
             </label>
             <InputText
@@ -101,7 +101,7 @@ const handleRegister = async () => {
 
           <!-- Password -->
           <div class="flex flex-col gap-2">
-            <label for="password" class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <label for="password" class="text-sm font-bold text-slate-500 uppercase tracking-wider">
               Mật khẩu
             </label>
             <Password
@@ -118,7 +118,7 @@ const handleRegister = async () => {
 
           <!-- Confirm Password -->
           <div class="flex flex-col gap-2">
-            <label for="confirmPassword" class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <label for="confirmPassword" class="text-sm font-bold text-slate-500 uppercase tracking-wider">
               Xác nhận mật khẩu
             </label>
             <Password
@@ -150,10 +150,10 @@ const handleRegister = async () => {
         </form>
 
         <!-- Footer -->
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600 dark:text-gray-400">
+        <div class="mt-8 text-center">
+          <p class="text-slate-500 font-medium">
             Đã có tài khoản? 
-            <router-link to="/login" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+            <router-link to="/login" class="font-bold text-indigo-600 hover:text-indigo-700">
               Đăng nhập ngay
             </router-link>
           </p>

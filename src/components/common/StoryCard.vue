@@ -57,15 +57,15 @@ const authorName = computed(() => {
 
       <template #content>
         <div class="space-y-1">
-          <h3 class="font-bold text-sm text-gray-900 dark:text-gray-600 min-h-[2.5rem] leading-tight">
+          <h3 class="font-bold text-sm text-slate-800 min-h-[2.5rem] leading-tight">
             {{ story.title }}
           </h3>
-          <p class="text-xs text-gray-600 dark:text-gray-400 truncate">
+          <p class="text-xs text-slate-500 truncate">
             <i class="pi pi-user text-xs mr-1"></i>
             {{ authorName }}
           </p>
 
-          <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-1 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between text-xs text-slate-400 pt-1 border-t border-slate-100">
             <span class="flex items-center gap-1">
               <i class="pi pi-eye text-xs"></i>
               {{ formattedViews }}

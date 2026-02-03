@@ -119,12 +119,12 @@ const readChapter = (chapterId) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     
     <div v-if="loading" class="flex flex-col items-center justify-center py-20">
       <ProgressSpinner />
-      <p class="mt-4 text-gray-600 dark:text-gray-400">Đang tải...</p>
+      <p class="mt-4 text-slate-500">Đang tải...</p>
     </div>
     
     <div v-else-if="story" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -139,11 +139,11 @@ const readChapter = (chapterId) => {
         </div>
         
         <div class="space-y-4">
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+          <h1 class="text-3xl md:text-4xl font-black text-slate-800 tracking-tighter">
             {{ story.title }}
           </h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
-            Tác giả: <strong>{{ story.authorName || 'Ẩn danh' }}</strong>
+          <p class="text-lg text-slate-500">
+            Tác giả: <strong class="text-slate-700">{{ story.authorName || 'Ẩn danh' }}</strong>
           </p>
           
           <div class="flex flex-wrap gap-2">
@@ -194,20 +194,25 @@ const readChapter = (chapterId) => {
       </div>
       
       <!-- Description -->
-      <div v-if="story.description" class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-8 shadow">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Giới thiệu</h2>
-        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
+      <div v-if="story.description" class="bg-white rounded-[1.5rem] p-8 mb-8 shadow-sm border border-slate-100">
+        <h2 class="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+          <i class="pi pi-align-left text-indigo-500"></i>
+          Giới thiệu
+        </h2>
+        <p class="text-slate-600 whitespace-pre-wrap leading-relaxed">
           {{ story.description }}
         </p>
       </div>
       
       <!-- Chapters List -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow mb-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          Danh sách chương ({{ chapters.length }})
+      <div class="bg-white rounded-[1.5rem] p-8 shadow-sm border border-slate-100 mb-8">
+        <h2 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
+          <i class="pi pi-list text-indigo-500"></i>
+          Danh sách chương <span class="text-slate-400 text-sm font-medium">({{ chapters.length }})</span>
         </h2>
         
-        <div v-if="chapters.length === 0" class="text-center py-10 text-gray-500 dark:text-gray-400">
+        <div v-if="chapters.length === 0" class="text-center py-12 text-slate-400">
+          <i class="pi pi-inbox text-4xl mb-3 opacity-20"></i>
           <p>Chưa có chương nào</p>
         </div>
         
@@ -216,12 +221,12 @@ const readChapter = (chapterId) => {
             v-for="chapter in chapters"
             :key="chapter.id"
             @click="readChapter(chapter.id)"
-            class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors border border-transparent hover:border-indigo-500"
+            class="flex items-center justify-between p-4 rounded-xl hover:bg-indigo-50 cursor-pointer transition-all border border-transparent hover:border-indigo-100 group"
           >
-            <span class="font-medium text-gray-900 dark:text-white">
+            <span class="font-bold text-slate-700 group-hover:text-indigo-600 transition-colors">
               Chương {{ chapter.chapterNumber }}: {{ chapter.title }}
             </span>
-            <span class="text-sm text-gray-500 dark:text-gray-400">
+            <span class="text-sm text-slate-400">
               {{ new Date(chapter.createdAt).toLocaleDateString('vi-VN') }}
             </span>
           </div>
@@ -229,12 +234,12 @@ const readChapter = (chapterId) => {
       </div>
       
       <!-- Rating Section -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow mb-8">
+      <div class="bg-white rounded-[1.5rem] p-8 shadow-sm border border-slate-100 mb-8">
         <RatingSection :storyId="story.id" />
       </div>
       
       <!-- Comment Section -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <div class="bg-white rounded-[1.5rem] p-8 shadow-sm border border-slate-100">
         <CommentSection :storyId="story.id" />
       </div>
     </div>

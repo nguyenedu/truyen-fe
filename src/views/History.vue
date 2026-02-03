@@ -154,17 +154,17 @@ const formatDate = (dateString) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     <ConfirmDialog />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center justify-between mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">
             Lịch sử đọc
           </h1>
-          <p class="text-gray-600 dark:text-gray-400">
+          <p class="text-slate-500 font-medium">
             {{ totalRecords }} truyện đã đọc
           </p>
         </div>
@@ -181,24 +181,24 @@ const formatDate = (dateString) => {
       
       <div v-if="loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
-        <p class="mt-4 text-gray-600 dark:text-gray-400">Đang tải...</p>
+        <p class="mt-4 text-slate-500">Đang tải...</p>
       </div>
       
-      <div v-else-if="histories.length === 0" class="text-center py-20">
+      <div v-else-if="histories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
         <div class="mb-6">
-          <i class="pi pi-history text-6xl text-gray-300"></i>
+          <i class="pi pi-history text-6xl text-slate-200 opacity-50"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 class="text-2xl font-black text-slate-800 mb-4 tracking-tighter">
           Chưa có lịch sử đọc
         </h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-6">
+        <p class="text-slate-400 mb-6 font-medium">
           Bắt đầu đọc truyện để lưu lịch sử
         </p>
         <Button
           label="Khám phá truyện"
           icon="pi pi-search"
-          @click="router.push('/')"
-          size="large"
+          @click="router.push('/browse')"
+          class="!bg-indigo-600 hover:!bg-indigo-700 px-8 py-3 rounded-xl font-bold"
         />
       </div>
       
@@ -218,13 +218,13 @@ const formatDate = (dateString) => {
             <template #content>
               <div class="space-y-3">
                 <h3 
-                  class="font-bold text-lg text-gray-900 dark:text-white line-clamp-2 cursor-pointer hover:text-indigo-600"
+                  class="font-black text-lg text-slate-800 line-clamp-2 cursor-pointer hover:text-indigo-600 transition-colors"
                   @click="viewStory(history.storyId)"
                 >
                   {{ history.storyTitle }}
                 </h3>
                 
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm text-slate-500">
                   <p class="mb-1">
                     <i class="pi pi-book mr-2"></i>
                     Chương {{ history.chapterNumber }}: {{ history.chapterTitle }}
