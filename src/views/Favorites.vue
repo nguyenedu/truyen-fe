@@ -159,5 +159,4 @@ const onPageChange = (event) => {
 </template>
 
 <style scoped>
-/* Custom styles */
 </style>

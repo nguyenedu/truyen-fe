@@ -9,7 +9,6 @@ import Menu from 'primevue/menu';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const { isDark, toggleTheme } = useTheme();
 
 const searchKeyword = ref('');
 const userMenu = ref();
@@ -77,15 +76,6 @@ const toggleUserMenu = (event) => {
         <!-- Navigation Links -->
         <div class="flex items-center gap-2">
           <!-- Theme Toggle -->
-          <Button
-              @click="toggleTheme"
-              :icon="isDark ? 'pi pi-sun' : 'pi pi-moon'"
-              text
-              rounded
-              class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              v-tooltip.bottom="isDark ? 'Chế độ sáng' : 'Chế độ tối'"
-          />
-
           <router-link to="/">
             <Button label="Trang chủ" text />
           </router-link>
@@ -131,9 +121,9 @@ const toggleUserMenu = (event) => {
 </template>
 
 <style scoped>
-/* Custom styles for PrimeVue components in navbar */
 
-/* Override Button text color - áp dụng cho tất cả button text trong navbar */
+
+
 :deep(.p-button.p-button-text) {
   color: white !important;
 }
@@ -142,7 +132,7 @@ const toggleUserMenu = (event) => {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Dark mode support */
+
 :deep(.dark .p-button.p-button-text) {
   color: rgb(209, 213, 219) !important; /* gray-300 */
 }
@@ -151,7 +141,7 @@ const toggleUserMenu = (event) => {
   background-color: rgb(55, 65, 81) !important; /* gray-700 */
 }
 
-/* Button outlined (Đăng nhập) */
+
 :deep(.p-button.p-button-outlined) {
   color: rgb(79, 70, 229) !important; /* indigo-600 */
   border-color: rgb(79, 70, 229) !important;

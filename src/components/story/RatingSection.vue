@@ -57,7 +57,6 @@ const loadMyRating = async () => {
       myReview.value = myRating.value.review || '';
     }
   } catch (error) {
-    // User hasn't rated yet
     myRating.value = null;
   }
 };
@@ -91,7 +90,6 @@ const submitRating = async () => {
     loading.value = true;
     
     if (myRating.value) {
-      // Update existing rating
       await updateRating(props.storyId, myRatingValue.value, myReview.value || null);
       toast.add({
         severity: 'success',

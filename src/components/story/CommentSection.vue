@@ -340,5 +340,4 @@ const isMyComment = (comment) => {
 </template>
 
 <style scoped>
-/* Custom styles */
 </style>

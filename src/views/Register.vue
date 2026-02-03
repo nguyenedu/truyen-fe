@@ -164,5 +164,4 @@ const handleRegister = async () => {
 </template>
 
 <style scoped>
-/* PrimeVue components will use theme styles */
 </style>
