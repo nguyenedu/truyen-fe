@@ -191,7 +191,7 @@ const ratingText = computed(() => {
           <Rating :modelValue="myRating.rating" readonly :cancel="false" class="text-yellow-400" />
         </div>
       </div>
-      <p v-if="myRating.review" class="text-gray-200 leading-relaxed font-medium">
+      <p v-if="myRating.review" class="text-gray-600 leading-relaxed font-medium">
         {{ myRating.review }}
       </p>
     </div>
