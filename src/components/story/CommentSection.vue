@@ -248,29 +248,29 @@ const isMyComment = (comment) => {
 
     <div v-else class="space-y-4">
       <div
-        v-for="comment in comments"
-        :key="comment.id"
-        class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
+          v-for="comment in comments"
+          :key="comment.id"
+          class="bg-blue-50 dark:bg-gray-800 p-4 rounded-lg border border-blue-200 dark:border-blue-700"
       >
         <div class="flex items-start gap-3">
           <Avatar
-            :label="comment.username.charAt(0).toUpperCase()"
-            shape="circle"
-            class="bg-indigo-600 text-white"
+              :label="comment.username.charAt(0).toUpperCase()"
+              shape="circle"
+              class="bg-blue-600 text-white"
           />
-          
+
           <div class="flex-1">
             <div class="flex items-center justify-between mb-2">
               <div>
-                <span class="font-semibold text-gray-900 dark:text-white">
-                  {{ comment.username }}
-                </span>
-                <span class="text-sm text-gray-500 ml-2">
-                  {{ formatDate(comment.createdAt) }}
-                </span>
-                <span v-if="comment.updatedAt && comment.updatedAt !== comment.createdAt" class="text-xs text-gray-400 ml-1">
-                  (đã sửa)
-                </span>
+          <span class="font-semibold text-gray-900 dark:text-white">
+            {{ comment.username }}
+          </span>
+                <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">
+            {{ formatDate(comment.createdAt) }}
+          </span>
+                <span v-if="comment.updatedAt && comment.updatedAt !== comment.createdAt" class="text-xs text-gray-500 dark:text-gray-400 ml-1">
+            (đã sửa)
+          </span>
               </div>
               
               <div v-if="isMyComment(comment)" class="flex gap-2">

@@ -166,15 +166,17 @@ const readChapter = (chapterId) => {
               severity="danger"
             />
           </div>
-          
+
           <div v-if="story.categories?.length" class="flex flex-wrap gap-2">
-            <Chip 
-              v-for="(category, index) in story.categories" 
-              :key="index"
-              :label="category" 
-              class="cursor-pointer" 
+            <Chip
+                v-for="(category, index) in story.categories"
+                :key="index"
+                :label="category"
+                class="cursor-pointer border-2 border-indigo-400"
             />
           </div>
+
+
           
           <div class="flex gap-3 pt-2">
             <Button
