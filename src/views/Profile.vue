@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router';
 const authStore = useAuthStore();
 const router = useRouter();
 
-// State
+
 const isEditing = ref(false);
 const loading = ref(false);
 const error = ref('');
@@ -30,7 +30,7 @@ const formData = ref({
 
 const fileName = ref('');
 
-// Use computed to ensure reactivity
+
 const user = computed(() => authStore.user);
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 

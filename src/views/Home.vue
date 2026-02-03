@@ -27,19 +27,19 @@ onMounted(async () => {
     loading.value = true;
     
     const promises = [
-      getStories(0, 24), // 24 truyện
+      getStories(0, 24),
       getCategories(0, 20),
-      getHotStories(12), // 12 truyện trending
+      getHotStories(12), g
     ];
     
-    // Load reading history if logged in
+
     if (authStore.isAuthenticated) {
-      promises.push(getReadingHistory(0, 6)); // 6 truyện gần đây
+      promises.push(getReadingHistory(0, 6));
     }
     
     const results = await Promise.all(promises);
     
-    // Safe check for response data
+
     stories.value = results[0]?.data?.data?.content || [];
     categories.value = results[1]?.data?.data?.content || [];
     trendingStories.value = results[2]?.data || [];
@@ -55,10 +55,9 @@ onMounted(async () => {
   }
 });
 
-// Watch for authentication changes - clear reading history when user logs out
+
 watch(() => authStore.isAuthenticated, (newValue) => {
   if (!newValue) {
-    // User logged out - clear reading history
     recentReading.value = [];
   }
 });

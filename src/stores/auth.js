@@ -3,17 +3,17 @@ import { ref, computed } from 'vue';
 import { loginApi, registerApi, logoutApi, updateUserApi, getCurrentUserApi } from '@/api/auth';
 
 export const useAuthStore = defineStore('auth', () => {
-    // State
+
     const user = ref(null);
     const token = ref(null);
 
-    // Getters
+
     const isAuthenticated = computed(() => !!token.value);
     const isAdmin = computed(() => {
         return user.value?.role === 'ADMIN' || user.value?.role === 'SUPER_ADMIN';
     });
 
-    // Actions
+
     const login = async (username, password) => {
         try {
             const response = await loginApi(username, password);
@@ -64,7 +64,6 @@ export const useAuthStore = defineStore('auth', () => {
             const response = await updateUserApi(id, formData);
             const updatedUser = response.data.data;
 
-            // Sync with current user state
             user.value = {
                 ...user.value,
                 fullname: updatedUser.fullname,

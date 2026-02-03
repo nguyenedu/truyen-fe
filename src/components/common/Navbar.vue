@@ -120,7 +120,6 @@ const toggleUserMenu = (event) => {
 </template>
 
 <style>
-/* Global styles for the user dropdown because it's portaled out of the component */
 .p-menu.user-dropdown-menu {
     background-color: #ffffff !important;
     border: 1px solid rgba(79, 70, 229, 0.1) !important;

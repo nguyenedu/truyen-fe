@@ -21,7 +21,6 @@ export const createComment = (storyId, chapterId, content) => {
     });
 };
 
-// Update comment
 export const updateComment = (commentId, content) => {
     return axios.put(`/api/comments/${commentId}`, {
         content

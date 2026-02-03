@@ -21,7 +21,6 @@ const error = ref('');
 const loading = ref(false);
 
 const handleRegister = async () => {
-  // Validation
   if (!formData.value.username || !formData.value.email || !formData.value.password) {
     error.value = 'Vui lòng nhập đầy đủ thông tin';
     return;

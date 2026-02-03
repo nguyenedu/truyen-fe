@@ -38,8 +38,7 @@ onMounted(async () => {
     
     story.value = storyRes.data.data;
     chapters.value = chaptersRes?.data?.data?.content || chaptersRes?.data?.data || [];
-    
-    // Load favorite status and count
+
     await loadFavoriteStatus();
   } catch (error) {
     console.error('Error loading story:', error);

@@ -34,8 +34,7 @@ const loadFavorites = async () => {
     loading.value = true;
     const response = await getFavorites(currentPage.value, pageSize.value);
     const data = response.data.data;
-    
-    // Transform FavoriteResponse to Story format for StoryCard
+
     favorites.value = data.content.map(fav => ({
       id: fav.storyId,
       title: fav.storyTitle,
@@ -44,7 +43,7 @@ const loadFavorites = async () => {
       categories: fav.categories || [],
       totalViews: fav.totalViews || 0,
       totalChapters: fav.totalChapters || 0,
-      favoriteId: fav.id // Keep favorite ID for removal
+      favoriteId: fav.id
     }));
     
     totalRecords.value = data.totalElements;
@@ -71,7 +70,7 @@ const handleRemoveFavorite = async (storyId) => {
       life: 3000
     });
     
-    // Reload favorites
+
     await loadFavorites();
   } catch (error) {
     console.error('Error removing favorite:', error);

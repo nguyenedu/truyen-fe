@@ -21,7 +21,6 @@ onMounted(async () => {
   await loadChapter();
 });
 
-// Watch for chapter change in URL
 watch(() => route.params.chapterId, async (newId) => {
   if (newId) {
     await loadChapter();
@@ -31,14 +30,9 @@ watch(() => route.params.chapterId, async (newId) => {
 const loadChaptersList = async () => {
   try {
     const chaptersRes = await getChaptersByStoryId(route.params.storyId);
-    // Handle both paginated and non-paginated responses
     const data = chaptersRes?.data?.data;
     allChapters.value = data?.content || data || [];
-    
-    // If it's paginated, we might only have one page. 
-    // For navigation, we ideally need all chapters.
-    // If we only have 10, but there are 100, we'll need to handle that.
-    // For now, let's assume getChaptersByStoryId returns a reasonable list or we'll need a better API.
+
   } catch (error) {
     console.error('Error loading chapters list:', error);
   }
@@ -52,8 +46,7 @@ const loadChapter = async () => {
     loading.value = true;
     const response = await getChapterById(chapterId);
     chapter.value = response.data.data;
-    
-    // Save reading history if user is logged in
+
     if (authStore.isAuthenticated) {
       try {
         await saveReadingHistory(route.params.storyId, chapterId);
@@ -61,8 +54,7 @@ const loadChapter = async () => {
         console.error('Error saving reading history:', error);
       }
     }
-    
-    // Scroll to top on load
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (error) {
     console.error('Error loading chapter:', error);

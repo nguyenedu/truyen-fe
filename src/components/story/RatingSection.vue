@@ -97,7 +97,6 @@ const submitRating = async () => {
         life: 3000
       });
     } else {
-      // Create new rating
       await rateStory(props.storyId, myRatingValue.value, myReview.value || null);
       toast.add({
         severity: 'success',

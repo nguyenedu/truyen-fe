@@ -22,7 +22,6 @@ const totalRecords = ref(0);
 const currentPage = ref(0);
 const pageSize = ref(24);
 
-// Filter options
 const keyword = ref('');
 const selectedStatus = ref(null);
 const selectedCategories = ref([]);

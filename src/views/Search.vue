@@ -24,7 +24,7 @@ onMounted(async () => {
   }
 });
 
-// Watch for query changes
+
 watch(() => route.query.q, (newKeyword) => {
   keyword.value = newKeyword || '';
   if (keyword.value) {
