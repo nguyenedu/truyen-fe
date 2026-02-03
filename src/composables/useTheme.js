@@ -29,10 +29,10 @@ export function useTheme() {
         }
     };
 
-    // Initialize immediately
+
     initTheme();
 
-    // Watch for changes
+
     watch(isDark, () => {
         updateTheme();
     });
