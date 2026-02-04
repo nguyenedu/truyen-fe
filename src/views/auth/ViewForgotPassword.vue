@@ -46,9 +46,9 @@ const handleForgotPassword = async () => {
         
         // Gửi email qua EmailJS
         const templateParams = {
-            to_email: email.value,    // Tên chính thức trong hướng dẫn của tôi
-            user_email: email.value,  // Tên phổ biến trong EmailJS
-            email: email.value,       // Tên mặc định của nhiều template
+            to_email: email.value,
+            user_email: email.value,
+            email: email.value,
             reset_link: `${window.location.origin}/reset-password?token=${resetToken}`
         };
         

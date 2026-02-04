@@ -29,7 +29,6 @@ import { usePagination } from '@/composables/usePagination';
 const { totalRecords, currentPage, pageSize, onPageChange } = usePagination(PAGINATION.HISTORY_PAGE_SIZE);
 
 onMounted(async () => {
-  if (handleAuthRequired(authStore, router, toast)) return;
   await loadHistory();
 });
 

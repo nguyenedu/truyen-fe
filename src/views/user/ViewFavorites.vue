@@ -23,11 +23,6 @@ const favorites = ref([]);
 const loading = ref(true);
 
 onMounted(async () => {
-  if (!authStore.isAuthenticated) {
-    router.push('/login');
-    return;
-  }
-  
   await loadFavorites();
 });
 

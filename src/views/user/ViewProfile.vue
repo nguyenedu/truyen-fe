@@ -40,10 +40,8 @@ const user = computed(() => authStore.user);
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 
 onMounted(async () => {
-    if (isAuthenticated.value) {
-        await authStore.fetchCurrentUser();
-        resetForm();
-    }
+    await authStore.fetchCurrentUser();
+    resetForm();
 });
 
 const resetForm = () => {
