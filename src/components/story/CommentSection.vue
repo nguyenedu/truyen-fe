@@ -8,13 +8,14 @@ import Textarea from 'primevue/textarea';
 import Avatar from 'primevue/avatar';
 import Paginator from 'primevue/paginator';
 import ProgressSpinner from 'primevue/progressspinner';
+import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { PAGINATION } from '@/utils/constants';
 import { formatRelativeDate } from '@/utils/formatters';
 import { handleAuthRequired, showSuccessToast, showErrorToast, showWarningToast, extractData } from '@/utils/helpers';
 import { ERROR_MESSAGES } from '@/utils/errors';
-import { getStoryComments, getChapterComments, createComment, updateComment, deleteComment } from '@/api/comment';
+import { getStoryComments, getChapterComments, createComment, updateComment, deleteComment, toggleLikeComment } from '@/api/comment';
 
 const props = defineProps({
   storyId: {
@@ -141,6 +142,26 @@ const handleDeleteComment = (commentId) => {
   });
 };
 
+const handleLikeComment = async (comment) => {
+  if (handleAuthRequired(authStore, router, toast, 'Vui lòng đăng nhập để thích bình luận')) return;
+
+  try {
+    await toggleLikeComment(comment.id);
+    // Cập nhật local state để UI phản hồi nhanh
+    if (comment.isLiked) {
+      comment.likesCount--;
+      comment.isLiked = false;
+    } else {
+      comment.likesCount++;
+      comment.isLiked = true;
+    }
+  } catch (error) {
+    showErrorToast(toast, error, 'Không thể thực hiện thao tác thích');
+    // Có thể load lại list nếu cần đồng bộ chính xác
+    await loadComments();
+  }
+};
+
 const handlePageChange = (event) => onPageChange(event, loadComments);
 
 const formatDate = (dateString) => formatRelativeDate(dateString);
@@ -152,6 +173,7 @@ const isMyComment = (comment) => {
 
 <template>
   <div class="comment-section">
+    <ConfirmDialog />
     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
       Bình luận ({{ totalRecords }})
     </h2>
@@ -209,23 +231,36 @@ const isMyComment = (comment) => {
           </span>
               </div>
               
-              <div v-if="isMyComment(comment)" class="flex gap-2">
+              <div class="flex items-center gap-2">
                 <Button
-                  v-if="editingCommentId !== comment.id"
-                  @click="startEdit(comment)"
-                  icon="pi pi-pencil"
-                  text
-                  rounded
-                  size="small"
+                    @click="handleLikeComment(comment)"
+                    :icon="comment.isLiked ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                    :label="comment.likesCount?.toString() || '0'"
+                    :severity="comment.isLiked ? 'danger' : 'secondary'"
+                    text
+                    rounded
+                    size="small"
+                    class="p-0 min-w-0"
                 />
-                <Button
-                  @click="handleDeleteComment(comment.id)"
-                  icon="pi pi-trash"
-                  severity="danger"
-                  text
-                  rounded
-                  size="small"
-                />
+
+                <div v-if="isMyComment(comment) || authStore.isAdmin" class="flex gap-2">
+                  <Button
+                    v-if="editingCommentId !== comment.id"
+                    @click="startEdit(comment)"
+                    icon="pi pi-pencil"
+                    text
+                    rounded
+                    size="small"
+                  />
+                  <Button
+                    @click="handleDeleteComment(comment.id)"
+                    icon="pi pi-trash"
+                    severity="danger"
+                    text
+                    rounded
+                    size="small"
+                  />
+                </div>
               </div>
             </div>
             

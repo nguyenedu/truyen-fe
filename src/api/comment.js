@@ -32,6 +32,10 @@ export const deleteComment = (commentId) => {
     return axios.delete(`/api/comments/${commentId}`);
 };
 
+export const toggleLikeComment = (commentId) => {
+    return axios.post(`/api/comment-likes/toggle/${commentId}`);
+};
+
 
 export const countStoryComments = (storyId) => {
     return axios.get(`/api/comments/count/story/${storyId}`);

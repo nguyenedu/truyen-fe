@@ -6,17 +6,15 @@ import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import Button from 'primevue/button';
 import Paginator from 'primevue/paginator';
-import { getFavorites } from '@/api/favorite';
+import { getFavorites, removeFavorite } from '@/api/favorite';
 import { useToast } from 'primevue/usetoast';
 import { usePagination } from '@/composables/usePagination';
-import { useFavorite } from '@/composables/useFavorite';
 import { PAGINATION } from '@/utils/constants';
 import { showErrorToast, showSuccessToast } from '@/utils/helpers';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToast();
-const { toggleFavoriteStatus } = useFavorite();
 const { totalRecords, currentPage, pageSize, onPageChange } = usePagination(PAGINATION.DEFAULT_PAGE_SIZE);
 
 const favorites = ref([]);
@@ -52,9 +50,13 @@ const loadFavorites = async () => {
 };
 
 const handleRemoveFavorite = async (storyId) => {
-  // Pass a dummy isFavorited = true to ensure it removes
-  await toggleFavoriteStatus(storyId);
-  await loadFavorites();
+  try {
+    await removeFavorite(storyId);
+    showSuccessToast(toast, 'Đã xóa', 'Đã xóa khỏi danh sách yêu thích');
+    await loadFavorites();
+  } catch (error) {
+    showErrorToast(toast, error, 'Không thể xóa khỏi danh sách yêu thích');
+  }
 };
 
 const handlePageChange = (event) => onPageChange(event, loadFavorites);
