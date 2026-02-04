@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from '@/utils/axios';
 
 
 export const getReadingHistory = (page = 0, size = 10) => {

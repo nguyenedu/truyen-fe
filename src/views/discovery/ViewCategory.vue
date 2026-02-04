@@ -13,9 +13,10 @@ const route = useRoute();
 const category = ref(null);
 const stories = ref([]);
 const loading = ref(true);
-const totalRecords = ref(0);
-const currentPage = ref(0);
-const pageSize = ref(PAGINATION.CATEGORY_PAGE_SIZE);
+
+import { usePagination } from '@/composables/usePagination';
+
+const { totalRecords, currentPage, pageSize, onPageChange } = usePagination(PAGINATION.CATEGORY_PAGE_SIZE);
 
 onMounted(async () => {
   await loadCategoryAndStories();
@@ -42,11 +43,7 @@ const loadCategoryAndStories = async () => {
   }
 };
 
-const onPageChange = (event) => {
-  currentPage.value = event.page;
-  loadCategoryAndStories();
-  window.scrollTo(0, 0);
-};
+const handlePageChange = (event) => onPageChange(event, loadCategoryAndStories);
 </script>
 
 <template>
@@ -92,7 +89,7 @@ const onPageChange = (event) => {
             :rows="pageSize"
             :totalRecords="totalRecords"
             :first="currentPage * pageSize"
-            @page="onPageChange"
+            @page="handlePageChange"
             template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
           />
         </div>

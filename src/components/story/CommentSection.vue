@@ -8,6 +8,7 @@ import Avatar from 'primevue/avatar';
 import Paginator from 'primevue/paginator';
 import ProgressSpinner from 'primevue/progressspinner';
 import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 import { PAGINATION } from '@/utils/constants';
 import { formatRelativeDate } from '@/utils/formatters';
 import { handleAuthRequired, showSuccessToast, showErrorToast, showWarningToast, extractData } from '@/utils/helpers';
@@ -36,9 +37,9 @@ const editingCommentId = ref(null);
 const editingContent = ref('');
 const submitting = ref(false);
 
-const totalRecords = ref(0);
-const currentPage = ref(0);
-const pageSize = ref(PAGINATION.DEFAULT_PAGE_SIZE);
+import { usePagination } from '@/composables/usePagination';
+
+const { totalRecords, currentPage, pageSize, onPageChange, resetPagination } = usePagination(PAGINATION.DEFAULT_PAGE_SIZE);
 
 onMounted(async () => {
   await loadComments();
@@ -80,7 +81,7 @@ const handleSubmitComment = async () => {
     showSuccessToast(toast, 'Đã gửi', 'Bình luận thành công');
     
     newCommentContent.value = '';
-    currentPage.value = 0;
+    resetPagination();
     await loadComments();
   } catch (error) {
     showErrorToast(toast, error, 'Không thể gửi bình luận');
@@ -138,11 +139,7 @@ const handleDeleteComment = (commentId) => {
   });
 };
 
-const onPageChange = (event) => {
-  currentPage.value = event.page;
-  loadComments();
-  window.scrollTo(0, 0);
-};
+const handlePageChange = (event) => onPageChange(event, loadComments);
 
 const formatDate = (dateString) => formatRelativeDate(dateString);
 
@@ -269,7 +266,7 @@ const isMyComment = (comment) => {
       :rows="pageSize"
       :totalRecords="totalRecords"
       :first="currentPage * pageSize"
-      @page="onPageChange"
+      @page="handlePageChange"
       template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
       class="mt-6"
     />

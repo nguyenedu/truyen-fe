@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from '@/utils/axios';
 
 export const getStoryComments = (storyId, page = 0, size = 10) => {
     return axios.get(`/api/comments/story/${storyId}`, {

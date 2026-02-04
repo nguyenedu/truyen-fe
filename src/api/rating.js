@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from '@/utils/axios';
 
 
 export const rateStory = (storyId, rating, review = null) => {

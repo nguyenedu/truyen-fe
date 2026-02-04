@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from '@/utils/axios';
 
 
 export const getFavorites = (page = 0, size = 10) => {

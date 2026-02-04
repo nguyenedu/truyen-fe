@@ -22,9 +22,10 @@ const toast = useToast();
 
 const histories = ref([]);
 const loading = ref(true);
-const totalRecords = ref(0);
-const currentPage = ref(0);
-const pageSize = ref(PAGINATION.HISTORY_PAGE_SIZE);
+
+import { usePagination } from '@/composables/usePagination';
+
+const { totalRecords, currentPage, pageSize, onPageChange } = usePagination(PAGINATION.HISTORY_PAGE_SIZE);
 
 onMounted(async () => {
   if (handleAuthRequired(authStore, router, toast)) return;
@@ -103,11 +104,7 @@ const handleDeleteAll = () => {
   });
 };
 
-const onPageChange = (event) => {
-  currentPage.value = event.page;
-  loadHistory();
-  window.scrollTo(0, 0);
-};
+const handlePageChange = (event) => onPageChange(event, loadHistory);
 
 const getRelativeDate = (dateString) => formatRelativeDate(dateString);
 </script>
@@ -220,7 +217,7 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
           :rows="pageSize"
           :totalRecords="totalRecords"
           :first="currentPage * pageSize"
-          @page="onPageChange"
+          @page="handlePageChange"
           template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
         />
       </div>

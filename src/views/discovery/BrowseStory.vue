@@ -10,29 +10,37 @@ import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
-import { filterStories } from '@/api/story';
-import { getCategories } from '@/api/category';
-import { PAGINATION, STORY_STATUS_OPTIONS, SORT_OPTIONS } from '@/utils/constants';
+import { PAGINATION } from '@/utils/constants';
 
-const route = useRoute();
-const router = useRouter();
+import { usePagination } from '@/composables/usePagination';
+import { useDiscovery } from '@/composables/useDiscovery';
+import { filterStories } from '@/api/story';
+
+const { 
+  totalRecords, 
+  currentPage, 
+  pageSize, 
+  onPageChange, 
+  resetPagination 
+} = usePagination(PAGINATION.BROWSE_PAGE_SIZE);
+
+const {
+  keyword,
+  selectedStatus,
+  selectedCategories,
+  categoryOptions,
+  selectedSort,
+  minChapters,
+  maxChapters,
+  statusOptions,
+  sortOptions,
+  fetchCategories,
+  resetFilters,
+  getFilterParams
+} = useDiscovery();
 
 const stories = ref([]);
 const loading = ref(true);
-const totalRecords = ref(0);
-const currentPage = ref(0);
-const pageSize = ref(PAGINATION.BROWSE_PAGE_SIZE);
-
-const keyword = ref('');
-const selectedStatus = ref(null);
-const selectedCategories = ref([]);
-const categoryOptions = ref([]);
-const selectedSort = ref({ label: 'Mới nhất', value: 'createdAt,desc' });
-const minChapters = ref(null);
-const maxChapters = ref(null);
-
-const statusOptions = STORY_STATUS_OPTIONS;
-
 
 onMounted(async () => {
   await Promise.all([
@@ -41,50 +49,16 @@ onMounted(async () => {
   ]);
 });
 
-const fetchCategories = async () => {
-    try {
-        const response = await getCategories(0, 50);
-        const data = response.data.data;
-        const categoryList = Array.isArray(data) ? data : (data.content || []);
-        categoryOptions.value = categoryList.map(c => ({
-            label: c.name,
-            value: c.id
-        }));
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-    }
-};
-
-const sortOptions = SORT_OPTIONS;
-
-onMounted(async () => {
-  await loadStories();
-});
-
 watch([selectedStatus, selectedSort, selectedCategories], () => {
-  currentPage.value = 0;
+  resetPagination();
   loadStories();
 });
 
 const loadStories = async () => {
   try {
     loading.value = true;
-    
-    const filters = {
-      page: currentPage.value,
-      size: pageSize.value,
-      sort: selectedSort.value?.value || 'createdAt,desc'
-    };
-    
-    if (keyword.value) filters.keyword = keyword.value;
-    if (selectedStatus.value) filters.status = selectedStatus.value;
-    if (selectedCategories.value && selectedCategories.value.length > 0) {
-        filters.categoryIds = selectedCategories.value;
-    }
-    if (minChapters.value) filters.minChapters = minChapters.value;
-    if (maxChapters.value) filters.maxChapters = maxChapters.value;
-    
-    const response = await filterStories(filters);
+    const params = getFilterParams(currentPage.value, pageSize.value);
+    const response = await filterStories(params);
     const data = response.data.data;
     
     stories.value = data.content || [];
@@ -99,24 +73,18 @@ const loadStories = async () => {
 };
 
 const handleSearch = () => {
-  currentPage.value = 0;
+  resetPagination();
   loadStories();
 };
 
 const handleReset = () => {
-  keyword.value = '';
-  selectedStatus.value = null;
-  selectedCategories.value = [];
-  selectedSort.value = { label: 'Mới nhất', value: 'createdAt,desc' };
-  minChapters.value = null;
-  maxChapters.value = null;
-  currentPage.value = 0;
+  resetFilters();
+  resetPagination();
   loadStories();
 };
 
-const onPageChange = (event) => {
-  currentPage.value = event.page;
-  loadStories();
+const handlePageChange = (event) => {
+  onPageChange(event, loadStories);
   window.scrollTo(0, 0);
 };
 </script>
@@ -271,7 +239,7 @@ const onPageChange = (event) => {
           :rows="pageSize"
           :totalRecords="totalRecords"
           :first="currentPage * pageSize"
-          @page="onPageChange"
+          @page="handlePageChange"
           template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
         />
       </div>

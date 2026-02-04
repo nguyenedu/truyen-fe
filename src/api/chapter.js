@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios from '@/utils/axios';
 
 export const getChaptersByStoryId = (storyId) => {
     return axios.get(`/api/chapters/story/${storyId}`);
