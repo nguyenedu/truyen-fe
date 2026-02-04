@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useUIStore } from '@/stores/ui';
 import Navbar from '@/components/common/Navbar.vue';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
@@ -20,8 +21,8 @@ const authStore = useAuthStore();
 const confirm = useConfirm();
 const toast = useToast();
 
+const uiStore = useUIStore();
 const histories = ref([]);
-const loading = ref(true);
 
 import { usePagination } from '@/composables/usePagination';
 
@@ -34,7 +35,7 @@ onMounted(async () => {
 
 const loadHistory = async () => {
   try {
-    loading.value = true;
+    uiStore.startLoading();
     const response = await getReadingHistory(currentPage.value, pageSize.value);
     const { content, total } = extractData(response);
     
@@ -43,7 +44,7 @@ const loadHistory = async () => {
   } catch (error) {
     showErrorToast(toast, error, 'Không thể tải lịch sử đọc');
   } finally {
-    loading.value = false;
+    uiStore.stopLoading();
   }
 };
 
@@ -135,7 +136,7 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
         />
       </div>
       
-      <div v-if="loading" class="flex flex-col items-center justify-center py-20">
+      <div v-if="uiStore.loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
         <p class="mt-4 text-slate-500">Đang tải...</p>
       </div>

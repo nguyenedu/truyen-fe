@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
+import { useUIStore } from '@/stores/ui';
 import Button from 'primevue/button';
 import Textarea from 'primevue/textarea';
 import Avatar from 'primevue/avatar';
@@ -30,8 +31,8 @@ const router = useRouter();
 const confirm = useConfirm();
 const toast = useToast();
 
+const uiStore = useUIStore();
 const comments = ref([]);
-const loading = ref(true);
 const newCommentContent = ref('');
 const editingCommentId = ref(null);
 const editingContent = ref('');
@@ -47,7 +48,7 @@ onMounted(async () => {
 
 const loadComments = async () => {
   try {
-    loading.value = true;
+    uiStore.startLoading();
     let response;
     
     if (props.chapterId) {
@@ -62,7 +63,7 @@ const loadComments = async () => {
   } catch (error) {
     showErrorToast(toast, error, 'Không thể tải bình luận');
   } finally {
-    loading.value = false;
+    uiStore.stopLoading();
   }
 };
 
@@ -171,7 +172,7 @@ const isMyComment = (comment) => {
     </div>
 
     <!-- Comments List -->
-    <div v-if="loading" class="flex justify-center py-10">
+    <div v-if="uiStore.loading" class="flex justify-center py-10">
       <ProgressSpinner />
     </div>
 

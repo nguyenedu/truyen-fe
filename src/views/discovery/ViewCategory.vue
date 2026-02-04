@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useUIStore } from '@/stores/ui';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import ProgressSpinner from 'primevue/progressspinner';
@@ -10,9 +11,9 @@ import { getCategoryById } from '@/api/category';
 import { PAGINATION } from '@/utils/constants';
 
 const route = useRoute();
+const uiStore = useUIStore();
 const category = ref(null);
 const stories = ref([]);
-const loading = ref(true);
 
 import { usePagination } from '@/composables/usePagination';
 
@@ -26,7 +27,7 @@ const loadCategoryAndStories = async () => {
   const categoryId = route.params.id;
   
   try {
-    loading.value = true;
+    uiStore.startLoading();
     const [categoryRes, storiesRes] = await Promise.all([
       getCategoryById(categoryId),
       getStoriesByCategory(categoryId, currentPage.value, pageSize.value),
@@ -39,7 +40,7 @@ const loadCategoryAndStories = async () => {
   } catch (error) {
     console.error('Error loading category:', error);
   } finally {
-    loading.value = false;
+    uiStore.stopLoading();
   }
 };
 
@@ -51,7 +52,7 @@ const handlePageChange = (event) => onPageChange(event, loadCategoryAndStories);
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div v-if="loading" class="flex flex-col items-center justify-center py-20">
+      <div v-if="uiStore.loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
         <p class="mt-4 text-slate-500">Đang tải...</p>
       </div>

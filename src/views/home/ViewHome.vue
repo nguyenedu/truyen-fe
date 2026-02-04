@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useUIStore } from '@/stores/ui';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import Chip from 'primevue/chip';
@@ -18,16 +19,16 @@ import { extractData } from '@/utils/helpers';
 const router = useRouter();
 const authStore = useAuthStore();
 
+const uiStore = useUIStore();
 const stories = ref([]);
 const categories = ref([]);
 const recentReading = ref([]);
 const trendingStories = ref([]);
-const loading = ref(true);
 const error = ref('');
 
 onMounted(async () => {
   try {
-    loading.value = true;
+    uiStore.startLoading();
     
     const promises = [
       getStories(0, 24),
@@ -53,7 +54,7 @@ onMounted(async () => {
     console.error('Error loading home data:', err);
     error.value = 'Không thể tải dữ liệu. Vui lòng thử lại sau.';
   } finally {
-    loading.value = false;
+    uiStore.stopLoading();
   }
 });
 
@@ -96,7 +97,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
       </section>
 
       <!-- Loading State -->
-      <div v-if="loading" class="flex flex-col items-center justify-center py-20">
+      <div v-if="uiStore.loading" class="flex flex-col items-center justify-center py-20">
         <ProgressSpinner />
         <p class="mt-4 text-gray-600">Đang tải dữ liệu...</p>
       </div>

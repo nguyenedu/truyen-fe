@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useUIStore } from '@/stores/ui';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import Button from 'primevue/button';
@@ -39,8 +40,8 @@ const {
   getFilterParams
 } = useDiscovery();
 
+const uiStore = useUIStore();
 const stories = ref([]);
-const loading = ref(true);
 
 onMounted(async () => {
   await Promise.all([
@@ -56,7 +57,7 @@ watch([selectedStatus, selectedSort, selectedCategories], () => {
 
 const loadStories = async () => {
   try {
-    loading.value = true;
+    uiStore.startLoading();
     const params = getFilterParams(currentPage.value, pageSize.value);
     const response = await filterStories(params);
     const data = response.data.data;
@@ -68,7 +69,7 @@ const loadStories = async () => {
     stories.value = [];
     totalRecords.value = 0;
   } finally {
-    loading.value = false;
+    uiStore.stopLoading();
   }
 };
 
@@ -213,7 +214,7 @@ const handlePageChange = (event) => {
       </div>
       
       <!-- Loading -->
-      <div v-if="loading" class="flex justify-center py-20">
+      <div v-if="uiStore.loading" class="flex justify-center py-20">
         <ProgressSpinner />
       </div>
       
