@@ -11,6 +11,7 @@ import { AVATAR_PLACEHOLDER } from '@/utils/constants';
 import { useUIStore } from '@/stores/ui';
 import { useToast } from 'primevue/usetoast';
 import { showErrorToast } from '@/utils/helpers';
+import { ERROR_MESSAGES } from '@/utils/errors';
 
 const route = useRoute();
 const router = useRouter();

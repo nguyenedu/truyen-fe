@@ -26,3 +26,11 @@ export const updateUserApi = (id, formData) => {
 export const getCurrentUserApi = () => {
     return axios.get('/api/users/me');
 };
+
+export const forgotPasswordApi = (email) => {
+    return axios.post('/api/auth/forgot-password', { email });
+};
+
+export const resetPasswordApi = (token, newPassword) => {
+    return axios.post('/api/auth/reset-password', { token, newPassword });
+};

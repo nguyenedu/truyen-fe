@@ -4,6 +4,8 @@ import { useAuthStore } from '@/stores/auth';
 // Auth Views
 import LoginAuth from '@/views/auth/LoginAuth.vue';
 import RegisterAuth from '@/views/auth/RegisterAuth.vue';
+import ViewForgotPassword from '@/views/auth/ViewForgotPassword.vue';
+import ViewResetPassword from '@/views/auth/ViewResetPassword.vue';
 
 // Home Views
 import ViewHome from '@/views/home/ViewHome.vue';
@@ -39,6 +41,18 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: RegisterAuth,
+        meta: { requiresGuest: true },
+    },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: ViewForgotPassword,
+        meta: { requiresGuest: true },
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ViewResetPassword,
         meta: { requiresGuest: true },
     },
     {

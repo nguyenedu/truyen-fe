@@ -91,6 +91,11 @@ const handleLogin = async () => {
               autocomplete="current-password"
               class="w-full"
             />
+            <div class="flex justify-end mt-1">
+              <router-link to="/forgot-password" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                Quên mật khẩu?
+              </router-link>
+            </div>
           </div>
 
           <!-- Error Message -->

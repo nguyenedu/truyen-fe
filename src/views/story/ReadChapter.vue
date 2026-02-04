@@ -14,6 +14,7 @@ import { saveReadingHistory } from '@/api/history';
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
 const uiStore = useUIStore();
 const toast = useToast();
 const chapter = ref(null);

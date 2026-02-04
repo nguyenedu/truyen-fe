@@ -1,8 +1,8 @@
 export const getErrorMessage = (error, defaultMessage = 'Có lỗi xảy ra, vui lòng thử lại sau') => {
-    if (error.response && error.response.data && error.response.data.message) {
+    if (error && error.response && error.response.data && error.response.data.message) {
         return error.response.data.message;
     }
-    return error.message || defaultMessage;
+    return error?.message || defaultMessage;
 };
 
 export const showToast = (toast, severity, summary, detail, life = 3000) => {
