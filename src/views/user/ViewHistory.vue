@@ -12,7 +12,8 @@ import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { getReadingHistory, deleteStoryHistory, deleteAllHistory } from '@/api/history';
 import { PAGINATION, IMAGE_PLACEHOLDER } from '@/utils/constants';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, formatRelativeDate } from '@/utils/formatters';
+import { handleAuthRequired, showSuccessToast, showErrorToast, extractData } from '@/utils/helpers';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -26,11 +27,7 @@ const currentPage = ref(0);
 const pageSize = ref(PAGINATION.HISTORY_PAGE_SIZE);
 
 onMounted(async () => {
-  if (!authStore.isAuthenticated) {
-    router.push('/login');
-    return;
-  }
-  
+  if (handleAuthRequired(authStore, router, toast)) return;
   await loadHistory();
 });
 
@@ -38,18 +35,12 @@ const loadHistory = async () => {
   try {
     loading.value = true;
     const response = await getReadingHistory(currentPage.value, pageSize.value);
-    const data = response.data.data;
+    const { content, total } = extractData(response);
     
-    histories.value = data.content || [];
-    totalRecords.value = data.totalElements || 0;
+    histories.value = content;
+    totalRecords.value = total;
   } catch (error) {
-    console.error('Error loading history:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: 'Không thể tải lịch sử đọc',
-      life: 3000
-    });
+    showErrorToast(toast, error, 'Không thể tải lịch sử đọc');
   } finally {
     loading.value = false;
   }
@@ -82,21 +73,10 @@ const handleDeleteOne = (history) => {
     accept: async () => {
       try {
         await deleteStoryHistory(history.storyId);
-        toast.add({
-          severity: 'success',
-          summary: 'Đã xóa',
-          detail: 'Đã xóa lịch sử đọc',
-          life: 3000
-        });
+        showSuccessToast(toast, 'Đã xóa', 'Đã xóa lịch sử đọc');
         await loadHistory();
       } catch (error) {
-        console.error('Error deleting history:', error);
-        toast.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: 'Không thể xóa lịch sử',
-          life: 3000
-        });
+        showErrorToast(toast, error, 'Không thể xóa lịch sử');
       }
     }
   });
@@ -113,22 +93,11 @@ const handleDeleteAll = () => {
     accept: async () => {
       try {
         await deleteAllHistory();
-        toast.add({
-          severity: 'success',
-          summary: 'Đã xóa',
-          detail: 'Đã xóa toàn bộ lịch sử đọc',
-          life: 3000
-        });
+        showSuccessToast(toast, 'Đã xóa', 'Đã xóa toàn bộ lịch sử đọc');
         histories.value = [];
         totalRecords.value = 0;
       } catch (error) {
-        console.error('Error deleting all history:', error);
-        toast.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: 'Không thể xóa lịch sử',
-          life: 3000
-        });
+        showErrorToast(toast, error, 'Không thể xóa lịch sử');
       }
     }
   });
@@ -140,19 +109,7 @@ const onPageChange = (event) => {
   window.scrollTo(0, 0);
 };
 
-const formatRelativeDate = (dateString) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now - date;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-  
-  if (minutes < 60) return `${minutes} phút trước`;
-  if (hours < 24) return `${hours} giờ trước`;
-  if (days < 7) return `${days} ngày trước`;
-  return formatDate(dateString);
-};
+const getRelativeDate = (dateString) => formatRelativeDate(dateString);
 </script>
 
 <template>
@@ -233,7 +190,7 @@ const formatRelativeDate = (dateString) => {
                   </p>
                   <p>
                     <i class="pi pi-clock mr-2"></i>
-                    {{ formatRelativeDate(history.readAt) }}
+                    {{ getRelativeDate(history.readAt) }}
                   </p>
                 </div>
                 

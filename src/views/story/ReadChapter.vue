@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
+import { formatDate } from '@/utils/formatters';
 import { getChaptersByStoryId, getChapterById } from '@/api/chapter';
 import { saveReadingHistory } from '@/api/history';
 
@@ -166,7 +167,7 @@ const backToStory = () => {
         </h2>
         <div class="flex items-center justify-center gap-2 text-sm text-gray-400 font-medium">
           <i class="pi pi-calendar"></i>
-          <span>Cập nhật: {{ new Date(chapter.createdAt).toLocaleDateString('vi-VN') }}</span>
+          <span>Cập nhật: {{ formatDate(chapter.createdAt) }}</span>
         </div>
       </div>
 

@@ -11,6 +11,9 @@ import ProgressSpinner from 'primevue/progressspinner';
 import { getStories, getHotStories } from '@/api/story';
 import { getCategories } from '@/api/category';
 import { getReadingHistory } from '@/api/history';
+import { IMAGE_PLACEHOLDER } from '@/utils/constants';
+import { formatRelativeDate } from '@/utils/formatters';
+import { extractData } from '@/utils/helpers';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -39,13 +42,12 @@ onMounted(async () => {
     
     const results = await Promise.all(promises);
     
-
-    stories.value = results[0]?.data?.data?.content || [];
-    categories.value = results[1]?.data?.data?.content || [];
+    stories.value = extractData(results[0]).content;
+    categories.value = extractData(results[1]).content;
     trendingStories.value = results[2]?.data || [];
     
     if (authStore.isAuthenticated && results[3]) {
-      recentReading.value = results[3]?.data?.data?.content || [];
+      recentReading.value = extractData(results[3]).content;
     }
   } catch (err) {
     console.error('Error loading home data:', err);
@@ -79,17 +81,7 @@ const viewStory = (storyId) => {
   });
 };
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now - date;
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-  
-  if (hours < 24) return `${hours} giờ trước`;
-  if (days < 7) return `${days} ngày trước`;
-  return date.toLocaleDateString('vi-VN');
-};
+const formatDate = (dateString) => formatRelativeDate(dateString);
 </script>
 
 <template>
@@ -141,7 +133,7 @@ const formatDate = (dateString) => {
               <template #header>
                 <div class="relative h-32 overflow-hidden" @click="viewStory(history.storyId)">
                   <img 
-                    :src="history.storyImage || 'https://via.placeholder.com/300x400?text=No+Image'" 
+                    :src="history.storyImage || IMAGE_PLACEHOLDER" 
                     :alt="history.storyTitle"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />

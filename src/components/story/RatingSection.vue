@@ -6,7 +6,7 @@ import Rating from 'primevue/rating';
 import Button from 'primevue/button';
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
-import { useToast } from 'primevue/usetoast';
+import { handleAuthRequired, showSuccessToast, showErrorToast, showWarningToast } from '@/utils/helpers';
 import { rateStory, updateRating, deleteRating, getMyRating, getStoryRatingInfo } from '@/api/rating';
 
 const props = defineProps({
@@ -61,27 +61,13 @@ const loadMyRating = async () => {
 };
 
 const openRatingDialog = () => {
-  if (!authStore.isAuthenticated) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Chưa đăng nhập',
-      detail: 'Vui lòng đăng nhập để đánh giá',
-      life: 3000
-    });
-    router.push('/login');
-    return;
-  }
+  if (handleAuthRequired(authStore, router, toast, 'Vui lòng đăng nhập để đánh giá')) return;
   showRatingDialog.value = true;
 };
 
 const submitRating = async () => {
   if (myRatingValue.value === 0) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Thiếu thông tin',
-      detail: 'Vui lòng chọn số sao',
-      life: 3000
-    });
+    showWarningToast(toast, 'Thiếu thông tin', 'Vui lòng chọn số sao');
     return;
   }
 
@@ -90,33 +76,17 @@ const submitRating = async () => {
     
     if (myRating.value) {
       await updateRating(props.storyId, myRatingValue.value, myReview.value || null);
-      toast.add({
-        severity: 'success',
-        summary: 'Đã cập nhật',
-        detail: 'Cập nhật đánh giá thành công',
-        life: 3000
-      });
+      showSuccessToast(toast, 'Đã cập nhật', 'Cập nhật đánh giá thành công');
     } else {
       await rateStory(props.storyId, myRatingValue.value, myReview.value || null);
-      toast.add({
-        severity: 'success',
-        summary: 'Đã đánh giá',
-        detail: 'Đánh giá truyện thành công',
-        life: 3000
-      });
+      showSuccessToast(toast, 'Đã đánh giá', 'Đánh giá truyện thành công');
     }
     
     showRatingDialog.value = false;
     await loadRatingInfo();
     await loadMyRating();
   } catch (error) {
-    console.error('Error submitting rating:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: error.response?.data?.message || 'Không thể đánh giá',
-      life: 3000
-    });
+    showErrorToast(toast, error, 'Không thể đánh giá');
   } finally {
     loading.value = false;
   }
@@ -125,12 +95,7 @@ const submitRating = async () => {
 const handleDeleteRating = async () => {
   try {
     await deleteRating(props.storyId);
-    toast.add({
-      severity: 'success',
-      summary: 'Đã xóa',
-      detail: 'Xóa đánh giá thành công',
-      life: 3000
-    });
+    showSuccessToast(toast, 'Đã xóa', 'Xóa đánh giá thành công');
     
     myRating.value = null;
     myRatingValue.value = 0;
@@ -139,13 +104,7 @@ const handleDeleteRating = async () => {
     
     await loadRatingInfo();
   } catch (error) {
-    console.error('Error deleting rating:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: 'Không thể xóa đánh giá',
-      life: 3000
-    });
+    showErrorToast(toast, error, 'Không thể xóa đánh giá');
   }
 };
 

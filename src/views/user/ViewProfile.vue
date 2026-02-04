@@ -10,6 +10,8 @@ import FileUpload from 'primevue/fileupload';
 import Message from 'primevue/message';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
+import { formatDate } from '@/utils/formatters';
+import { getErrorMessage, showSuccessToast, showErrorToast } from '@/utils/helpers';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -82,7 +84,7 @@ const handleUpdateProfile = async () => {
     const result = await authStore.updateProfile(user.value.id, data);
 
     if (result.success) {
-        success.value = 'Cập nhật thông tin thành công!';
+        showSuccessToast(null, 'Đã cập nhật', 'Cập nhật thông tin thành công!');
         isEditing.value = false;
         await authStore.fetchCurrentUser();
     } else {
@@ -148,7 +150,7 @@ const handleUpdateProfile = async () => {
                 <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 transition-all hover:bg-white hover:shadow-md hover:border-indigo-100">
                     <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Ngày tham gia</span>
                     <span class="text-xl font-bold text-slate-800">
-                        {{ user?.createdAt ? new Date(user.createdAt).toLocaleDateString('vi-VN') : 'Đang cập nhật...' }}
+                        {{ user?.createdAt ? formatDate(user.createdAt) : 'Đang cập nhật...' }}
                     </span>
                 </div>
             </div>

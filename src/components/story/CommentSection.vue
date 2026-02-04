@@ -8,7 +8,9 @@ import Avatar from 'primevue/avatar';
 import Paginator from 'primevue/paginator';
 import ProgressSpinner from 'primevue/progressspinner';
 import { useConfirm } from 'primevue/useconfirm';
-import { useToast } from 'primevue/usetoast';
+import { PAGINATION } from '@/utils/constants';
+import { formatRelativeDate } from '@/utils/formatters';
+import { handleAuthRequired, showSuccessToast, showErrorToast, showWarningToast, extractData } from '@/utils/helpers';
 import { getStoryComments, getChapterComments, createComment, updateComment, deleteComment } from '@/api/comment';
 
 const props = defineProps({
@@ -36,7 +38,7 @@ const submitting = ref(false);
 
 const totalRecords = ref(0);
 const currentPage = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(PAGINATION.DEFAULT_PAGE_SIZE);
 
 onMounted(async () => {
   await loadComments();
@@ -53,35 +55,21 @@ const loadComments = async () => {
       response = await getStoryComments(props.storyId, currentPage.value, pageSize.value);
     }
     
-    const data = response.data.data;
-    comments.value = data.content || [];
-    totalRecords.value = data.totalElements || 0;
+    const { content, total } = extractData(response);
+    comments.value = content;
+    totalRecords.value = total;
   } catch (error) {
-    console.error('Error loading comments:', error);
+    showErrorToast(toast, error, 'Không thể tải bình luận');
   } finally {
     loading.value = false;
   }
 };
 
 const handleSubmitComment = async () => {
-  if (!authStore.isAuthenticated) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Chưa đăng nhập',
-      detail: 'Vui lòng đăng nhập để bình luận',
-      life: 3000
-    });
-    router.push('/login');
-    return;
-  }
+  if (handleAuthRequired(authStore, router, toast, 'Vui lòng đăng nhập để bình luận')) return;
 
   if (!newCommentContent.value.trim()) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Thiếu nội dung',
-      detail: 'Vui lòng nhập nội dung bình luận',
-      life: 3000
-    });
+    showWarningToast(toast, 'Thiếu nội dung', 'Vui lòng nhập nội dung bình luận');
     return;
   }
 
@@ -89,24 +77,13 @@ const handleSubmitComment = async () => {
     submitting.value = true;
     await createComment(props.storyId, props.chapterId, newCommentContent.value);
     
-    toast.add({
-      severity: 'success',
-      summary: 'Đã gửi',
-      detail: 'Bình luận thành công',
-      life: 3000
-    });
+    showSuccessToast(toast, 'Đã gửi', 'Bình luận thành công');
     
     newCommentContent.value = '';
     currentPage.value = 0;
     await loadComments();
   } catch (error) {
-    console.error('Error creating comment:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: error.response?.data?.message || 'Không thể gửi bình luận',
-      life: 3000
-    });
+    showErrorToast(toast, error, 'Không thể gửi bình luận');
   } finally {
     submitting.value = false;
   }
@@ -124,36 +101,20 @@ const cancelEdit = () => {
 
 const handleUpdateComment = async (commentId) => {
   if (!editingContent.value.trim()) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Thiếu nội dung',
-      detail: 'Vui lòng nhập nội dung bình luận',
-      life: 3000
-    });
+    showWarningToast(toast, 'Thiếu nội dung', 'Vui lòng nhập nội dung bình luận');
     return;
   }
 
   try {
     await updateComment(commentId, editingContent.value);
     
-    toast.add({
-      severity: 'success',
-      summary: 'Đã cập nhật',
-      detail: 'Cập nhật bình luận thành công',
-      life: 3000
-    });
+    showSuccessToast(toast, 'Đã cập nhật', 'Cập nhật bình luận thành công');
     
     editingCommentId.value = null;
     editingContent.value = '';
     await loadComments();
   } catch (error) {
-    console.error('Error updating comment:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: 'Không thể cập nhật bình luận',
-      life: 3000
-    });
+    showErrorToast(toast, error, 'Không thể cập nhật bình luận');
   }
 };
 
@@ -168,22 +129,10 @@ const handleDeleteComment = (commentId) => {
       try {
         await deleteComment(commentId);
         
-        toast.add({
-          severity: 'success',
-          summary: 'Đã xóa',
-          detail: 'Xóa bình luận thành công',
-          life: 3000
-        });
-        
+        showSuccessToast(toast, 'Đã xóa', 'Xóa bình luận thành công');
         await loadComments();
       } catch (error) {
-        console.error('Error deleting comment:', error);
-        toast.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: 'Không thể xóa bình luận',
-          life: 3000
-        });
+        showErrorToast(toast, error, 'Không thể xóa bình luận');
       }
     }
   });
@@ -195,19 +144,7 @@ const onPageChange = (event) => {
   window.scrollTo(0, 0);
 };
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now - date;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-  
-  if (minutes < 60) return `${minutes} phút trước`;
-  if (hours < 24) return `${hours} giờ trước`;
-  if (days < 7) return `${days} ngày trước`;
-  return date.toLocaleDateString('vi-VN');
-};
+const formatDate = (dateString) => formatRelativeDate(dateString);
 
 const isMyComment = (comment) => {
   return authStore.user && comment.userId === authStore.user.id;
