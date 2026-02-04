@@ -132,7 +132,7 @@ export const useAuthStore = defineStore('auth', () => {
         if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
             try {
                 user.value = JSON.parse(savedUser);
-                console.log('✅ User restored:', user.value);
+                console.log('User restored:', user.value);
             } catch (error) {
                 console.error('Failed to parse user data from localStorage:', error);
                 localStorage.removeItem('user');

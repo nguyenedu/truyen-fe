@@ -7,6 +7,8 @@ import Password from 'primevue/password';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 
+import { isRequired, isValidEmail, isValidPassword } from '@/utils/validation';
+
 const router = useRouter();
 const authStore = useAuthStore();
 
@@ -21,8 +23,13 @@ const error = ref('');
 const loading = ref(false);
 
 const handleRegister = async () => {
-  if (!formData.value.username || !formData.value.email || !formData.value.password) {
+  if (!isRequired(formData.value.username) || !isRequired(formData.value.email) || !isRequired(formData.value.password)) {
     error.value = 'Vui lòng nhập đầy đủ thông tin';
+    return;
+  }
+
+  if (!isValidEmail(formData.value.email)) {
+    error.value = 'Email không hợp lệ';
     return;
   }
 
@@ -31,7 +38,7 @@ const handleRegister = async () => {
     return;
   }
 
-  if (formData.value.password.length < 6) {
+  if (!isValidPassword(formData.value.password)) {
     error.value = 'Mật khẩu phải có ít nhất 6 ký tự';
     return;
   }

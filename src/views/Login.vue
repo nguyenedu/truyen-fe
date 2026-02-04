@@ -7,6 +7,8 @@ import Password from 'primevue/password';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 
+import { isRequired } from '@/utils/validation';
+
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
@@ -17,7 +19,7 @@ const error = ref('');
 const loading = ref(false);
 
 const handleLogin = async () => {
-  if (!username.value || !password.value) {
+  if (!isRequired(username.value) || !isRequired(password.value)) {
     error.value = 'Vui lòng nhập đầy đủ thông tin';
     return;
   }

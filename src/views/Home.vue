@@ -29,7 +29,7 @@ onMounted(async () => {
     const promises = [
       getStories(0, 24),
       getCategories(0, 20),
-      getHotStories(12), g
+      getHotStories(12),
     ];
     
 

@@ -7,6 +7,7 @@ import { getAuthorById } from '@/api/author';
 import { getStoriesByAuthor } from '@/api/author';
 import StoryCard from '@/components/common/StoryCard.vue';
 import ProgressSpinner from 'primevue/progressspinner';
+import { AVATAR_PLACEHOLDER } from '@/utils/constants';
 
 const route = useRoute();
 const router = useRouter();
@@ -75,7 +76,7 @@ onMounted(() => {
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                     <div class="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-slate-50 shadow-md shrink-0">
                         <img 
-                            :src="author.avatar || 'https://via.placeholder.com/200?text=Avatar'" 
+                            :src="author.avatar || AVATAR_PLACEHOLDER" 
                             :alt="author.name"
                             class="w-full h-full object-cover"
                         />

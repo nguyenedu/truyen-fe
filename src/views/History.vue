@@ -11,6 +11,8 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { getReadingHistory, deleteStoryHistory, deleteAllHistory } from '@/api/history';
+import { PAGINATION, IMAGE_PLACEHOLDER } from '@/utils/constants';
+import { formatDate } from '@/utils/formatters';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -21,7 +23,7 @@ const histories = ref([]);
 const loading = ref(true);
 const totalRecords = ref(0);
 const currentPage = ref(0);
-const pageSize = ref(12);
+const pageSize = ref(PAGINATION.HISTORY_PAGE_SIZE);
 
 onMounted(async () => {
   if (!authStore.isAuthenticated) {
@@ -138,7 +140,7 @@ const onPageChange = (event) => {
   window.scrollTo(0, 0);
 };
 
-const formatDate = (dateString) => {
+const formatRelativeDate = (dateString) => {
   const date = new Date(dateString);
   const now = new Date();
   const diff = now - date;
@@ -149,7 +151,7 @@ const formatDate = (dateString) => {
   if (minutes < 60) return `${minutes} phút trước`;
   if (hours < 24) return `${hours} giờ trước`;
   if (days < 7) return `${days} ngày trước`;
-  return date.toLocaleDateString('vi-VN');
+  return formatDate(dateString);
 };
 </script>
 
@@ -208,7 +210,7 @@ const formatDate = (dateString) => {
             <template #header>
               <div class="relative overflow-hidden h-48 cursor-pointer" @click="viewStory(history.storyId)">
                 <img 
-                  :src="history.storyImage || 'https://via.placeholder.com/300x400?text=No+Image'" 
+                  :src="history.storyImage || IMAGE_PLACEHOLDER" 
                   :alt="history.storyTitle"
                   class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
@@ -231,7 +233,7 @@ const formatDate = (dateString) => {
                   </p>
                   <p>
                     <i class="pi pi-clock mr-2"></i>
-                    {{ formatDate(history.readAt) }}
+                    {{ formatRelativeDate(history.readAt) }}
                   </p>
                 </div>
                 

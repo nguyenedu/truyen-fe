@@ -10,6 +10,8 @@ import Tag from 'primevue/tag';
 import Chip from 'primevue/chip';
 import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
+import { IMAGE_PLACEHOLDER } from '@/utils/constants';
+import { formatDate } from '@/utils/formatters';
 import { getStoryById } from '@/api/story';
 import { getChaptersByStoryId } from '@/api/chapter';
 import { checkFavorite, addFavorite, removeFavorite, getFavoriteCount } from '@/api/favorite';
@@ -131,7 +133,7 @@ const readChapter = (chapterId) => {
       <div class="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8 mb-8">
         <div class="mx-auto md:mx-0">
           <img 
-            :src="story.image || 'https://via.placeholder.com/300x400?text=No+Image'" 
+            :src="story.image || IMAGE_PLACEHOLDER" 
             :alt="story.title"
             class="w-full max-w-[250px] rounded-xl shadow-lg"
           />
@@ -234,7 +236,7 @@ const readChapter = (chapterId) => {
               Chương {{ chapter.chapterNumber }}: {{ chapter.title }}
             </span>
             <span class="text-sm text-slate-400">
-              {{ new Date(chapter.createdAt).toLocaleDateString('vi-VN') }}
+              {{ formatDate(chapter.createdAt) }}
             </span>
           </div>
         </div>

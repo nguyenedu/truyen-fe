@@ -7,6 +7,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { getStoriesByCategory } from '@/api/story';
 import { getCategoryById } from '@/api/category';
+import { PAGINATION } from '@/utils/constants';
 
 const route = useRoute();
 const category = ref(null);
@@ -14,7 +15,7 @@ const stories = ref([]);
 const loading = ref(true);
 const totalRecords = ref(0);
 const currentPage = ref(0);
-const pageSize = ref(12);
+const pageSize = ref(PAGINATION.CATEGORY_PAGE_SIZE);
 
 onMounted(async () => {
   await loadCategoryAndStories();

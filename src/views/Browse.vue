@@ -12,6 +12,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { filterStories } from '@/api/story';
 import { getCategories } from '@/api/category';
+import { PAGINATION, STORY_STATUS_OPTIONS, SORT_OPTIONS } from '@/utils/constants';
 
 const route = useRoute();
 const router = useRouter();
@@ -20,7 +21,7 @@ const stories = ref([]);
 const loading = ref(true);
 const totalRecords = ref(0);
 const currentPage = ref(0);
-const pageSize = ref(24);
+const pageSize = ref(PAGINATION.BROWSE_PAGE_SIZE);
 
 const keyword = ref('');
 const selectedStatus = ref(null);
@@ -30,12 +31,7 @@ const selectedSort = ref({ label: 'Mới nhất', value: 'createdAt,desc' });
 const minChapters = ref(null);
 const maxChapters = ref(null);
 
-const statusOptions = [
-  { label: 'Tất cả', value: null },
-  { label: 'Đang tiến hành', value: 'ONGOING' },
-  { label: 'Hoàn thành', value: 'COMPLETED' },
-  { label: 'Tạm dừng', value: 'PAUSED' }
-];
+const statusOptions = STORY_STATUS_OPTIONS;
 
 
 onMounted(async () => {
@@ -59,15 +55,7 @@ const fetchCategories = async () => {
     }
 };
 
-const sortOptions = [
-  { label: 'Mới nhất', value: 'createdAt,desc' },
-  { label: 'Cũ nhất', value: 'createdAt,asc' },
-  { label: 'Hot nhất (lượt xem)', value: 'totalViews,desc' },
-  { label: 'Nhiều chương nhất', value: 'totalChapters,desc' },
-  { label: 'Ít chương nhất', value: 'totalChapters,asc' },
-  { label: 'A-Z', value: 'title,asc' },
-  { label: 'Z-A', value: 'title,desc' }
-];
+const sortOptions = SORT_OPTIONS;
 
 onMounted(async () => {
   await loadStories();
