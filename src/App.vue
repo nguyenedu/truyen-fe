@@ -2,6 +2,7 @@
 import { watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import Toast from 'primevue/toast';
+import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
 
 const route = useRoute();
 
@@ -20,6 +21,7 @@ watch(() => route.path, () => {
 <template>
   <div id="app">
     <Toast />
+    <LoadingOverlay />
     <RouterView />
   </div>
 </template>

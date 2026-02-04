@@ -11,7 +11,6 @@ import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
-import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { PAGINATION } from '@/utils/constants';
 import { ERROR_MESSAGES } from '@/utils/errors';
@@ -217,13 +216,8 @@ const handlePageChange = (event) => {
         </p>
       </div>
       
-      <!-- Loading -->
-      <div v-if="uiStore.loading" class="flex justify-center py-20">
-        <ProgressSpinner />
-      </div>
-      
       <!-- No Results -->
-      <div v-else-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+      <div v-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
         <i class="pi pi-inbox text-6xl text-slate-200 mb-4"></i>
         <p class="text-slate-400 font-medium">Không tìm thấy truyện nào</p>
       </div>

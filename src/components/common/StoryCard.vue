@@ -2,6 +2,8 @@
 import { computed } from 'vue';
 import Card from 'primevue/card';
 import Tag from 'primevue/tag';
+import { formatCompactNumber } from '@/utils/formatters';
+import { IMAGE_PLACEHOLDER } from '@/utils/constants';
 
 const props = defineProps({
   story: {
@@ -12,9 +14,7 @@ const props = defineProps({
 
 const formattedViews = computed(() => {
   const views = props.story.totalViews || props.story.viewCount || 0;
-  if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
-  if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
-  return views;
+  return formatCompactNumber(views);
 });
 
 const chapterCount = computed(() => {
@@ -22,8 +22,8 @@ const chapterCount = computed(() => {
 });
 
 const primaryCategory = computed(() => {
-  if (Array.isArray(props.story.categories)) {
-    return props.story.categories[0] || 'Chưa phân loại';
+  if (Array.isArray(props.story.categories) && props.story.categories.length > 0) {
+    return props.story.categories[0];
   }
   return 'Chưa phân loại';
 });
@@ -43,7 +43,7 @@ const authorId = computed(() => {
       <template #header>
         <router-link :to="`/story/${story.id}`" class="block relative overflow-hidden aspect-[2/3]">
           <img
-              :src="story.image || 'https://via.placeholder.com/300x400?text=No+Image'"
+              :src="story.image || IMAGE_PLACEHOLDER"
               :alt="story.title"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />

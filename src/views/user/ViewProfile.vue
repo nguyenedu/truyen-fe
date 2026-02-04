@@ -75,6 +75,18 @@ const onFileSelect = (event) => {
 const handleUpdateProfile = async () => {
     try {
         uiStore.startLoading();
+        
+        const data = new FormData();
+        data.append('fullname', formData.value.fullname);
+        data.append('email', formData.value.email);
+        data.append('phone', formData.value.phone);
+        if (formData.value.password) {
+            data.append('password', formData.value.password);
+        }
+        if (formData.value.avatar) {
+            data.append('avatar', formData.value.avatar);
+        }
+
         const result = await authStore.updateProfile(user.value.id, data);
 
         if (result.success) {
@@ -197,8 +209,8 @@ const handleUpdateProfile = async () => {
                             chooseLabel="Chọn ảnh mới"
                             class="p-button-outlined !border-indigo-200 !text-indigo-600 hover:!bg-indigo-50"
                         />
-                        <span v-if="selectedFile" class="text-sm font-medium text-emerald-600 flex items-center gap-2">
-                            <i class="pi pi-check-circle"></i> {{ selectedFile.name }}
+                        <span v-if="formData.avatar" class="text-sm font-medium text-emerald-600 flex items-center gap-2">
+                            <i class="pi pi-check-circle"></i> {{ formData.avatar.name }}
                         </span>
                     </div>
                 </div>

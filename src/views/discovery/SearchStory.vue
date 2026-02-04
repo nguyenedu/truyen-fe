@@ -3,7 +3,6 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
-import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { searchStories } from '@/api/story';
 
@@ -71,12 +70,7 @@ const onPageChange = (event) => {
         </p>
       </div>
       
-      <div v-if="loading" class="flex flex-col items-center justify-center py-20">
-        <ProgressSpinner />
-        <p class="mt-4 text-slate-500 font-medium">Đang tìm kiếm...</p>
-      </div>
-      
-      <div v-else-if="!keyword" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+      <div v-if="!keyword" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
         <i class="pi pi-search text-6xl text-slate-200 mb-4"></i>
         <p class="text-slate-400 font-medium">Nhập từ khóa để tìm kiếm truyện</p>
       </div>

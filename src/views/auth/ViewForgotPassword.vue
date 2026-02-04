@@ -15,7 +15,6 @@ const router = useRouter();
 const toast = useToast();
 const uiStore = useUIStore();
 
-// Khởi tạo EmailJS
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
 const email = ref('');

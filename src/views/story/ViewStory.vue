@@ -8,7 +8,6 @@ import CommentSection from '@/components/story/CommentSection.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import Chip from 'primevue/chip';
-import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
 import { IMAGE_PLACEHOLDER } from '@/utils/constants';
 import { formatDate } from '@/utils/formatters';
@@ -16,19 +15,17 @@ import { showErrorToast } from '@/utils/helpers';
 import { ERROR_MESSAGES } from '@/utils/errors';
 import { getStoryById } from '@/api/story';
 import { getChaptersByStoryId } from '@/api/chapter';
-import { checkFavorite, addFavorite, removeFavorite, getFavoriteCount } from '@/api/favorite';
+import { useFavorite } from '@/composables/useFavorite';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToast();
+const { isFavorited, favoriteCount, loading: favoriteLoading, loadStatus, toggleFavoriteStatus } = useFavorite();
 
 const story = ref(null);
 const chapters = ref([]);
 const loading = ref(true);
-const isFavorited = ref(false);
-const favoriteCount = ref(0);
-const favoriteLoading = ref(false);
 
 onMounted(async () => {
   const storyId = route.params.id;
@@ -38,12 +35,11 @@ onMounted(async () => {
     const [storyRes, chaptersRes] = await Promise.all([
       getStoryById(storyId),
       getChaptersByStoryId(storyId),
+      loadStatus(storyId)
     ]);
     
     story.value = storyRes.data.data;
     chapters.value = chaptersRes?.data?.data?.content || chaptersRes?.data?.data || [];
-
-    await loadFavoriteStatus();
   } catch (error) {
     showErrorToast(toast, error, ERROR_MESSAGES.LOAD_STORY_FAILED);
   } finally {
@@ -51,70 +47,7 @@ onMounted(async () => {
   }
 });
 
-const loadFavoriteStatus = async () => {
-  if (!authStore.isAuthenticated) return;
-  
-  try {
-    const [statusRes, countRes] = await Promise.all([
-      checkFavorite(route.params.id),
-      getFavoriteCount(route.params.id),
-    ]);
-    
-    isFavorited.value = statusRes.data.data;
-    favoriteCount.value = countRes.data.data;
-  } catch (error) {
-    console.error('Error loading favorite status:', error);
-  }
-};
-
-const toggleFavorite = async () => {
-  if (!authStore.isAuthenticated) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Chưa đăng nhập',
-      detail: 'Vui lòng đăng nhập để thêm vào yêu thích',
-      life: 3000
-    });
-    router.push('/login');
-    return;
-  }
-  
-  try {
-    favoriteLoading.value = true;
-    
-    if (isFavorited.value) {
-      await removeFavorite(route.params.id);
-      isFavorited.value = false;
-      favoriteCount.value = Math.max(0, favoriteCount.value - 1);
-      toast.add({
-        severity: 'success',
-        summary: 'Đã xóa',
-        detail: 'Đã xóa khỏi danh sách yêu thích',
-        life: 3000
-      });
-    } else {
-      await addFavorite(route.params.id);
-      isFavorited.value = true;
-      favoriteCount.value += 1;
-      toast.add({
-        severity: 'success',
-        summary: 'Đã thêm',
-        detail: 'Đã thêm vào danh sách yêu thích',
-        life: 3000
-      });
-    }
-  } catch (error) {
-    console.error('Error toggling favorite:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: error.response?.data?.message || 'Có lỗi xảy ra',
-      life: 3000
-    });
-  } finally {
-    favoriteLoading.value = false;
-  }
-};
+const toggleFavorite = () => toggleFavoriteStatus(route.params.id);
 
 const readChapter = (chapterId) => {
   router.push({ name: 'ReadChapter', params: { storyId: story.value.id, chapterId } });
@@ -125,12 +58,7 @@ const readChapter = (chapterId) => {
   <div class="min-h-screen bg-[#f1f5f9]">
     <Navbar />
     
-    <div v-if="loading" class="flex flex-col items-center justify-center py-20">
-      <ProgressSpinner />
-      <p class="mt-4 text-slate-500">Đang tải...</p>
-    </div>
-    
-    <div v-else-if="story" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div v-if="story" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Story Info -->
       <div class="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8 mb-8">
         <div class="mx-auto md:mx-0">

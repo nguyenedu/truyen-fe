@@ -6,7 +6,6 @@ import { useToast } from 'primevue/usetoast';
 import { showErrorToast } from '@/utils/helpers';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
-import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { getStoriesByCategory } from '@/api/story';
 import { getCategoryById } from '@/api/category';
@@ -56,12 +55,7 @@ const handlePageChange = (event) => onPageChange(event, loadCategoryAndStories);
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div v-if="uiStore.loading" class="flex flex-col items-center justify-center py-20">
-        <ProgressSpinner />
-        <p class="mt-4 text-slate-500">Đang tải...</p>
-      </div>
-      
-      <div v-else>
+      <div>
         <div class="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
           <h1 class="text-4xl font-black text-slate-800 mb-3 tracking-tighter">
             {{ category?.name || 'Thể loại' }}

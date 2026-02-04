@@ -6,7 +6,6 @@ import Button from 'primevue/button';
 import { getAuthorById } from '@/api/author';
 import { getStoriesByAuthor } from '@/api/author';
 import StoryCard from '@/components/common/StoryCard.vue';
-import ProgressSpinner from 'primevue/progressspinner';
 import { AVATAR_PLACEHOLDER } from '@/utils/constants';
 import { useUIStore } from '@/stores/ui';
 import { useToast } from 'primevue/usetoast';
@@ -65,11 +64,7 @@ onMounted(() => {
                 />
             </div>
 
-            <div v-if="uiStore.loading" class="flex justify-center items-center py-20">
-                <ProgressSpinner />
-            </div>
-
-            <div v-else-if="!author && !uiStore.loading" class="text-center py-20 text-slate-500 italic">
+            <div v-if="!author && !uiStore.loading" class="text-center py-20 text-slate-500 italic">
                 Không tìm thấy thông tin tác giả.
             </div>
 

@@ -8,7 +8,6 @@ import StoryCard from '@/components/common/StoryCard.vue';
 import Chip from 'primevue/chip';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
-import ProgressSpinner from 'primevue/progressspinner';
 import { getStories, getHotStories } from '@/api/story';
 import { getCategories } from '@/api/category';
 import { getReadingHistory } from '@/api/history';
@@ -99,14 +98,8 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
         <p class="text-xl opacity-90">Khám phá hàng ngàn truyện hay, cập nhật mỗi ngày</p>
       </section>
 
-      <!-- Loading State -->
-      <div v-if="uiStore.loading" class="flex flex-col items-center justify-center py-20">
-        <ProgressSpinner />
-        <p class="mt-4 text-gray-600">Đang tải dữ liệu...</p>
-      </div>
-
       <!-- Error State -->
-      <div v-else-if="error" class="text-center py-20">
+      <div v-if="error" class="text-center py-20">
         <p class="text-red-600">{{ error }}</p>
       </div>
 

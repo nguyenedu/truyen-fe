@@ -9,16 +9,14 @@ import Message from 'primevue/message';
 import { useUIStore } from '@/stores/ui';
 import { useToast } from 'primevue/usetoast';
 import { showErrorToast } from '@/utils/helpers';
-
 import { ERROR_MESSAGES } from '@/utils/errors';
 import { isRequired } from '@/utils/validation';
-
-const router = useRouter();
-const route = useRoute();
-const authStore = useAuthStore();
+import { useAuth } from '@/composables/useAuth';
 
 const uiStore = useUIStore();
 const toast = useToast();
+const { loginAndRedirect } = useAuth();
+
 const username = ref('');
 const password = ref('');
 const error = ref('');
@@ -33,12 +31,9 @@ const handleLogin = async () => {
   
   try {
     uiStore.startLoading();
-    const result = await authStore.login(username.value, password.value);
+    const result = await loginAndRedirect(username.value, password.value);
     
-    if (result.success) {
-      const redirect = route.query.redirect || '/';
-      router.push(redirect);
-    } else {
+    if (!result.success) {
       error.value = result.message;
     }
   } catch (err) {

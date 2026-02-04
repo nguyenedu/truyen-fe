@@ -5,20 +5,22 @@ import { useAuthStore } from '@/stores/auth';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import Button from 'primevue/button';
-import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
-import { getFavorites, removeFavorite } from '@/api/favorite';
+import { getFavorites } from '@/api/favorite';
 import { useToast } from 'primevue/usetoast';
+import { usePagination } from '@/composables/usePagination';
+import { useFavorite } from '@/composables/useFavorite';
+import { PAGINATION } from '@/utils/constants';
+import { showErrorToast, showSuccessToast } from '@/utils/helpers';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToast();
+const { toggleFavoriteStatus } = useFavorite();
+const { totalRecords, currentPage, pageSize, onPageChange } = usePagination(PAGINATION.DEFAULT_PAGE_SIZE);
 
 const favorites = ref([]);
 const loading = ref(true);
-const totalRecords = ref(0);
-const currentPage = ref(0);
-const pageSize = ref(12);
 
 onMounted(async () => {
   if (!authStore.isAuthenticated) {
@@ -48,46 +50,19 @@ const loadFavorites = async () => {
     
     totalRecords.value = data.totalElements;
   } catch (error) {
-    console.error('Error loading favorites:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: 'Không thể tải danh sách yêu thích',
-      life: 3000
-    });
+    showErrorToast(toast, error, 'Không thể tải danh sách yêu thích');
   } finally {
     loading.value = false;
   }
 };
 
 const handleRemoveFavorite = async (storyId) => {
-  try {
-    await removeFavorite(storyId);
-    toast.add({
-      severity: 'success',
-      summary: 'Đã xóa',
-      detail: 'Đã xóa khỏi danh sách yêu thích',
-      life: 3000
-    });
-    
-
-    await loadFavorites();
-  } catch (error) {
-    console.error('Error removing favorite:', error);
-    toast.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: 'Không thể xóa khỏi yêu thích',
-      life: 3000
-    });
-  }
+  // Pass a dummy isFavorited = true to ensure it removes
+  await toggleFavoriteStatus(storyId);
+  await loadFavorites();
 };
 
-const onPageChange = (event) => {
-  currentPage.value = event.page;
-  loadFavorites();
-  window.scrollTo(0, 0);
-};
+const handlePageChange = (event) => onPageChange(event, loadFavorites);
 </script>
 
 <template>
@@ -104,12 +79,7 @@ const onPageChange = (event) => {
         </p>
       </div>
       
-      <div v-if="loading" class="flex flex-col items-center justify-center py-20">
-        <ProgressSpinner />
-        <p class="mt-4 text-slate-500">Đang tải...</p>
-      </div>
-      
-      <div v-else-if="favorites.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+      <div v-if="favorites.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
         <div class="mb-6">
           <i class="pi pi-heart text-6xl text-slate-200 opacity-50"></i>
         </div>
