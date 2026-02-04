@@ -14,6 +14,7 @@ import { useToast } from 'primevue/usetoast';
 import { getReadingHistory, deleteStoryHistory, deleteAllHistory } from '@/api/history';
 import { PAGINATION, IMAGE_PLACEHOLDER } from '@/utils/constants';
 import { formatDate, formatRelativeDate } from '@/utils/formatters';
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { handleAuthRequired, showSuccessToast, showErrorToast, extractData } from '@/utils/helpers';
 
 const router = useRouter();
@@ -42,7 +43,7 @@ const loadHistory = async () => {
     histories.value = content;
     totalRecords.value = total;
   } catch (error) {
-    showErrorToast(toast, error, 'Không thể tải lịch sử đọc');
+    showErrorToast(toast, error, ERROR_MESSAGES.LOAD_HISTORY_FAILED);
   } finally {
     uiStore.stopLoading();
   }

@@ -5,15 +5,19 @@ import { useAuthStore } from '@/stores/auth';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
 import { formatDate } from '@/utils/formatters';
+import { useUIStore } from '@/stores/ui';
+import { useToast } from 'primevue/usetoast';
+import { showErrorToast } from '@/utils/helpers';
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { getChaptersByStoryId, getChapterById } from '@/api/chapter';
 import { saveReadingHistory } from '@/api/history';
 
 const route = useRoute();
 const router = useRouter();
-const authStore = useAuthStore();
+const uiStore = useUIStore();
+const toast = useToast();
 const chapter = ref(null);
 const allChapters = ref([]);
-const loading = ref(true);
 const fontSize = ref(18);
 const darkMode = ref(false);
 
@@ -33,9 +37,8 @@ const loadChaptersList = async () => {
     const chaptersRes = await getChaptersByStoryId(route.params.storyId);
     const data = chaptersRes?.data?.data;
     allChapters.value = data?.content || data || [];
-
   } catch (error) {
-    console.error('Error loading chapters list:', error);
+    showErrorToast(toast, error, ERROR_MESSAGES.LOAD_CHAPTERS_FAILED);
   }
 };
 
@@ -44,7 +47,7 @@ const loadChapter = async () => {
   if (!chapterId) return;
 
   try {
-    loading.value = true;
+    uiStore.startLoading();
     const response = await getChapterById(chapterId);
     chapter.value = response.data.data;
 
@@ -58,9 +61,9 @@ const loadChapter = async () => {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (error) {
-    console.error('Error loading chapter:', error);
+    showErrorToast(toast, error, ERROR_MESSAGES.LOAD_CHAPTER_CONTENT_FAILED);
   } finally {
-    loading.value = false;
+    uiStore.stopLoading();
   }
 };
 
@@ -150,7 +153,7 @@ const backToStory = () => {
     </div>
 
     <!-- Loading State -->
-    <div v-if="loading" class="flex flex-col items-center justify-center py-32">
+    <div v-if="uiStore.loading" class="flex flex-col items-center justify-center py-32">
       <ProgressSpinner strokeWidth="4" />
       <p class="mt-4 text-indigo-600 dark:text-indigo-400 font-bold animate-pulse">Đang tải chương...</p>
     </div>

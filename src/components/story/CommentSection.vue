@@ -13,6 +13,7 @@ import { useToast } from 'primevue/usetoast';
 import { PAGINATION } from '@/utils/constants';
 import { formatRelativeDate } from '@/utils/formatters';
 import { handleAuthRequired, showSuccessToast, showErrorToast, showWarningToast, extractData } from '@/utils/helpers';
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { getStoryComments, getChapterComments, createComment, updateComment, deleteComment } from '@/api/comment';
 
 const props = defineProps({
@@ -61,7 +62,7 @@ const loadComments = async () => {
     comments.value = content;
     totalRecords.value = total;
   } catch (error) {
-    showErrorToast(toast, error, 'Không thể tải bình luận');
+    showErrorToast(toast, error, ERROR_MESSAGES.LOAD_COMMENTS_FAILED);
   } finally {
     uiStore.stopLoading();
   }
@@ -85,7 +86,7 @@ const handleSubmitComment = async () => {
     resetPagination();
     await loadComments();
   } catch (error) {
-    showErrorToast(toast, error, 'Không thể gửi bình luận');
+    showErrorToast(toast, error, ERROR_MESSAGES.SEND_COMMENT_FAILED);
   } finally {
     submitting.value = false;
   }

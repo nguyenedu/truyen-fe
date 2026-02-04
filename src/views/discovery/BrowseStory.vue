@@ -2,6 +2,8 @@
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUIStore } from '@/stores/ui';
+import { useToast } from 'primevue/usetoast';
+import { showErrorToast } from '@/utils/helpers';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import Button from 'primevue/button';
@@ -12,6 +14,7 @@ import InputNumber from 'primevue/inputnumber';
 import ProgressSpinner from 'primevue/progressspinner';
 import Paginator from 'primevue/paginator';
 import { PAGINATION } from '@/utils/constants';
+import { ERROR_MESSAGES } from '@/utils/errors';
 
 import { usePagination } from '@/composables/usePagination';
 import { useDiscovery } from '@/composables/useDiscovery';
@@ -40,6 +43,7 @@ const {
   getFilterParams
 } = useDiscovery();
 
+const toast = useToast();
 const uiStore = useUIStore();
 const stories = ref([]);
 
@@ -64,8 +68,8 @@ const loadStories = async () => {
     
     stories.value = data.content || [];
     totalRecords.value = data.totalElements || 0;
-  } catch (error) {
-    console.error('Error loading stories:', error);
+  } catch (err) {
+    showErrorToast(toast, err, ERROR_MESSAGES.LOAD_STORIES_FAILED);
     stories.value = [];
     totalRecords.value = 0;
   } finally {

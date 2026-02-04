@@ -6,12 +6,18 @@ import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+import { useUIStore } from '@/stores/ui';
+import { useToast } from 'primevue/usetoast';
+import { showErrorToast } from '@/utils/helpers';
 
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validation';
 
 const router = useRouter();
 const authStore = useAuthStore();
 
+const uiStore = useUIStore();
+const toast = useToast();
 const formData = ref({
   username: '',
   email: '',
@@ -20,7 +26,6 @@ const formData = ref({
 });
 
 const error = ref('');
-const loading = ref(false);
 
 const handleRegister = async () => {
   if (!isRequired(formData.value.username) || !isRequired(formData.value.email) || !isRequired(formData.value.password)) {
@@ -44,20 +49,24 @@ const handleRegister = async () => {
   }
 
   error.value = '';
-  loading.value = true;
+  
+  try {
+    uiStore.startLoading();
+    const result = await authStore.register({
+      username: formData.value.username,
+      email: formData.value.email,
+      password: formData.value.password,
+    });
 
-  const result = await authStore.register({
-    username: formData.value.username,
-    email: formData.value.email,
-    password: formData.value.password,
-  });
-
-  loading.value = false;
-
-  if (result.success) {
-    router.push({ name: 'Login' });
-  } else {
-    error.value = result.message;
+    if (result.success) {
+      router.push({ name: 'Login' });
+    } else {
+      error.value = result.message;
+    }
+  } catch (err) {
+    showErrorToast(toast, err, ERROR_MESSAGES.REGISTER_FAILED);
+  } finally {
+    uiStore.stopLoading();
   }
 };
 </script>
@@ -147,9 +156,9 @@ const handleRegister = async () => {
           <!-- Submit Button -->
           <Button
             type="submit"
-            :label="loading ? 'Đang đăng ký...' : 'Đăng ký'"
-            :loading="loading"
-            :disabled="loading"
+            :label="uiStore.loading ? 'Đang đăng ký...' : 'Đăng ký'"
+            :loading="uiStore.loading"
+            :disabled="uiStore.loading"
             class="w-full"
             size="large"
           />

@@ -12,6 +12,8 @@ import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
 import { IMAGE_PLACEHOLDER } from '@/utils/constants';
 import { formatDate } from '@/utils/formatters';
+import { showErrorToast } from '@/utils/helpers';
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { getStoryById } from '@/api/story';
 import { getChaptersByStoryId } from '@/api/chapter';
 import { checkFavorite, addFavorite, removeFavorite, getFavoriteCount } from '@/api/favorite';
@@ -43,7 +45,7 @@ onMounted(async () => {
 
     await loadFavoriteStatus();
   } catch (error) {
-    console.error('Error loading story:', error);
+    showErrorToast(toast, error, ERROR_MESSAGES.LOAD_STORY_FAILED);
   } finally {
     loading.value = false;
   }

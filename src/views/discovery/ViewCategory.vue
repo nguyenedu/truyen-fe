@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUIStore } from '@/stores/ui';
+import { useToast } from 'primevue/usetoast';
+import { showErrorToast } from '@/utils/helpers';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
 import ProgressSpinner from 'primevue/progressspinner';
@@ -9,9 +11,11 @@ import Paginator from 'primevue/paginator';
 import { getStoriesByCategory } from '@/api/story';
 import { getCategoryById } from '@/api/category';
 import { PAGINATION } from '@/utils/constants';
+import { ERROR_MESSAGES } from '@/utils/errors';
 
 const route = useRoute();
 const uiStore = useUIStore();
+const toast = useToast();
 const category = ref(null);
 const stories = ref([]);
 
@@ -38,7 +42,7 @@ const loadCategoryAndStories = async () => {
     stories.value = data.content || [];
     totalRecords.value = data.totalElements || 0;
   } catch (error) {
-    console.error('Error loading category:', error);
+    showErrorToast(toast, error, ERROR_MESSAGES.LOAD_CATEGORIES_FAILED);
   } finally {
     uiStore.stopLoading();
   }

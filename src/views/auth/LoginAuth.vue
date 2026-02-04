@@ -6,17 +6,22 @@ import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+import { useUIStore } from '@/stores/ui';
+import { useToast } from 'primevue/usetoast';
+import { showErrorToast } from '@/utils/helpers';
 
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { isRequired } from '@/utils/validation';
 
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
+const uiStore = useUIStore();
+const toast = useToast();
 const username = ref('');
 const password = ref('');
 const error = ref('');
-const loading = ref(false);
 
 const handleLogin = async () => {
   if (!isRequired(username.value) || !isRequired(password.value)) {
@@ -25,17 +30,21 @@ const handleLogin = async () => {
   }
 
   error.value = '';
-  loading.value = true;
-
-  const result = await authStore.login(username.value, password.value);
   
-  loading.value = false;
-
-  if (result.success) {
-    const redirect = route.query.redirect || '/';
-    router.push(redirect);
-  } else {
-    error.value = result.message;
+  try {
+    uiStore.startLoading();
+    const result = await authStore.login(username.value, password.value);
+    
+    if (result.success) {
+      const redirect = route.query.redirect || '/';
+      router.push(redirect);
+    } else {
+      error.value = result.message;
+    }
+  } catch (err) {
+    showErrorToast(toast, err, ERROR_MESSAGES.LOGIN_FAILED);
+  } finally {
+    uiStore.stopLoading();
   }
 };
 </script>
@@ -92,9 +101,9 @@ const handleLogin = async () => {
           <!-- Submit Button -->
           <Button
             type="submit"
-            :label="loading ? 'Đang đăng nhập...' : 'Đăng nhập'"
-            :loading="loading"
-            :disabled="loading"
+            :label="uiStore.loading ? 'Đang đăng nhập...' : 'Đăng nhập'"
+            :loading="uiStore.loading"
+            :disabled="uiStore.loading"
             class="w-full"
             size="large"
           />

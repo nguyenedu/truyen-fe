@@ -8,17 +8,20 @@ import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import FileUpload from 'primevue/fileupload';
 import Message from 'primevue/message';
+import { useUIStore } from '@/stores/ui';
 import { useAuthStore } from '@/stores/auth';
+import { useToast } from 'primevue/usetoast';
 import { useRouter } from 'vue-router';
 import { formatDate } from '@/utils/formatters';
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { getErrorMessage, showSuccessToast, showErrorToast } from '@/utils/helpers';
 
 const authStore = useAuthStore();
 const router = useRouter();
 
-
+const uiStore = useUIStore();
+const toast = useToast();
 const isEditing = ref(false);
-const loading = ref(false);
 const error = ref('');
 const success = ref('');
 
@@ -70,27 +73,22 @@ const onFileSelect = (event) => {
 };
 
 const handleUpdateProfile = async () => {
-    loading.value = true;
-    error.value = '';
-    success.value = '';
+    try {
+        uiStore.startLoading();
+        const result = await authStore.updateProfile(user.value.id, data);
 
-    const data = new FormData();
-    if (formData.value.fullname) data.append('fullname', formData.value.fullname);
-    if (formData.value.email) data.append('email', formData.value.email);
-    if (formData.value.phone) data.append('phone', formData.value.phone);
-    if (formData.value.password) data.append('password', formData.value.password);
-    if (formData.value.avatar) data.append('avatar', formData.value.avatar);
-
-    const result = await authStore.updateProfile(user.value.id, data);
-
-    if (result.success) {
-        showSuccessToast(null, 'Đã cập nhật', 'Cập nhật thông tin thành công!');
-        isEditing.value = false;
-        await authStore.fetchCurrentUser();
-    } else {
-        error.value = result.message;
+        if (result.success) {
+            showSuccessToast(toast, 'Đã cập nhật', 'Cập nhật thông tin thành công!');
+            isEditing.value = false;
+            await authStore.fetchCurrentUser();
+        } else {
+            error.value = result.message;
+        }
+    } catch (err) {
+        showErrorToast(toast, err, ERROR_MESSAGES.UPDATE_PROFILE_FAILED);
+    } finally {
+        uiStore.stopLoading();
     }
-    loading.value = false;
 };
 </script>
 
@@ -219,7 +217,7 @@ const handleUpdateProfile = async () => {
                     type="submit"
                     label="Lưu thay đổi"
                     icon="pi pi-check"
-                    :loading="loading"
+                    :loading="uiStore.loading"
                     class="p-button-raised !bg-emerald-600 hover:!bg-emerald-700 border-0 px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105"
                 />
             </div>

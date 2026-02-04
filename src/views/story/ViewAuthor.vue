@@ -8,21 +8,23 @@ import { getStoriesByAuthor } from '@/api/author';
 import StoryCard from '@/components/common/StoryCard.vue';
 import ProgressSpinner from 'primevue/progressspinner';
 import { AVATAR_PLACEHOLDER } from '@/utils/constants';
+import { useUIStore } from '@/stores/ui';
+import { useToast } from 'primevue/usetoast';
+import { showErrorToast } from '@/utils/helpers';
 
 const route = useRoute();
 const router = useRouter();
+const uiStore = useUIStore();
+const toast = useToast();
 const author = ref(null);
 const stories = ref([]);
-const loading = ref(true);
-const error = ref(null);
 
 const fetchAuthorData = async () => {
-    loading.value = true;
-    error.value = null;
     try {
+        uiStore.startLoading();
         const authorId = route.params.id;
         if (!authorId || authorId === 'null') {
-            error.value = 'ID tác giả không hợp lệ hoặc không tồn tại.';
+            showErrorToast(toast, ERROR_MESSAGES.INVALID_AUTHOR_ID, 'Lỗi dữ liệu');
             return;
         }
         const [authorRes, storiesRes] = await Promise.all([
@@ -33,10 +35,9 @@ const fetchAuthorData = async () => {
         author.value = authorRes.data.data;
         stories.value = storiesRes.data.data;
     } catch (err) {
-        console.error('Error fetching author data:', err);
-        error.value = 'Không thể tải thông tin tác giả. Vui lòng thử lại sau.';
+        showErrorToast(toast, err, ERROR_MESSAGES.LOAD_AUTHOR_FAILED);
     } finally {
-        loading.value = false;
+        uiStore.stopLoading();
     }
 };
 
@@ -63,12 +64,12 @@ onMounted(() => {
                 />
             </div>
 
-            <div v-if="loading" class="flex justify-center items-center py-20">
+            <div v-if="uiStore.loading" class="flex justify-center items-center py-20">
                 <ProgressSpinner />
             </div>
 
-            <div v-else-if="error" class="text-center py-20 text-red-500">
-                {{ error }}
+            <div v-else-if="!author && !uiStore.loading" class="text-center py-20 text-slate-500 italic">
+                Không tìm thấy thông tin tác giả.
             </div>
 
             <div v-else-if="author" class="space-y-8">

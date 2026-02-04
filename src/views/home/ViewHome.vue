@@ -12,12 +12,15 @@ import ProgressSpinner from 'primevue/progressspinner';
 import { getStories, getHotStories } from '@/api/story';
 import { getCategories } from '@/api/category';
 import { getReadingHistory } from '@/api/history';
+import { ERROR_MESSAGES } from '@/utils/errors';
 import { IMAGE_PLACEHOLDER } from '@/utils/constants';
 import { formatRelativeDate } from '@/utils/formatters';
-import { extractData } from '@/utils/helpers';
+import { useToast } from 'primevue/usetoast';
+import { extractData, showErrorToast } from '@/utils/helpers';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useToast();
 
 const uiStore = useUIStore();
 const stories = ref([]);
@@ -51,7 +54,7 @@ onMounted(async () => {
       recentReading.value = extractData(results[3]).content;
     }
   } catch (err) {
-    console.error('Error loading home data:', err);
+    showErrorToast(toast, err, ERROR_MESSAGES.FETCH_DATA_FAILED);
     error.value = 'Không thể tải dữ liệu. Vui lòng thử lại sau.';
   } finally {
     uiStore.stopLoading();
