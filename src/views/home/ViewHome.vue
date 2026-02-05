@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useUIStore } from '@/stores/ui';
@@ -65,6 +65,14 @@ watch(() => authStore.isAuthenticated, (newValue) => {
   if (!newValue) {
     recentReading.value = [];
   }
+});
+
+
+const filteredTrendingStories = computed(() => {
+  return trendingStories.value.filter(story => {
+
+    return !story.status || story.status === 'PUBLIC';
+  });
 });
 
 const continueReading = (history) => {
@@ -170,14 +178,14 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
         </section>
 
         <!-- Trending Stories -->
-        <section v-if="trendingStories.length > 0" class="mb-12">
+        <section v-if="filteredTrendingStories.length > 0" class="mb-12">
           <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
             <i class="pi pi-chart-line text-red-500"></i>
             🔥 Truyện Trending
           </h2>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <StoryCard
-              v-for="(trending, index) in trendingStories"
+              v-for="(trending, index) in filteredTrendingStories"
               :key="trending.storyId"
               :story="{
                 id: trending.storyId,

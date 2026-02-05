@@ -44,13 +44,22 @@ const {
 
 const toast = useToast();
 const uiStore = useUIStore();
+const route = useRoute();
+const router = useRouter();
 const stories = ref([]);
 
 onMounted(async () => {
-  await Promise.all([
-    fetchCategories(),
-    loadStories()
-  ]);
+  await fetchCategories();
+  
+  // Read category from URL query parameter
+  if (route.query.category) {
+    const categoryId = parseInt(route.query.category);
+    if (!isNaN(categoryId)) {
+      selectedCategories.value = [categoryId];
+    }
+  }
+  
+  await loadStories();
 });
 
 watch([selectedStatus, selectedSort, selectedCategories], () => {

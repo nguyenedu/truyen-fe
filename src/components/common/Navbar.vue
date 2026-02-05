@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { getCategories } from '@/api/category';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Menu from 'primevue/menu';
@@ -11,6 +12,9 @@ const authStore = useAuthStore();
 
 const searchKeyword = ref('');
 const userMenu = ref();
+const categories = ref([]);
+const showCategoryDropdown = ref(false);
+let hideTimeout = null;
 
 const userMenuItems = ref([
   {
@@ -28,6 +32,23 @@ const userMenuItems = ref([
   }
 ]);
 
+onMounted(async () => {
+  try {
+    const response = await getCategories(0, 100);
+    
+    // Backend returns {success, message, data} structure
+    if (response.data && response.data.data) {
+      if (Array.isArray(response.data.data)) {
+        categories.value = response.data.data;
+      } else if (response.data.data.content) {
+        categories.value = response.data.data.content;
+      }
+    }
+  } catch (error) {
+    console.error('Lỗi khi tải danh sách thể loại:', error);
+  }
+});
+
 const handleSearch = () => {
   if (searchKeyword.value.trim()) {
     router.push({ name: 'Search', query: { q: searchKeyword.value } });
@@ -41,6 +62,25 @@ async function handleLogout() {
 
 const toggleUserMenu = (event) => {
   userMenu.value.toggle(event);
+};
+
+const showCategories = () => {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+    hideTimeout = null;
+  }
+  showCategoryDropdown.value = true;
+};
+
+const hideCategories = () => {
+  hideTimeout = setTimeout(() => {
+    showCategoryDropdown.value = false;
+  }, 200);
+};
+
+const navigateToCategory = (categoryId) => {
+  router.push({ name: 'Browse', query: { category: categoryId } });
+  showCategoryDropdown.value = false;
 };
 </script>
 
@@ -58,6 +98,42 @@ const toggleUserMenu = (event) => {
 
         <!-- Navigation Links (Left-aligned) -->
         <div class="flex items-center gap-1 ml-6 shrink-0">
+          <!-- Category Dropdown -->
+          <div 
+            class="relative category-dropdown-container"
+            @mouseenter="showCategories"
+            @mouseleave="hideCategories"
+          >
+            <Button 
+              label="Thể Loại" 
+              icon="pi pi-angle-down" 
+              iconPos="right"
+              text 
+              class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" 
+            />
+            
+            <!-- Dropdown Menu -->
+            <Transition name="dropdown">
+              <div 
+                v-if="showCategoryDropdown && categories.length > 0"
+                class="category-dropdown"
+                @mouseenter="showCategories"
+                @mouseleave="hideCategories"
+              >
+                <div class="category-grid">
+                  <button
+                    v-for="category in categories"
+                    :key="category.id"
+                    @click="navigateToCategory(category.id)"
+                    class="category-item"
+                  >
+                    {{ category.name }}
+                  </button>
+                </div>
+              </div>
+            </Transition>
+          </div>
+
           <router-link to="/browse">
             <Button label="Khám phá" text class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" />
           </router-link>
@@ -120,6 +196,89 @@ const toggleUserMenu = (event) => {
 </template>
 
 <style>
+/* Category Dropdown Styles */
+.category-dropdown-container {
+    position: relative;
+}
+
+.category-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0.5rem;
+    background-color: #ffffff;
+    border: 1px solid rgba(79, 70, 229, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    min-width: 600px;
+    max-width: 800px;
+    z-index: 1000;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.category-item {
+    padding: 0.75rem 1rem;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category-item:hover {
+    background-color: #eef2ff;
+    border-color: #818cf8;
+    color: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown Transition */
+.dropdown-enter-active,
+.dropdown-leave-active {
+    transition: all 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.dropdown-enter-to,
+.dropdown-leave-from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .category-dropdown {
+        min-width: 90vw;
+        left: 0;
+        transform: translateX(0);
+        margin-left: -1rem;
+    }
+    
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .p-menu.user-dropdown-menu {
     background-color: #ffffff !important;
     border: 1px solid rgba(79, 70, 229, 0.1) !important;
