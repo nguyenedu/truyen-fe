@@ -9,7 +9,7 @@ import Chip from 'primevue/chip';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import { getStories, getHotStories } from '@/api/story';
-import { getCategories } from '@/api/category';
+
 import { getReadingHistory } from '@/api/history';
 import { ERROR_MESSAGES } from '@/utils/errors';
 import { IMAGE_PLACEHOLDER } from '@/utils/constants';
@@ -23,7 +23,7 @@ const toast = useToast();
 
 const uiStore = useUIStore();
 const stories = ref([]);
-const categories = ref([]);
+
 const recentReading = ref([]);
 const trendingStories = ref([]);
 const error = ref('');
@@ -34,7 +34,7 @@ onMounted(async () => {
     
     const promises = [
       getStories(0, 24),
-      getCategories(0, 20),
+
       getHotStories(12),
     ];
     
@@ -46,11 +46,10 @@ onMounted(async () => {
     const results = await Promise.all(promises);
     
     stories.value = extractData(results[0]).content;
-    categories.value = extractData(results[1]).content;
-    trendingStories.value = results[2]?.data || [];
+    trendingStories.value = results[1]?.data || [];
     
-    if (authStore.isAuthenticated && results[3]) {
-      recentReading.value = extractData(results[3]).content;
+    if (authStore.isAuthenticated && results[2]) {
+      recentReading.value = extractData(results[2]).content;
     }
   } catch (err) {
     showErrorToast(toast, err, ERROR_MESSAGES.FETCH_DATA_FAILED);
@@ -208,24 +207,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
           </div>
         </section>
 
-        <section v-if="categories.length" class="mb-12">
-          <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
-            <i class="pi pi-tag text-emerald-500"></i>
-            Thể loại
-          </h2>
-          <div class="flex flex-wrap gap-3">
-            <router-link
-              v-for="category in categories"
-              :key="category.id"
-              :to="`/category/${category.id}`"
-            >
-              <Chip 
-                :label="category.name" 
-                class="cursor-pointer !bg-white !text-slate-600 hover:!bg-indigo-50 hover:!text-indigo-600 !border !border-slate-100 transition-all font-semibold"
-              />
-            </router-link>
-          </div>
-        </section>
+
 
         <section v-if="stories.length" class="mb-12">
           <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
