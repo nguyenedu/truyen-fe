@@ -15,10 +15,10 @@ import ViewStory from '@/views/story/ViewStory.vue';
 import ReadChapter from '@/views/story/ReadChapter.vue';
 import ViewAuthor from '@/views/story/ViewAuthor.vue';
 
-// Discovery Views
-import BrowseStory from '@/views/discovery/BrowseStory.vue';
-import SearchStory from '@/views/discovery/SearchStory.vue';
-import ViewCategory from '@/views/discovery/ViewCategory.vue';
+// Search Views
+import BrowseStory from '@/views/search/BrowseStory.vue';
+import SearchStory from '@/views/search/SearchStory.vue';
+import ViewCategory from '@/views/search/ViewCategory.vue';
 
 // User Views
 import ViewProfile from '@/views/user/ViewProfile.vue';
