@@ -135,7 +135,7 @@ const navigateToCategory = (categoryId) => {
           </div>
 
           <router-link to="/browse">
-            <Button label="Khám phá" text class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" />
+            <Button label="Tìm kiếm" text class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" />
           </router-link>
 
           <template v-if="authStore.isAuthenticated">

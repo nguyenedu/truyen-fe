@@ -2,7 +2,7 @@ import { ref, watch } from 'vue';
 import { getCategories } from '@/api/category';
 import { STORY_STATUS_OPTIONS, SORT_OPTIONS } from '@/utils/constants';
 
-export function useDiscovery() {
+export function useSearch() {
     const keyword = ref('');
     const selectedStatus = ref(null);
     const selectedCategories = ref([]);

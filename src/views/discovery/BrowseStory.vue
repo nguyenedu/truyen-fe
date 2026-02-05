@@ -16,7 +16,7 @@ import { PAGINATION } from '@/utils/constants';
 import { ERROR_MESSAGES } from '@/utils/errors';
 
 import { usePagination } from '@/composables/usePagination';
-import { useDiscovery } from '@/composables/useDiscovery';
+import { useSearch } from '@/composables/useSearch';
 import { filterStories } from '@/api/story';
 
 const { 
@@ -40,7 +40,7 @@ const {
   fetchCategories,
   resetFilters,
   getFilterParams
-} = useDiscovery();
+} = useSearch();
 
 const toast = useToast();
 const uiStore = useUIStore();
