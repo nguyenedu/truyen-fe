@@ -212,9 +212,16 @@ const isMyComment = (comment) => {
       >
         <div class="flex items-start gap-3">
           <Avatar
-              :label="comment.username.charAt(0).toUpperCase()"
-              shape="circle"
-              class="bg-blue-600 text-white"
+            v-if="comment.userAvatar"
+            :image="comment.userAvatar"
+            shape="circle"
+            class="!w-10 !h-10 border-2 border-blue-600"
+          />
+          <Avatar
+            v-else
+            :label="comment.username.charAt(0).toUpperCase()"
+            shape="circle"
+            class="!w-10 !h-10 bg-blue-600 text-white"
           />
 
           <div class="flex-1">

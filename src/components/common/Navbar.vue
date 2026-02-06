@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth';
 import { getCategories } from '@/api/category';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Avatar from 'primevue/avatar';
 import Menu from 'primevue/menu';
 
 const router = useRouter();
@@ -166,16 +167,22 @@ const navigateToCategory = (categoryId) => {
         <div class="flex items-center gap-2 shrink-0">
           <template v-if="authStore.isAuthenticated">
             <!-- User Menu -->
-            <Button
-                type="button"
-                @click="toggleUserMenu"
-                class="!bg-indigo-600 hover:!bg-indigo-700 !border-0 ml-4 shadow-md !w-10 !h-10 p-0 overflow-hidden group transition-all"
-                rounded
-            >
-              <span class="font-black text-white group-hover:scale-110 transition-transform">
-                {{ authStore.user?.username?.charAt(0).toUpperCase() }}
-              </span>
-            </Button>
+            <div @click="toggleUserMenu" class="cursor-pointer ml-4">
+              <Avatar
+                v-if="authStore.user?.avatar"
+                :image="authStore.user.avatar"
+                shape="circle"
+                size="large"
+                class="!w-10 !h-10 shadow-md hover:scale-110 transition-transform border-2 border-indigo-600"
+              />
+              <Avatar
+                v-else
+                :label="authStore.user?.username?.charAt(0).toUpperCase()"
+                shape="circle"
+                size="large"
+                class="!w-10 !h-10 !bg-indigo-600 !text-white shadow-md hover:scale-110 transition-transform"
+              />
+            </div>
             <Menu ref="userMenu" :model="userMenuItems" popup class="user-dropdown-menu" />
           </template>
 
