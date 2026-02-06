@@ -1,8 +1,9 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
 import ProgressSpinner from 'primevue/progressspinner';
 import { formatDate } from '@/utils/formatters';
 import { useUIStore } from '@/stores/ui';
@@ -21,10 +22,39 @@ const chapter = ref(null);
 const allChapters = ref([]);
 const fontSize = ref(18);
 const darkMode = ref(false);
+const showScrollTop = ref(false);
+const showChapterDialog = ref(false);
+
+// Scroll to top functionality
+const handleScroll = () => {
+  showScrollTop.value = window.scrollY > 300;
+};
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// Chapter selection dialog
+const toggleChapterDialog = () => {
+  showChapterDialog.value = !showChapterDialog.value;
+};
+
+const goToChapter = (chapterId) => {
+  showChapterDialog.value = false;
+  router.push({ 
+    name: 'ReadChapter', 
+    params: { storyId: route.params.storyId, chapterId } 
+  });
+};
 
 onMounted(async () => {
   await loadChaptersList();
   await loadChapter();
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
 });
 
 watch(() => route.params.chapterId, async (newId) => {
@@ -113,6 +143,15 @@ const backToStory = () => {
           @click="backToStory"
           icon="pi pi-arrow-left"
           label="Quay lại"
+          text
+          class="!text-indigo-600 dark:!text-indigo-400 font-bold"
+        />
+        
+        <!-- Chapter List Button -->
+        <Button
+          @click="toggleChapterDialog"
+          icon="pi pi-list"
+          label="Danh sách chương"
           text
           class="!text-indigo-600 dark:!text-indigo-400 font-bold"
         />
@@ -220,8 +259,99 @@ const backToStory = () => {
         />
       </div>
     </div>
+
+    <!-- Chapter Selection Dialog -->
+    <Dialog
+      v-model:visible="showChapterDialog"
+      modal
+      :header="chapter?.story?.title || 'Danh sách chương'"
+      :style="{ width: '90vw', maxWidth: '800px' }"
+      :dismissableMask="true"
+      class="chapter-dialog"
+    >
+      <div class="max-h-[60vh] overflow-y-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-2">
+          <Button
+            v-for="ch in allChapters"
+            :key="ch.id"
+            @click="goToChapter(ch.id)"
+            :label="`Chương ${ch.chapterNumber}`"
+            :outlined="ch.id !== parseInt(route.params.chapterId)"
+            :severity="ch.id === parseInt(route.params.chapterId) ? 'primary' : 'secondary'"
+            class="!text-sm !py-3 !font-semibold transition-all hover:!scale-105"
+            :class="ch.id === parseInt(route.params.chapterId) ? '!bg-indigo-600 !text-white !border-indigo-600' : ''"
+          />
+        </div>
+      </div>
+    </Dialog>
+
+    <!-- Scroll to Top Button -->
+    <Transition name="fade-slide">
+      <Button
+        v-if="showScrollTop"
+        @click="scrollToTop"
+        icon="pi pi-arrow-up"
+        rounded
+        class="!fixed !bottom-8 !right-8 !w-14 !h-14 !shadow-2xl !border-0 !z-40 hover:!scale-110 !transition-all !duration-300"
+        :class="darkMode ? '!bg-indigo-600 !text-white hover:!bg-indigo-700' : '!bg-indigo-600 !text-white hover:!bg-indigo-700'"
+        aria-label="Lướt lên đầu trang"
+      />
+    </Transition>
   </div>
 </template>
 
 <style scoped>
+/* Scroll to Top Button Animation */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Chapter Dialog Styling */
+:deep(.chapter-dialog .p-dialog-content) {
+  padding: 0.5rem;
+}
+
+:deep(.chapter-dialog .p-dialog-header) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: bold;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Custom Scrollbar */
+.max-h-\[60vh\]::-webkit-scrollbar {
+  width: 8px;
+}
+
+.max-h-\[60vh\]::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.max-h-\[60vh\]::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 10px;
+}
+
+.max-h-\[60vh\]::-webkit-scrollbar-thumb:hover {
+  background: #764ba2;
+}
+
 </style>
