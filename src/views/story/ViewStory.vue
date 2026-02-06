@@ -120,6 +120,15 @@ const readChapter = (chapterId) => {
             />
             
             <Button
+              v-if="chapters.length"
+              @click="readChapter(chapters[chapters.length - 1].id)"
+              label="Đọc mới nhất"
+              icon="pi pi-forward"
+              size="large"
+              class="!bg-emerald-600 hover:!bg-emerald-700"
+            />
+            
+            <Button
               @click="toggleFavorite"
               :label="isFavorited ? 'Bỏ yêu thích' : 'Yêu thích'"
               :icon="isFavorited ? 'pi pi-heart-fill' : 'pi pi-heart'"
