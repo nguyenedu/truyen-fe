@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { getCategories } from '@/api/category';
-import InputText from 'primevue/inputtext';
+import SearchBox from '@/components/common/SearchBox.vue';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 import Menu from 'primevue/menu';
@@ -11,7 +11,6 @@ import Menu from 'primevue/menu';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const searchKeyword = ref('');
 const userMenu = ref();
 const categories = ref([]);
 const showCategoryDropdown = ref(false);
@@ -49,12 +48,6 @@ onMounted(async () => {
     console.error('Lỗi khi tải danh sách thể loại:', error);
   }
 });
-
-const handleSearch = () => {
-  if (searchKeyword.value.trim()) {
-    router.push({ name: 'Search', query: { q: searchKeyword.value } });
-  }
-};
 
 async function handleLogout() {
   await authStore.logout();
@@ -152,15 +145,7 @@ const navigateToCategory = (categoryId) => {
 
         <!-- Search Bar (Flexible Space) -->
         <div class="flex-1 max-w-md mx-6 hidden lg:block">
-          <div class="relative group">
-            <InputText
-                v-model="searchKeyword"
-                @keyup.enter="handleSearch"
-                placeholder="Tìm kiếm truyện..."
-                class="w-full !pl-10 !bg-slate-50 !border-slate-200 !text-slate-800 focus:!bg-white focus:!border-indigo-500 rounded-2xl transition-all"
-            />
-            <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          </div>
+          <SearchBox />
         </div>
 
         <!-- Right Side Actions -->

@@ -194,7 +194,9 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
                 totalChapters: trending.totalChapters,
                 authorName: trending.authorName,
                 authorId: trending.authorId,
-                categories: trending.categories
+                categories: trending.categories,
+                averageRating: trending.averageRating,
+                totalRatings: trending.totalRatings
               }"
             >
               <!-- Trending Badge -->

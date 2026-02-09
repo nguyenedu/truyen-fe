@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import Card from 'primevue/card';
 import Tag from 'primevue/tag';
+import Rating from 'primevue/rating';
 import { formatCompactNumber } from '@/utils/formatters';
 import { IMAGE_PLACEHOLDER } from '@/utils/constants';
 
@@ -19,6 +20,14 @@ const formattedViews = computed(() => {
 
 const chapterCount = computed(() => {
   return props.story.totalChapters || props.story.chapterCount || 0;
+});
+
+const averageRating = computed(() => {
+  return props.story.averageRating || 0;
+});
+
+const totalRatings = computed(() => {
+  return props.story.totalRatings || 0;
 });
 
 const primaryCategory = computed(() => {
@@ -86,6 +95,20 @@ const authorId = computed(() => {
                 {{ chapterCount }}
               </span>
             </div>
+            
+            <!-- Rating Section -->
+            <div class="flex items-center gap-1 pt-2 border-t border-slate-100 mt-2">
+              <Rating 
+                :modelValue="averageRating" 
+                readonly 
+                :cancel="false"
+                class="text-xs"
+              />
+              <span class="text-xs text-slate-500 ml-1">
+                {{ averageRating.toFixed(1) }}
+                <span v-if="totalRatings > 0" class="text-slate-400">({{ totalRatings }})</span>
+              </span>
+            </div>
           </router-link>
         </div>
       </template>
@@ -101,5 +124,20 @@ const authorId = computed(() => {
 :deep(.p-card-content) {
   padding: 0.75rem;
   padding-top: 0.5rem;
+}
+
+/* Rating stars styling */
+:deep(.p-rating .p-rating-icon) {
+  font-size: 0.875rem;
+  color: #fbbf24; /* yellow-400 */
+}
+
+:deep(.p-rating .p-rating-icon.p-icon) {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+:deep(.p-rating .p-rating-icon.pi-star-fill) {
+  color: #f59e0b; /* amber-500 */
 }
 </style>
