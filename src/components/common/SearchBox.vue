@@ -25,7 +25,7 @@ watch(searchKeyword, (newValue) => {
   
   debounceTimeout = setTimeout(async () => {
     await fetchSuggestions(newValue);
-  }, 300); // Đợi 300ms sau khi user ngừng gõ
+  }, 300);
 });
 
 const fetchSuggestions = async (query) => {
