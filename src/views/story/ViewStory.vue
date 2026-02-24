@@ -183,7 +183,11 @@ const readChapter = (chapterId) => {
       
       <!-- Rating Section -->
       <div class="bg-white rounded-[1.5rem] p-8 shadow-sm border border-slate-100 mb-8">
-        <RatingSection :storyId="story.id" />
+      <RatingSection 
+        :storyId="story.id" 
+        :initialAverageRating="story.averageRating || 0"
+        :initialTotalRatings="story.totalRatings || 0"
+      />
       </div>
       
       <!-- Comment Section -->

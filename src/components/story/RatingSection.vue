@@ -8,12 +8,21 @@ import Button from 'primevue/button';
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
 import { handleAuthRequired, showSuccessToast, showErrorToast, showWarningToast } from '@/utils/helpers';
-import { rateStory, updateRating, deleteRating, getMyRating, getStoryRatingInfo } from '@/api/rating';
+import { rateStory, updateRating, deleteRating, getMyRating } from '@/api/rating';
+import { getStoryById } from '@/api/story';
 
 const props = defineProps({
   storyId: {
     type: [Number, String],
     required: true
+  },
+  initialAverageRating: {
+    type: Number,
+    default: 0
+  },
+  initialTotalRatings: {
+    type: Number,
+    default: 0
   }
 });
 
@@ -31,20 +40,23 @@ const averageRating = ref(0);
 const totalRatings = ref(0);
 
 onMounted(async () => {
-  await loadRatingInfo();
+  // Dùng giá trị từ story API (Double, chính xác) làm giá trị ban đầu
+  averageRating.value = props.initialAverageRating;
+  totalRatings.value = props.initialTotalRatings;
   if (authStore.isAuthenticated) {
     await loadMyRating();
   }
 });
 
-const loadRatingInfo = async () => {
+// Refresh rating từ story API (giống StoryCard) sau khi user vote
+const refreshRatingFromStory = async () => {
   try {
-    const response = await getStoryRatingInfo(props.storyId);
-    const data = response.data.data;
-    averageRating.value = data.averageRating || 0;
-    totalRatings.value = data.totalRatings || 0;
+    const response = await getStoryById(props.storyId);
+    const story = response.data.data;
+    averageRating.value = story?.averageRating ?? 0;
+    totalRatings.value = story?.totalRatings ?? 0;
   } catch (error) {
-    console.error('Error loading rating info:', error);
+    console.error('Error refreshing rating:', error);
   }
 };
 
@@ -84,7 +96,7 @@ const submitRating = async () => {
     }
     
     showRatingDialog.value = false;
-    await loadRatingInfo();
+    await refreshRatingFromStory();
     await loadMyRating();
   } catch (error) {
     showErrorToast(toast, error, 'Không thể đánh giá');
@@ -103,7 +115,7 @@ const handleDeleteRating = async () => {
     myReview.value = '';
     showRatingDialog.value = false;
     
-    await loadRatingInfo();
+    await refreshRatingFromStory();
   } catch (error) {
     showErrorToast(toast, error, 'Không thể xóa đánh giá');
   }
