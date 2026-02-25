@@ -1,12 +1,12 @@
 // Hàm format dữ liệu - Định dạng ngày tháng và số cho hiển thị
 
-// Định dạng ngày theo locale (mặc định: Việt Nam)
+// Định dạng ngày theo locale
 export const formatDate = (dateString, options = { locale: 'vi-VN' }) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString(options.locale);
 };
 
-// Chuyển ngày thành dạng tương đối (VD: "5 phút trước", "2 ngày trước")
+// Chuyển ngày thành dạng tương đối
 export const formatRelativeDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -23,13 +23,13 @@ export const formatRelativeDate = (dateString) => {
     return formatDate(dateString);
 };
 
-// Định dạng số với dấu chấm phân cách hàng nghìn (VD: 1.000.000)
+// Định dạng số với dấu chấm phân cách hàng nghìn
 export const formatNumber = (num) => {
     if (!num && num !== 0) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-// Rút gọn số lớn (VD: 1500 → "1.5K", 2000000 → "2.0M")
+// Rút gọn số lớn
 export const formatCompactNumber = (num) => {
     if (!num && num !== 0) return '0';
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
