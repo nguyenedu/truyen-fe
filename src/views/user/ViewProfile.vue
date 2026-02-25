@@ -108,7 +108,7 @@ const handleUpdateProfile = async () => {
     <Navbar />
     
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <Card v-if="user" class="shadow-xl border-0 !bg-white overflow-hidden rounded-[2rem]">
+      <Card v-if="user" class="shadow-xl border-0 bg-white! overflow-hidden rounded-[2rem]">
         <template #content>
           <div class="text-center mb-12">
             <div class="relative inline-block group">
@@ -168,7 +168,7 @@ const handleUpdateProfile = async () => {
                 <Button 
                     label="Chỉnh sửa thông tin" 
                     icon="pi pi-user-edit" 
-                    class="p-button-raised !bg-indigo-600 hover:!bg-indigo-700 border-0 px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105"
+                    class="p-button-raised bg-indigo-600! hover:bg-indigo-700! border-0 px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105"
                     @click="toggleEdit" 
                 />
             </div>
@@ -178,22 +178,22 @@ const handleUpdateProfile = async () => {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="flex flex-col gap-3">
                     <label for="fullname" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Họ và tên</label>
-                    <InputText id="fullname" v-model="formData.fullname" placeholder="Nhập họ và tên" class="w-full !bg-slate-50 !border-slate-200 !text-slate-900 focus:!border-indigo-500 rounded-xl" />
+                    <InputText id="fullname" v-model="formData.fullname" placeholder="Nhập họ và tên" class="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="flex flex-col gap-3">
                     <label for="email" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Email</label>
-                    <InputText id="email" v-model="formData.email" type="email" placeholder="example@gmail.com" class="w-full !bg-slate-50 !border-slate-200 !text-slate-900 focus:!border-indigo-500 rounded-xl" />
+                    <InputText id="email" v-model="formData.email" type="email" placeholder="example@gmail.com" class="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="flex flex-col gap-3">
                     <label for="phone" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Số điện thoại</label>
-                    <InputText id="phone" v-model="formData.phone" placeholder="Nhập số điện thoại" class="w-full !bg-slate-50 !border-slate-200 !text-slate-900 focus:!border-indigo-500 rounded-xl" />
+                    <InputText id="phone" v-model="formData.phone" placeholder="Nhập số điện thoại" class="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="flex flex-col gap-3">
                     <label for="password" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Mật khẩu mới (để trống nếu không đổi)</label>
-                    <Password id="password" v-model="formData.password" toggleMask :feedback="false" placeholder="••••••••" class="w-full" inputClass="w-full !bg-slate-50 !border-slate-200 !text-slate-900 focus:!border-indigo-500 rounded-xl" />
+                    <Password id="password" v-model="formData.password" toggleMask :feedback="false" placeholder="••••••••" class="w-full" inputClass="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="md:col-span-2 flex flex-col gap-3">
@@ -206,7 +206,7 @@ const handleUpdateProfile = async () => {
                             :maxFileSize="1000000"
                             label="Chọn ảnh"
                             chooseLabel="Chọn ảnh mới"
-                            class="p-button-outlined !border-indigo-200 !text-indigo-600 hover:!bg-indigo-50"
+                            class="p-button-outlined border-indigo-200! text-indigo-600! hover:bg-indigo-50!"
                         />
                         <span v-if="formData.avatar" class="text-sm font-medium text-emerald-600 flex items-center gap-2">
                             <i class="pi pi-check-circle"></i> {{ formData.avatar.name }}
@@ -229,7 +229,7 @@ const handleUpdateProfile = async () => {
                     label="Lưu thay đổi"
                     icon="pi pi-check"
                     :loading="uiStore.loading"
-                    class="p-button-raised !bg-emerald-600 hover:!bg-emerald-700 border-0 px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105"
+                    class="p-button-raised bg-emerald-600! hover:bg-emerald-700! border-0 px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105"
                 />
             </div>
           </form>
@@ -239,7 +239,7 @@ const handleUpdateProfile = async () => {
       <div v-else class="flex flex-col items-center justify-center py-24 bg-white rounded-[2rem] shadow-sm">
           <i class="pi pi-user-slash text-6xl text-slate-200 mb-4"></i>
           <p class="text-slate-500 font-medium">Vui lòng đăng nhập để xem thông tin</p>
-          <Button label="Đăng nhập ngay" icon="pi pi-sign-in" text class="mt-4 !text-indigo-600 font-bold" @click="router.push('/login')" />
+          <Button label="Đăng nhập ngay" icon="pi pi-sign-in" text class="mt-4 text-indigo-600! font-bold" @click="router.push('/login')" />
       </div>
     </div>
   </div>

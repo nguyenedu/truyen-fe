@@ -145,7 +145,7 @@ const backToStory = () => {
           icon="pi pi-arrow-left"
           label="Quay lại"
           text
-          class="!text-indigo-600 dark:!text-indigo-400 font-bold"
+          class="text-indigo-600! dark:text-indigo-400! font-bold"
         />
         
         <!-- Chapter List Button -->
@@ -154,7 +154,7 @@ const backToStory = () => {
           icon="pi pi-list"
           label="Danh sách chương"
           text
-          class="!text-indigo-600 dark:!text-indigo-400 font-bold"
+          class="text-indigo-600! dark:text-indigo-400! font-bold"
         />
         
         <div class="flex items-center gap-4">
@@ -166,7 +166,7 @@ const backToStory = () => {
               text
               rounded
               size="small"
-              class="!w-10 !h-10 !text-indigo-600 dark:!text-indigo-400 hover:!bg-indigo-50 dark:hover:!bg-indigo-900/40"
+              class="w-10! h-10! text-indigo-600! dark:text-indigo-400! hover:bg-indigo-50! dark:hover:bg-indigo-900/40!"
             />
             <div class="px-3">
                 <span class="text-sm font-bold text-gray-700 dark:text-gray-200">{{ fontSize }}px</span>
@@ -177,7 +177,7 @@ const backToStory = () => {
               text
               rounded
               size="small"
-              class="!w-10 !h-10 !text-indigo-600 dark:!text-indigo-400 hover:!bg-indigo-50 dark:hover:!bg-indigo-900/40"
+              class="w-10! h-10! text-indigo-600! dark:text-indigo-400! hover:bg-indigo-50! dark:hover:bg-indigo-900/40!"
             />
           </div>
           
@@ -186,8 +186,8 @@ const backToStory = () => {
             @click="darkMode = !darkMode"
             :icon="darkMode ? 'pi pi-sun' : 'pi pi-moon'"
             rounded
-            class="!w-10 !h-10 !border-0 shadow-md"
-            :class="darkMode ? '!bg-amber-400 !text-black hover:!bg-amber-300' : '!bg-indigo-600 !text-white hover:!bg-indigo-700'"
+            class="w-10! h-10! border-0! shadow-md"
+            :class="darkMode ? 'bg-amber-400! text-black! hover:bg-amber-300!' : 'bg-indigo-600! text-white! hover:bg-indigo-700!'"
           />
         </div>
       </div>
@@ -279,8 +279,8 @@ const backToStory = () => {
             :label="`Chương ${ch.chapterNumber}`"
             :outlined="ch.id !== parseInt(route.params.chapterId)"
             :severity="ch.id === parseInt(route.params.chapterId) ? 'primary' : 'secondary'"
-            class="!text-sm !py-3 !font-semibold transition-all hover:!scale-105"
-            :class="ch.id === parseInt(route.params.chapterId) ? '!bg-indigo-600 !text-white !border-indigo-600' : ''"
+            class="text-sm! py-3! font-semibold! transition-all hover:scale-105!"
+            :class="ch.id === parseInt(route.params.chapterId) ? 'bg-indigo-600! text-white! border-indigo-600!' : ''"
           />
         </div>
       </div>
@@ -293,8 +293,8 @@ const backToStory = () => {
         @click="scrollToTop"
         icon="pi pi-arrow-up"
         rounded
-        class="!fixed !bottom-8 !right-8 !w-14 !h-14 !shadow-2xl !border-0 !z-40 hover:!scale-110 !transition-all !duration-300"
-        :class="darkMode ? '!bg-indigo-600 !text-white hover:!bg-indigo-700' : '!bg-indigo-600 !text-white hover:!bg-indigo-700'"
+        class="fixed! bottom-8! right-8! w-14! h-14! shadow-2xl! border-0! z-40! hover:scale-110! transition-all! duration-300!"
+        :class="darkMode ? 'bg-indigo-600! text-white! hover:bg-indigo-700!' : 'bg-indigo-600! text-white! hover:bg-indigo-700!'"
         aria-label="Lướt lên đầu trang"
       />
     </Transition>

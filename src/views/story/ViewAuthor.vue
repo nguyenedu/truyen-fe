@@ -60,7 +60,7 @@ onMounted(() => {
                 <Button 
                     icon="pi pi-arrow-left" 
                     label="Quay lại" 
-                    class="p-button-text !text-slate-600 hover:!text-indigo-600 !p-0"
+                    class="p-button-text text-slate-600! hover:text-indigo-600! p-0!"
                     @click="goBack"
                 />
             </div>

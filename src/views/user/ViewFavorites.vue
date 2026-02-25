@@ -91,7 +91,7 @@ const handlePageChange = (event) => onPageChange(event, loadFavorites);
           label="Khám phá truyện"
           icon="pi pi-search"
           @click="router.push('/browse')"
-          class="!bg-indigo-600 hover:!bg-indigo-700 px-8 py-3 rounded-xl font-bold"
+          class="bg-indigo-600! hover:bg-indigo-700! px-8 py-3 rounded-xl font-bold"
         />
       </div>
       
@@ -106,7 +106,7 @@ const handlePageChange = (event) => onPageChange(event, loadFavorites);
               icon="pi pi-times"
               rounded
               severity="danger"
-              class="!absolute !top-2 !right-2 !opacity-0 group-hover:!opacity-100 !transition-opacity !z-10"
+              class="absolute! top-2! right-2! opacity-0! group-hover:opacity-100! transition-opacity! z-10!"
               size="small"
             />
           </div>

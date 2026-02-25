@@ -83,7 +83,7 @@ const navigateToCategory = (categoryId) => {
 </script>
 
 <template>
-  <nav class="!bg-white shadow-md border-b border-slate-100 sticky top-0 z-50">
+  <nav class="bg-white! shadow-md border-b border-slate-100 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
@@ -91,7 +91,7 @@ const navigateToCategory = (categoryId) => {
           <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
             <i class="pi pi-book text-white text-xl"></i>
           </div>
-          <span class="text-xl font-black !text-slate-900 ml-2 tracking-tighter hidden sm:inline">TRUYỆN <span class="text-indigo-600">ONLINE</span></span>
+          <span class="text-xl font-black text-slate-900! ml-2 tracking-tighter hidden sm:inline">TRUYỆN <span class="text-indigo-600">ONLINE</span></span>
         </router-link>
 
         <!-- Liên kết điều hướng -->
@@ -107,7 +107,7 @@ const navigateToCategory = (categoryId) => {
               icon="pi pi-angle-down" 
               iconPos="right"
               text 
-              class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" 
+              class="text-slate-600! hover:text-indigo-600! px-3! font-semibold" 
             />
             
             <!-- Menu dropdown thể loại -->
@@ -133,16 +133,16 @@ const navigateToCategory = (categoryId) => {
           </div>
 
           <router-link to="/browse">
-            <Button label="Tìm kiếm" text class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" />
+            <Button label="Tìm kiếm" text class="text-slate-600! hover:text-indigo-600! px-3! font-semibold" />
           </router-link>
 
           <template v-if="authStore.isAuthenticated">
             <router-link to="/favorites">
-                <Button label="Yêu thích" text class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold hidden md:inline-flex" />
+                <Button label="Yêu thích" text class="text-slate-600! hover:text-indigo-600! px-3! font-semibold hidden md:inline-flex" />
             </router-link>
             
             <router-link to="/history">
-                <Button label="Lịch sử" text class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold hidden md:inline-flex" />
+                <Button label="Lịch sử" text class="text-slate-600! hover:text-indigo-600! px-3! font-semibold hidden md:inline-flex" />
             </router-link>
           </template>
         </div>
@@ -162,14 +162,14 @@ const navigateToCategory = (categoryId) => {
                 :image="authStore.user.avatar"
                 shape="circle"
                 size="large"
-                class="!w-10 !h-10 shadow-md hover:scale-110 transition-transform border-2 border-indigo-600"
+                class="w-10! h-10! shadow-md hover:scale-110 transition-transform border-2 border-indigo-600"
               />
               <Avatar
                 v-else
                 :label="authStore.user?.username?.charAt(0).toUpperCase()"
                 shape="circle"
                 size="large"
-                class="!w-10 !h-10 !bg-indigo-600 !text-white shadow-md hover:scale-110 transition-transform"
+                class="w-10! h-10! bg-indigo-600! text-white! shadow-md hover:scale-110 transition-transform"
               />
             </div>
             <Menu ref="userMenu" :model="userMenuItems" popup class="user-dropdown-menu" />
@@ -178,10 +178,10 @@ const navigateToCategory = (categoryId) => {
           <template v-else>
             <div class="flex items-center gap-3 ml-4">
                 <router-link to="/login">
-                  <Button label="Đăng nhập" text class="!text-slate-600 hover:!text-indigo-600 font-semibold" />
+                  <Button label="Đăng nhập" text class="text-slate-600! hover:text-indigo-600! font-semibold" />
                 </router-link>
                 <router-link to="/register">
-                  <Button label="Đăng ký" class="!bg-indigo-600 hover:!bg-indigo-700 border-0 shadow-md px-6 rounded-xl font-bold" />
+                  <Button label="Đăng ký" class="bg-indigo-600! hover:bg-indigo-700! border-0 shadow-md px-6 rounded-xl font-bold" />
                 </router-link>
             </div>
           </template>

@@ -107,7 +107,7 @@ const handleResetPassword = async () => {
                         type="submit"
                         label="Cập nhật mật khẩu"
                         icon="pi pi-save"
-                        class="w-full !bg-indigo-600 hover:!bg-indigo-700"
+                        class="w-full bg-indigo-600! hover:bg-indigo-700!"
                         :loading="uiStore.loading"
                     />
                 </div>

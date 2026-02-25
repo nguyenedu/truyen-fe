@@ -107,7 +107,7 @@ const handleForgotPassword = async () => {
                             type="submit"
                             label="Gửi yêu cầu"
                             icon="pi pi-envelope"
-                            class="w-full !bg-indigo-600 hover:!bg-indigo-700"
+                            class="w-full bg-indigo-600! hover:bg-indigo-700!"
                             :loading="uiStore.loading"
                         />
                     </div>
@@ -137,7 +137,7 @@ const handleForgotPassword = async () => {
                     label="Quay lại đăng nhập"
                     link
                     @click="router.push('/login')"
-                    class="!text-indigo-600 font-bold"
+                    class="text-indigo-600! font-bold"
                 />
             </div>
         </div>

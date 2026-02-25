@@ -207,7 +207,7 @@ const handlePageChange = (event) => {
             @click="handleSearch"
             label="Tìm kiếm"
             icon="pi pi-search"
-            class="!bg-indigo-600 hover:!bg-indigo-700"
+            class="bg-indigo-600! hover:bg-indigo-700!"
           />
           <Button
             @click="handleReset"

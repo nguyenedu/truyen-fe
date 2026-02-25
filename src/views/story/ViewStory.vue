@@ -117,7 +117,7 @@ const readChapter = (chapterId) => {
               label="Đọc từ đầu"
               icon="pi pi-book"
               size="large"
-              class="!bg-indigo-600 hover:!bg-indigo-700"
+              class="bg-indigo-600! hover:bg-indigo-700!"
             />
             
             <Button
@@ -126,7 +126,7 @@ const readChapter = (chapterId) => {
               label="Đọc mới nhất"
               icon="pi pi-forward"
               size="large"
-              class="!bg-emerald-600 hover:!bg-emerald-700"
+              class="bg-emerald-600! hover:bg-emerald-700!"
             />
             
             <Button

@@ -16,7 +16,7 @@ const uiStore = useUIStore();
         strokeWidth="4" 
         animationDuration=".5s"
         aria-label="Loading"
-        class="!w-16 !h-16"
+        class="w-16! h-16!"
       />
       <p class="text-slate-600 font-bold tracking-tight">Đang xử lý...</p>
     </div>

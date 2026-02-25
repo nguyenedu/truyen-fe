@@ -150,7 +150,7 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
           label="Khám phá truyện"
           icon="pi pi-search"
           @click="router.push('/browse')"
-          class="!bg-indigo-600 hover:!bg-indigo-700 px-8 py-3 rounded-xl font-bold"
+          class="bg-indigo-600! hover:bg-indigo-700! px-8 py-3 rounded-xl font-bold"
         />
       </div>
       
@@ -193,7 +193,7 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
                     label="Đọc tiếp"
                     icon="pi pi-play"
                     size="small"
-                    class="flex-1 !bg-indigo-600 hover:!bg-indigo-700"
+                    class="flex-1 bg-indigo-600! hover:bg-indigo-700!"
                   />
                   <Button
                     @click="handleDeleteOne(history)"

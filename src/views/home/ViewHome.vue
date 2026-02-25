@@ -181,7 +181,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
                     @click="continueReading(history)"
                     label="Tiếp tục đọc"
                     icon="pi pi-play"
-                    class="w-full !bg-indigo-600 hover:!bg-indigo-700"
+                    class="w-full bg-indigo-600! hover:bg-indigo-700!"
                   />
                 </div>
               </template>

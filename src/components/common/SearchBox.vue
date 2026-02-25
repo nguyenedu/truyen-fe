@@ -87,7 +87,7 @@ const hideSuggestions = () => {
         @focus="searchKeyword.length >= 2 && suggestions.length > 0 ? showSuggestions = true : null"
         @blur="hideSuggestions"
         placeholder="Tìm kiếm truyện..."
-        class="w-full !pl-10 !bg-slate-50 !border-slate-200 !text-slate-800 focus:!bg-white focus:!border-indigo-500 rounded-2xl transition-all"
+        class="w-full pl-10! bg-slate-50! border-slate-200! text-slate-800! focus:bg-white! focus:border-indigo-500! rounded-2xl transition-all"
       />
       <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
       
