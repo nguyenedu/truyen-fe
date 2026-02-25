@@ -1,3 +1,4 @@
+// Cấu hình Axios - HTTP client với interceptor tự động gắn token và xử lý lỗi 401
 import axios from 'axios';
 import { API_BASE_URL } from '@/utils/constants';
 import { getAuthToken, removeAuthToken, removeUser } from '@/utils/helpers';
@@ -9,6 +10,7 @@ const axiosInstance = axios.create({
     }
 });
 
+// Interceptor request: Tự động gắn Bearer token vào mỗi request
 axiosInstance.interceptors.request.use(
     (config) => {
         const token = getAuthToken();
@@ -22,6 +24,7 @@ axiosInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+// Interceptor response: Chuyển hướng về login khi token hết hạn (401)
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {

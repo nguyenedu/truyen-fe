@@ -1,4 +1,5 @@
 <script setup>
+// Component Navbar - Thanh điều hướng chính với menu thể loại, tìm kiếm, và tài khoản
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
@@ -16,6 +17,7 @@ const categories = ref([]);
 const showCategoryDropdown = ref(false);
 let hideTimeout = null;
 
+// Menu dropdown cho người dùng đã đăng nhập
 const userMenuItems = ref([
   {
     label: 'Trang cá nhân',
@@ -32,11 +34,12 @@ const userMenuItems = ref([
   }
 ]);
 
+// Tải danh sách thể loại cho dropdown khi component mount
 onMounted(async () => {
   try {
     const response = await getCategories(0, 100);
     
-    // Backend returns {success, message, data} structure
+    // Xử lý cấu trúc response từ backend (có thể là mảng hoặc phân trang)
     if (response.data && response.data.data) {
       if (Array.isArray(response.data.data)) {
         categories.value = response.data.data;
@@ -58,6 +61,7 @@ const toggleUserMenu = (event) => {
   userMenu.value.toggle(event);
 };
 
+// Dùng timeout để tránh dropdown đóng khi di chuột giữa nút và menu
 const showCategories = () => {
   if (hideTimeout) {
     clearTimeout(hideTimeout);
@@ -90,9 +94,9 @@ const navigateToCategory = (categoryId) => {
           <span class="text-xl font-black !text-slate-900 ml-2 tracking-tighter hidden sm:inline">TRUYỆN <span class="text-indigo-600">ONLINE</span></span>
         </router-link>
 
-        <!-- Navigation Links (Left-aligned) -->
+        <!-- Liên kết điều hướng -->
         <div class="flex items-center gap-1 ml-6 shrink-0">
-          <!-- Category Dropdown -->
+          <!-- Dropdown thể loại -->
           <div 
             class="relative category-dropdown-container"
             @mouseenter="showCategories"
@@ -106,7 +110,7 @@ const navigateToCategory = (categoryId) => {
               class="!text-slate-600 hover:!text-indigo-600 !px-3 font-semibold" 
             />
             
-            <!-- Dropdown Menu -->
+            <!-- Menu dropdown thể loại -->
             <Transition name="dropdown">
               <div 
                 v-if="showCategoryDropdown && categories.length > 0"
@@ -143,15 +147,15 @@ const navigateToCategory = (categoryId) => {
           </template>
         </div>
 
-        <!-- Search Bar (Flexible Space) -->
+        <!-- Ô tìm kiếm -->
         <div class="flex-1 max-w-md mx-6 hidden lg:block">
           <SearchBox />
         </div>
 
-        <!-- Right Side Actions -->
+        <!-- Nút bên phải -->
         <div class="flex items-center gap-2 shrink-0">
           <template v-if="authStore.isAuthenticated">
-            <!-- User Menu -->
+            <!-- Menu người dùng -->
             <div @click="toggleUserMenu" class="cursor-pointer ml-4">
               <Avatar
                 v-if="authStore.user?.avatar"
@@ -188,7 +192,7 @@ const navigateToCategory = (categoryId) => {
 </template>
 
 <style>
-/* Category Dropdown Styles */
+/* Dropdown thể loại */
 .category-dropdown-container {
     position: relative;
 }
@@ -239,7 +243,7 @@ const navigateToCategory = (categoryId) => {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Dropdown Transition */
+/* Hiệu ứng chuyển đổi dropdown */
 .dropdown-enter-active,
 .dropdown-leave-active {
     transition: all 0.2s ease;
@@ -257,7 +261,7 @@ const navigateToCategory = (categoryId) => {
     transform: translateX(-50%) translateY(0);
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     .category-dropdown {
         min-width: 90vw;
@@ -271,6 +275,7 @@ const navigateToCategory = (categoryId) => {
     }
 }
 
+/* Menu dropdown người dùng */
 .p-menu.user-dropdown-menu {
     background-color: #ffffff !important;
     border: 1px solid rgba(79, 70, 229, 0.1) !important;
@@ -292,31 +297,31 @@ const navigateToCategory = (categoryId) => {
 }
 
 .user-dropdown-menu .p-menuitem-link:hover {
-    background-color: #f5f3ff !important; /* indigo-50 */
+    background-color: #f5f3ff !important;
 }
 
 .user-dropdown-menu .p-menuitem-text {
-    color: #4b5563 !important; /* gray-600 */
+    color: #4b5563 !important;
     font-weight: 600 !important;
     font-size: 0.9rem !important;
 }
 
 .user-dropdown-menu .p-menuitem-icon {
-    color: #6366f1 !important; /* indigo-500 */
+    color: #6366f1 !important;
     font-size: 1.1rem !important;
     margin-right: 0.75rem !important;
 }
 
 .user-dropdown-menu .p-menuitem-link:hover .p-menuitem-text {
-    color: #4f46e5 !important; /* indigo-600 */
+    color: #4f46e5 !important;
 }
 
 .user-dropdown-menu .p-menuitem-link:hover .p-menuitem-icon {
-    color: #4338ca !important; /* indigo-700 */
+    color: #4338ca !important;
 }
 
 .user-dropdown-menu .p-divider {
-    border-top: 1px solid #f3f4f6 !important; /* gray-100 */
+    border-top: 1px solid #f3f4f6 !important;
     margin: 0.4rem 0 !important;
 }
 </style>

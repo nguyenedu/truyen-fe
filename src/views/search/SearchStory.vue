@@ -1,4 +1,5 @@
 <script setup>
+// Trang kết quả tìm kiếm - Hiển thị truyện theo từ khóa từ query URL
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from '@/components/common/Navbar.vue';

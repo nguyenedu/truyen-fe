@@ -1,4 +1,5 @@
 <script setup>
+// Trang chủ - Hero section, đọc tiếp, trending, danh sách truyện mới
 import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

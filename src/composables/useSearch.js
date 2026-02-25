@@ -1,8 +1,10 @@
+// Composable tìm kiếm - Quản lý bộ lọc, từ khóa, và tham số tìm kiếm truyện
 import { ref, watch } from 'vue';
 import { getCategories } from '@/api/category';
 import { STORY_STATUS_OPTIONS, SORT_OPTIONS } from '@/utils/constants';
 
 export function useSearch() {
+    // === State bộ lọc ===
     const keyword = ref('');
     const selectedStatus = ref(null);
     const selectedCategories = ref([]);
@@ -11,6 +13,7 @@ export function useSearch() {
     const minChapters = ref(null);
     const maxChapters = ref(null);
 
+    // Tải danh sách thể loại cho dropdown bộ lọc
     const fetchCategories = async () => {
         try {
             const response = await getCategories(0, 50);
@@ -25,6 +28,7 @@ export function useSearch() {
         }
     };
 
+    // Đặt lại tất cả bộ lọc về mặc định
     const resetFilters = () => {
         keyword.value = '';
         selectedStatus.value = null;
@@ -34,6 +38,7 @@ export function useSearch() {
         maxChapters.value = null;
     };
 
+    // Xây dựng tham số query từ các bộ lọc hiện tại
     const getFilterParams = (currentPage, pageSize) => {
         const params = {
             page: currentPage,
@@ -41,6 +46,7 @@ export function useSearch() {
             sort: selectedSort.value?.value || 'createdAt,desc'
         };
 
+        // Chỉ thêm tham số có giá trị
         if (keyword.value) params.keyword = keyword.value;
         if (selectedStatus.value) params.status = selectedStatus.value;
         if (selectedCategories.value && selectedCategories.value.length > 0) {

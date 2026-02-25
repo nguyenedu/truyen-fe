@@ -1,19 +1,23 @@
+// Store xác thực - Quản lý trạng thái đăng nhập, thông tin user, và phiên làm việc
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { loginApi, registerApi, logoutApi, updateUserApi, getCurrentUserApi } from '@/api/auth';
 
 export const useAuthStore = defineStore('auth', () => {
 
+    // === State ===
     const user = ref(null);
     const token = ref(null);
 
-
+    // === Getters ===
     const isAuthenticated = computed(() => !!token.value);
     const isAdmin = computed(() => {
         return user.value?.role === 'ADMIN' || user.value?.role === 'SUPER_ADMIN';
     });
 
+    // === Actions ===
 
+    // Đăng nhập và lưu thông tin vào localStorage
     const login = async (username, password) => {
         try {
             const response = await loginApi(username, password);
@@ -46,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
+    // Đăng ký tài khoản mới
     const register = async (userData) => {
         try {
             const response = await registerApi(userData);
@@ -59,6 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
+    // Cập nhật hồ sơ và đồng bộ localStorage
     const updateProfile = async (id, formData) => {
         try {
             const response = await updateUserApi(id, formData);
@@ -83,6 +89,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
+    // Lấy thông tin user mới nhất từ server
     const fetchCurrentUser = async () => {
         try {
             const response = await getCurrentUserApi();
@@ -105,22 +112,22 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
+    // Đăng xuất và xóa toàn bộ dữ liệu phiên
     const logout = async () => {
         try {
             await logoutApi();
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
-
             token.value = null;
             user.value = null;
-
 
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }
     };
 
+    // Khôi phục phiên từ localStorage khi tải lại trang
     const checkAuth = () => {
         const savedToken = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
@@ -134,6 +141,7 @@ export const useAuthStore = defineStore('auth', () => {
                 user.value = JSON.parse(savedUser);
                 console.log('User restored:', user.value);
             } catch (error) {
+                // Dữ liệu localStorage bị hỏng, xóa và reset
                 console.error('Failed to parse user data from localStorage:', error);
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');

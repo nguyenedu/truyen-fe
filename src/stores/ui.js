@@ -1,3 +1,4 @@
+// Store UI - Quản lý trạng thái loading toàn cục
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 

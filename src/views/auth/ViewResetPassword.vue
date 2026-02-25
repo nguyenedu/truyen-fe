@@ -1,4 +1,5 @@
 <script setup>
+// Trang đặt lại mật khẩu - Xác thực token và cập nhật mật khẩu mới
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from 'primevue/usetoast';

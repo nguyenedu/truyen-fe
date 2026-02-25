@@ -1,4 +1,5 @@
 <script setup>
+// Component CommentSection - Hệ thống bình luận với CRUD, like, phân trang
 import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
@@ -48,6 +49,7 @@ onMounted(async () => {
   await loadComments();
 });
 
+// Tải bình luận (ưu tiên chương nếu có, không thì lấy theo truyện)
 const loadComments = async () => {
   try {
     uiStore.startLoading();
@@ -69,6 +71,7 @@ const loadComments = async () => {
   }
 };
 
+// Gửi bình luận mới
 const handleSubmitComment = async () => {
   if (handleAuthRequired(authStore, router, toast, 'Vui lòng đăng nhập để bình luận')) return;
 
@@ -93,6 +96,7 @@ const handleSubmitComment = async () => {
   }
 };
 
+// === Chỉnh sửa bình luận ===
 const startEdit = (comment) => {
   editingCommentId.value = comment.id;
   editingContent.value = comment.content;
@@ -122,6 +126,7 @@ const handleUpdateComment = async (commentId) => {
   }
 };
 
+// Xóa bình luận với dialog xác nhận
 const handleDeleteComment = (commentId) => {
   confirm.require({
     message: 'Xóa bình luận này?',
@@ -142,6 +147,7 @@ const handleDeleteComment = (commentId) => {
   });
 };
 
+// Like/unlike bình luận (cập nhật UI ngay, đồng bộ lại nếu lỗi)
 const handleLikeComment = async (comment) => {
   if (handleAuthRequired(authStore, router, toast, 'Vui lòng đăng nhập để thích bình luận')) return;
 
@@ -157,7 +163,7 @@ const handleLikeComment = async (comment) => {
     }
   } catch (error) {
     showErrorToast(toast, error, 'Không thể thực hiện thao tác thích');
-    // Có thể load lại list nếu cần đồng bộ chính xác
+    // Đồng bộ lại từ server nếu cập nhật local bị sai
     await loadComments();
   }
 };
@@ -166,6 +172,7 @@ const handlePageChange = (event) => onPageChange(event, loadComments);
 
 const formatDate = (dateString) => formatRelativeDate(dateString);
 
+// Kiểm tra bình luận có phải của người dùng hiện tại không
 const isMyComment = (comment) => {
   return authStore.user && comment.userId === authStore.user.id;
 };
@@ -178,7 +185,7 @@ const isMyComment = (comment) => {
       Bình luận ({{ totalRecords }})
     </h2>
 
-    <!-- New Comment Form -->
+    <!-- Form bình luận mới -->
     <div class="mb-8">
       <Textarea
         v-model="newCommentContent"
@@ -194,7 +201,7 @@ const isMyComment = (comment) => {
       />
     </div>
 
-    <!-- Comments List -->
+    <!-- Danh sách bình luận -->
     <div v-if="uiStore.loading" class="flex justify-center py-10">
       <ProgressSpinner />
     </div>
@@ -271,7 +278,7 @@ const isMyComment = (comment) => {
               </div>
             </div>
             
-            <!-- Edit Mode -->
+            <!-- Chế độ chỉnh sửa -->
             <div v-if="editingCommentId === comment.id" class="space-y-2">
               <Textarea
                 v-model="editingContent"
@@ -295,7 +302,7 @@ const isMyComment = (comment) => {
               </div>
             </div>
             
-            <!-- View Mode -->
+            <!-- Chế độ xem -->
             <p v-else class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
               {{ comment.content }}
             </p>
@@ -304,7 +311,7 @@ const isMyComment = (comment) => {
       </div>
     </div>
 
-    <!-- Pagination -->
+    <!-- Phân trang -->
     <Paginator
       v-if="totalRecords > pageSize"
       :rows="pageSize"

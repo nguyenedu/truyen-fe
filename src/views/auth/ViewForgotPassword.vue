@@ -1,4 +1,5 @@
 <script setup>
+// Trang quên mật khẩu - Gửi token reset qua EmailJS
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';

@@ -1,26 +1,27 @@
+// Cấu hình Router - Định tuyến trang, bảo vệ route, và scroll behavior
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 
-// Auth Views
+// === Trang xác thực ===
 import LoginAuth from '@/views/auth/LoginAuth.vue';
 import RegisterAuth from '@/views/auth/RegisterAuth.vue';
 import ViewForgotPassword from '@/views/auth/ViewForgotPassword.vue';
 import ViewResetPassword from '@/views/auth/ViewResetPassword.vue';
 
-// Home Views
+// === Trang chính ===
 import ViewHome from '@/views/home/ViewHome.vue';
 
-// Story Views
+// === Trang truyện ===
 import ViewStory from '@/views/story/ViewStory.vue';
 import ReadChapter from '@/views/story/ReadChapter.vue';
 import ViewAuthor from '@/views/story/ViewAuthor.vue';
 
-// Search Views
+// === Trang tìm kiếm ===
 import BrowseStory from '@/views/search/BrowseStory.vue';
 import SearchStory from '@/views/search/SearchStory.vue';
 import ViewCategory from '@/views/search/ViewCategory.vue';
 
-// User Views
+// === Trang người dùng ===
 import ViewProfile from '@/views/user/ViewProfile.vue';
 import ViewFavorites from '@/views/user/ViewFavorites.vue';
 import ViewHistory from '@/views/user/ViewHistory.vue';
@@ -108,6 +109,7 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    // Khôi phục vị trí scroll khi quay lại, hoặc cuộn lên đầu khi chuyển trang mới
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition;
@@ -118,13 +120,16 @@ const router = createRouter({
 });
 
 
+// Navigation Guard: Kiểm tra quyền truy cập trước mỗi lần chuyển trang
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        // Chưa đăng nhập → chuyển về login, lưu lại đường dẫn để redirect sau
         next({ name: 'Login', query: { redirect: to.fullPath } });
     }
     else if (to.meta.requiresGuest && authStore.isAuthenticated) {
+        // Đã đăng nhập → không cho vào trang login/register
         next({ name: 'Home' });
     }
     else {

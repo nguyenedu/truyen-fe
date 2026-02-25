@@ -1,4 +1,5 @@
 <script setup>
+// Trang yêu thích - Quản lý danh sách truyện yêu thích của người dùng
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

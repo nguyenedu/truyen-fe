@@ -1,3 +1,6 @@
+// Hàm tiện ích - Xử lý lỗi, toast, kiểm tra đăng nhập, trích xuất dữ liệu, localStorage
+
+// Trích xuất message lỗi từ response API hoặc dùng message mặc định
 export const getErrorMessage = (error, defaultMessage = 'Có lỗi xảy ra, vui lòng thử lại sau') => {
     if (error && error.response && error.response.data && error.response.data.message) {
         return error.response.data.message;
@@ -5,6 +8,7 @@ export const getErrorMessage = (error, defaultMessage = 'Có lỗi xảy ra, vui
     return error?.message || defaultMessage;
 };
 
+// === Hiển thị Toast ===
 export const showToast = (toast, severity, summary, detail, life = 3000) => {
     toast.add({ severity, summary, detail, life });
 };
@@ -15,6 +19,7 @@ export const showErrorToast = (toast, error, defaultMessage) => {
     showToast(toast, 'error', 'Lỗi', getErrorMessage(error, defaultMessage));
 };
 
+// Kiểm tra đăng nhập, chuyển hướng về login nếu chưa xác thực
 export const handleAuthRequired = (authStore, router, toast, message = 'Vui lòng đăng nhập để thực hiện chức năng này') => {
     if (!authStore.isAuthenticated) {
         showWarningToast(toast, 'Chưa đăng nhập', message);
@@ -24,6 +29,7 @@ export const handleAuthRequired = (authStore, router, toast, message = 'Vui lòn
     return false;
 };
 
+// Trích xuất dữ liệu từ response API (hỗ trợ cả phân trang và danh sách đơn)
 export const extractData = (response) => {
     const data = response?.data?.data;
     if (data && typeof data === 'object' && 'content' in data) {
@@ -38,10 +44,12 @@ export const extractData = (response) => {
     };
 };
 
+// === Quản lý token trong localStorage ===
 export const getAuthToken = () => localStorage.getItem('token');
 export const setAuthToken = (token) => localStorage.setItem('token', token);
 export const removeAuthToken = () => localStorage.removeItem('token');
 
+// === Quản lý thông tin user trong localStorage ===
 export const getUser = () => {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;

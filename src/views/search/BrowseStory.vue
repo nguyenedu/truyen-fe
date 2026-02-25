@@ -1,4 +1,5 @@
 <script setup>
+// Trang tìm kiếm nâng cao - Lọc truyện theo từ khóa, thể loại, trạng thái, số chương
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUIStore } from '@/stores/ui';
@@ -51,7 +52,7 @@ const stories = ref([]);
 onMounted(async () => {
   await fetchCategories();
   
-  // Read category from URL query parameter
+  // Đọc thể loại từ query URL (khi người dùng click từ dropdown thể loại)
   if (route.query.category) {
     const categoryId = parseInt(route.query.category);
     if (!isNaN(categoryId)) {

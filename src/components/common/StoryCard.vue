@@ -1,4 +1,5 @@
 <script setup>
+// Component StoryCard - Thẻ hiển thị thông tin tóm tắt của một truyện
 import { computed } from 'vue';
 import Card from 'primevue/card';
 import Tag from 'primevue/tag';
@@ -13,6 +14,7 @@ const props = defineProps({
   },
 });
 
+// === Computed: Chuẩn hóa dữ liệu từ nhiều nguồn API khác nhau ===
 const formattedViews = computed(() => {
   const views = props.story.totalViews || props.story.viewCount || 0;
   return formatCompactNumber(views);
@@ -57,7 +59,7 @@ const authorId = computed(() => {
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
 
-          <!-- Custom badge slot (for trending rank, etc) -->
+          <!-- Slot cho badge tùy chỉnh (VD: thứ hạng trending) -->
           <slot name="badge"></slot>
 
           <Tag
@@ -96,7 +98,7 @@ const authorId = computed(() => {
               </span>
             </div>
             
-            <!-- Rating Section -->
+            <!-- Phần đánh giá sao -->
             <div class="flex items-center gap-1 pt-2 border-t border-slate-100 mt-2">
               <Rating 
                 :modelValue="averageRating" 
@@ -126,10 +128,10 @@ const authorId = computed(() => {
   padding-top: 0.5rem;
 }
 
-/* Rating stars styling */
+/* Tùy chỉnh sao đánh giá */
 :deep(.p-rating .p-rating-icon) {
   font-size: 0.875rem;
-  color: #fbbf24; /* yellow-400 */
+  color: #fbbf24;
 }
 
 :deep(.p-rating .p-rating-icon.p-icon) {
@@ -138,6 +140,6 @@ const authorId = computed(() => {
 }
 
 :deep(.p-rating .p-rating-icon.pi-star-fill) {
-  color: #f59e0b; /* amber-500 */
+  color: #f59e0b;
 }
 </style>

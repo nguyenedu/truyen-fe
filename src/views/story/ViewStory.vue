@@ -1,4 +1,5 @@
 <script setup>
+// Trang chi tiết truyện - Thông tin truyện, danh sách chương, đánh giá, bình luận
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

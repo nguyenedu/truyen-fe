@@ -1,4 +1,5 @@
 <script setup>
+// Trang đăng ký - Tạo tài khoản mới với validate email, mật khẩu
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

@@ -1,4 +1,5 @@
 <script setup>
+// Trang đăng nhập - Xác thực người dùng và chuyển hướng
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

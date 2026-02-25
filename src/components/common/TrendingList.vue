@@ -1,4 +1,5 @@
 <template>
+  <!-- Danh sách truyện trending -->
   <div class="trending-list">
     <div 
       v-for="(story, index) in stories" 
@@ -13,6 +14,7 @@
 </template>
 
 <script setup>
+// Component TrendingList - Hiển thị danh sách truyện thịnh hành dạng list
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -73,7 +75,7 @@ const goToStory = (id) => {
   text-align: right;
 }
 
-
+/* Chế độ tối */
 .dark .trending-item {
   background: #1f2937;
   border-color: #374151;

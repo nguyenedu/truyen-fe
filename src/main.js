@@ -1,10 +1,11 @@
+// Điểm khởi tạo ứng dụng - Cấu hình Vue, Pinia, Router, PrimeVue
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 import './style.css';
 
-// PrimeVue
+// PrimeVue UI Framework
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import ToastService from 'primevue/toastservice';
@@ -18,14 +19,14 @@ const pinia = createPinia();
 
 app.use(pinia);
 
-// Initialize auth state BEFORE router
+// Khôi phục phiên đăng nhập TRƯỚC khi khởi tạo router (tránh redirect sai)
 const authStore = useAuthStore();
 authStore.checkAuth();
 
-// Now initialize router
+// Khởi tạo router sau khi đã có trạng thái xác thực
 app.use(router);
 
-// Use Aura preset (same as admin-fe)
+// Cấu hình PrimeVue với theme Aura
 app.use(PrimeVue, {
     theme: {
         preset: Aura,
@@ -35,11 +36,11 @@ app.use(PrimeVue, {
     }
 });
 
-// Add services
+// Đăng ký dịch vụ PrimeVue
 app.use(ToastService);
 app.use(ConfirmationService);
 
-// Add directives
+// Đăng ký directive
 app.directive('tooltip', Tooltip);
 
 app.mount('#app');

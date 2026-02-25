@@ -1,4 +1,5 @@
 <script setup>
+// Component Loading - Hiển thị overlay loading toàn cục khi đang xử lý
 import { useUIStore } from '@/stores/ui';
 import ProgressSpinner from 'primevue/progressspinner';
 

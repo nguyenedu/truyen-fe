@@ -1,4 +1,5 @@
 <script setup>
+// Component SearchBox - Ô tìm kiếm với gợi ý tự động (auto-suggest)
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { getSearchSuggestions } from '@/api/searchAnalytics';
@@ -11,7 +12,7 @@ const showSuggestions = ref(false);
 const loading = ref(false);
 let debounceTimeout = null;
 
-// Debounce search để không gọi API quá nhiều
+// Debounce 300ms để tránh gọi API quá nhiều khi nhập liệu
 watch(searchKeyword, (newValue) => {
   if (debounceTimeout) {
     clearTimeout(debounceTimeout);
@@ -28,12 +29,13 @@ watch(searchKeyword, (newValue) => {
   }, 300);
 });
 
+// Lấy gợi ý từ API, xử lý nhiều dạng response có thể
 const fetchSuggestions = async (query) => {
   try {
     loading.value = true;
     const response = await getSearchSuggestions(query, 5);
     
-    // Xử lý response từ backend (có thể là {success, message, data})
+    // Xử lý response (có thể là mảng trực tiếp hoặc bọc trong {data})
     let suggestionData = [];
     if (response.data) {
       if (Array.isArray(response.data)) {
@@ -54,6 +56,7 @@ const fetchSuggestions = async (query) => {
   }
 };
 
+// Chuyển hướng đến trang kết quả tìm kiếm
 const handleSearch = (query = null) => {
   const searchQuery = query || searchKeyword.value;
   if (searchQuery && searchQuery.trim()) {
@@ -67,6 +70,7 @@ const selectSuggestion = (suggestion) => {
   handleSearch(suggestion);
 };
 
+// Delay ẩn để cho phép click vào gợi ý trước khi dropdown biến mất
 const hideSuggestions = () => {
   setTimeout(() => {
     showSuggestions.value = false;
@@ -87,11 +91,11 @@ const hideSuggestions = () => {
       />
       <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
       
-      <!-- Loading spinner -->
+      <!-- Spinner khi đang tải gợi ý -->
       <i v-if="loading" class="pi pi-spin pi-spinner absolute right-4 top-1/2 -translate-y-1/2 text-indigo-500"></i>
     </div>
     
-    <!-- Auto-suggest Dropdown -->
+    <!-- Dropdown gợi ý tự động -->
     <Transition name="dropdown">
       <div 
         v-if="showSuggestions && suggestions.length > 0"
@@ -116,7 +120,7 @@ const hideSuggestions = () => {
 </template>
 
 <style scoped>
-/* Dropdown Transition */
+/* Hiệu ứng chuyển đổi dropdown */
 .dropdown-enter-active,
 .dropdown-leave-active {
   transition: all 0.2s ease;

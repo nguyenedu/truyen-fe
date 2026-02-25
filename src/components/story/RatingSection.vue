@@ -1,4 +1,5 @@
 <script setup>
+// Component RatingSection - Đánh giá sao và nhận xét cho truyện
 import { ref, computed, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
@@ -48,7 +49,7 @@ onMounted(async () => {
   }
 });
 
-// Refresh rating từ story API (giống StoryCard) sau khi user vote
+// Làm mới điểm đánh giá từ story API sau khi user vote (đảm bảo chính xác)
 const refreshRatingFromStory = async () => {
   try {
     const response = await getStoryById(props.storyId);
@@ -60,6 +61,7 @@ const refreshRatingFromStory = async () => {
   }
 };
 
+// Tải đánh giá của người dùng hiện tại (nếu đã đánh giá)
 const loadMyRating = async () => {
   try {
     const response = await getMyRating(props.storyId);
@@ -78,6 +80,7 @@ const openRatingDialog = () => {
   showRatingDialog.value = true;
 };
 
+// Gửi đánh giá (tạo mới hoặc cập nhật tùy theo đã có hay chưa)
 const submitRating = async () => {
   if (myRatingValue.value === 0) {
     showWarningToast(toast, 'Thiếu thông tin', 'Vui lòng chọn số sao');
@@ -105,6 +108,7 @@ const submitRating = async () => {
   }
 };
 
+// Xóa đánh giá và reset state
 const handleDeleteRating = async () => {
   try {
     await deleteRating(props.storyId);
@@ -131,7 +135,7 @@ const ratingText = computed(() => {
 
 <template>
   <div class="rating-section">
-    <!-- Rating Display -->
+    <!-- Hiển thị điểm đánh giá -->
     <div class="flex items-center gap-4 mb-4">
       <div class="text-center">
         <div class="text-4xl font-bold text-indigo-600">
@@ -154,7 +158,7 @@ const ratingText = computed(() => {
       </div>
     </div>
 
-    <!-- My Rating Display -->
+    <!-- Đánh giá của tôi -->
     <div v-if="myRating && !showRatingDialog" class="bg-indigo-500/10 border border-indigo-500/30 p-5 rounded-2xl mb-6 backdrop-blur-sm shadow-lg">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-3">
@@ -167,7 +171,7 @@ const ratingText = computed(() => {
       </p>
     </div>
 
-    <!-- Rating Dialog -->
+    <!-- Dialog đánh giá -->
     <Dialog
       v-model:visible="showRatingDialog"
       modal

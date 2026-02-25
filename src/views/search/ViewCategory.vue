@@ -1,4 +1,5 @@
 <script setup>
+// Trang thể loại - Hiển thị danh sách truyện theo thể loại
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUIStore } from '@/stores/ui';

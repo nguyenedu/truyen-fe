@@ -1,4 +1,5 @@
 <script setup>
+// Trang đọc chương - Hiển thị nội dung, điều hướng chương, dark mode, lưu lịch sử
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
@@ -25,7 +26,7 @@ const darkMode = ref(false);
 const showScrollTop = ref(false);
 const showChapterDialog = ref(false);
 
-// Scroll to top functionality
+// Cuộn lên đầu trang khi đọc dài
 const handleScroll = () => {
   showScrollTop.value = window.scrollY > 300;
 };
@@ -34,7 +35,7 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// Chapter selection dialog
+// Dialog chọn chương
 const toggleChapterDialog = () => {
   showChapterDialog.value = !showChapterDialog.value;
 };

@@ -1,7 +1,11 @@
+// Hằng số ứng dụng - URL, phân trang, trạng thái truyện, tùy chọn sắp xếp
+
+// === Cấu hình chung ===
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 export const IMAGE_PLACEHOLDER = 'https://via.placeholder.com/300x400?text=No+Image';
 export const AVATAR_PLACEHOLDER = 'https://via.placeholder.com/200?text=Avatar';
 
+// === Cấu hình phân trang theo từng trang ===
 export const PAGINATION = {
     DEFAULT_PAGE_SIZE: 10,
     BROWSE_PAGE_SIZE: 24,
@@ -9,12 +13,14 @@ export const PAGINATION = {
     CATEGORY_PAGE_SIZE: 12
 };
 
+// === Trạng thái truyện ===
 export const STORY_STATUS = {
     ONGOING: 'ONGOING',
     COMPLETED: 'COMPLETED',
     PAUSED: 'PAUSED'
 };
 
+// Tùy chọn lọc theo trạng thái (dùng cho dropdown)
 export const STORY_STATUS_OPTIONS = [
     { label: 'Tất cả', value: null },
     { label: 'Đang tiến hành', value: STORY_STATUS.ONGOING },
@@ -22,6 +28,7 @@ export const STORY_STATUS_OPTIONS = [
     { label: 'Tạm dừng', value: STORY_STATUS.PAUSED }
 ];
 
+// Tùy chọn sắp xếp truyện (dùng cho dropdown)
 export const SORT_OPTIONS = [
     { label: 'Mới nhất', value: 'createdAt,desc' },
     { label: 'Cũ nhất', value: 'createdAt,asc' },

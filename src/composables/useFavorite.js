@@ -1,3 +1,4 @@
+// Composable yêu thích - Quản lý trạng thái yêu thích và toggle cho một truyện
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
@@ -10,10 +11,12 @@ export const useFavorite = () => {
     const router = useRouter();
     const toast = useToast();
 
+    // === State ===
     const isFavorited = ref(false);
     const favoriteCount = ref(0);
     const loading = ref(false);
 
+    // Tải trạng thái yêu thích và số lượt song song
     const loadStatus = async (storyId) => {
         if (!authStore.isAuthenticated || !storyId) return;
 
@@ -30,6 +33,7 @@ export const useFavorite = () => {
         }
     };
 
+    // Bật/tắt yêu thích, cập nhật số lượt ngay lập tức (optimistic UI)
     const toggleFavoriteStatus = async (storyId) => {
         if (handleAuthRequired(authStore, router, toast, 'Vui lòng đăng nhập để thêm vào yêu thích')) return;
 

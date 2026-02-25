@@ -1,4 +1,5 @@
 <script setup>
+// Component gốc - Quản lý theme theo route và hiển thị layout chính
 import { watch } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import Toast from 'primevue/toast';
@@ -6,7 +7,7 @@ import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
 
 const route = useRoute();
 
-
+// Tắt dark mode khi rời trang đọc chương (chỉ trang đọc mới dùng dark mode)
 watch(() => route.path, () => {
   if (!route.path.includes('/chapter/')) {
     document.documentElement.classList.remove('dark');

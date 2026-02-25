@@ -1,4 +1,5 @@
 <script setup>
+// Trang tác giả - Hiển thị thông tin và danh sách truyện của tác giả
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Navbar from '@/components/common/Navbar.vue';

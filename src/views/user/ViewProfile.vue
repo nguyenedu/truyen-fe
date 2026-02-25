@@ -1,4 +1,5 @@
 <script setup>
+// Trang hồ sơ - Xem và chỉnh sửa thông tin cá nhân, đổi avatar
 import { ref, computed, onMounted } from 'vue';
 import Navbar from '@/components/common/Navbar.vue';
 import Avatar from 'primevue/avatar';

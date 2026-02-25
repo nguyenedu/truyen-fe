@@ -1,4 +1,5 @@
 <script setup>
+// Trang lịch sử đọc - Quản lý lịch sử đọc với đọc tiếp và xóa
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
