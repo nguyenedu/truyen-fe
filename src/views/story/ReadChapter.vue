@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import Select from 'primevue/select';
 import ProgressSpinner from 'primevue/progressspinner';
 import { formatDate } from '@/utils/formatters';
 import { useUIStore } from '@/stores/ui';
@@ -13,6 +14,7 @@ import { showErrorToast } from '@/utils/helpers';
 import { ERROR_MESSAGES } from '@/utils/errors';
 import { getChaptersByStoryId, getChapterById } from '@/api/chapter';
 import { saveReadingHistory } from '@/api/history';
+import { FONT_OPTIONS } from '@/utils/constants';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,7 +24,9 @@ const toast = useToast();
 const chapter = ref(null);
 const allChapters = ref([]);
 const fontSize = ref(18);
+const fontFamily = ref('default');
 const darkMode = ref(false);
+const fontOptions = FONT_OPTIONS;
 const showScrollTop = ref(false);
 const showChapterDialog = ref(false);
 
@@ -158,6 +162,26 @@ const backToStory = () => {
         />
         
         <div class="flex items-center gap-4">
+          <!-- Font Family Selector -->
+          <Select
+            v-model="fontFamily"
+            :options="fontOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="font-selector"
+          >
+            <template #value="slotProps">
+              <span class="font-bold text-sm" :style="{ fontFamily: slotProps.value !== 'default' ? slotProps.value : 'inherit' }">
+                {{ fontOptions.find(f => f.value === slotProps.value)?.label || 'Phông chữ' }}
+              </span>
+            </template>
+            <template #option="slotProps">
+              <span :style="{ fontFamily: slotProps.option.value !== 'default' ? slotProps.option.value : 'inherit' }">
+                {{ slotProps.option.label }}
+              </span>
+            </template>
+          </Select>
+
           <!-- Font Size Control -->
           <div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-2xl p-1.5 border border-gray-200 dark:border-gray-700">
             <Button
@@ -218,7 +242,7 @@ const backToStory = () => {
       <!-- Chapter Content -->
       <div 
         class="mb-12 leading-relaxed"
-        :style="{ fontSize: fontSize + 'px', lineHeight: '1.8' }"
+        :style="{ fontSize: fontSize + 'px', lineHeight: '1.8', fontFamily: fontFamily !== 'default' ? fontFamily : 'inherit' }"
       >
         <p 
           v-for="(paragraph, index) in chapter.content?.split('\n')" 
@@ -353,6 +377,20 @@ const backToStory = () => {
 
 .max-h-\[60vh\]::-webkit-scrollbar-thumb:hover {
   background: #764ba2;
+}
+
+/* Font Selector Dropdown */
+:deep(.font-selector) {
+  min-width: 160px;
+  border-radius: 1rem;
+  border: 1px solid var(--p-gray-200);
+  background: var(--p-gray-100);
+  font-weight: 600;
+}
+
+:deep(.font-selector .p-select-label) {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
 }
 
 </style>

@@ -38,3 +38,14 @@ export const SORT_OPTIONS = [
     { label: 'A-Z', value: 'title,asc' },
     { label: 'Z-A', value: 'title,desc' }
 ];
+
+// Tùy chọn phông chữ cho trang đọc chương
+export const FONT_OPTIONS = [
+    { label: 'Mặc định', value: 'default' },
+    { label: 'Roboto', value: "'Roboto', sans-serif" },
+    { label: 'Merriweather', value: "'Merriweather', serif" },
+    { label: 'Noto Serif', value: "'Noto Serif', serif" },
+    { label: 'Source Sans 3', value: "'Source Sans 3', sans-serif" },
+    { label: 'Lora', value: "'Lora', serif" },
+    { label: 'Nunito', value: "'Nunito', sans-serif" },
+];
