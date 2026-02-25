@@ -3,6 +3,7 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useStoryStore } from '@/stores/story';
 import { useUIStore } from '@/stores/ui';
 import Navbar from '@/components/common/Navbar.vue';
 import StoryCard from '@/components/common/StoryCard.vue';
@@ -23,6 +24,7 @@ const authStore = useAuthStore();
 const toast = useToast();
 
 const uiStore = useUIStore();
+const storyStore = useStoryStore();
 const stories = ref([]);
 
 const recentReading = ref([]);
@@ -73,6 +75,16 @@ const filteredTrendingStories = computed(() => {
 
     return !story.status || story.status === 'PUBLIC';
   });
+});
+
+// Lắng nghe thay đổi từ storyStore để cập nhật trending real-time
+watch(() => storyStore.lastUpdatedStory, (updated) => {
+  if (!updated) return;
+  const target = trendingStories.value.find(s => s.storyId === updated.storyId);
+  if (target) {
+    target.averageRating = updated.averageRating;
+    target.totalRatings = updated.totalRatings;
+  }
 });
 
 const continueReading = (history) => {

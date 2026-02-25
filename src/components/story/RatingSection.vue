@@ -2,6 +2,7 @@
 // Component RatingSection - Đánh giá sao và nhận xét cho truyện
 import { ref, computed, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import { useStoryStore } from '@/stores/story';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import Rating from 'primevue/rating';
@@ -28,6 +29,7 @@ const props = defineProps({
 });
 
 const authStore = useAuthStore();
+const storyStore = useStoryStore();
 const router = useRouter();
 const toast = useToast();
 
@@ -101,6 +103,12 @@ const submitRating = async () => {
     showRatingDialog.value = false;
     await refreshRatingFromStory();
     await loadMyRating();
+
+    // Thông báo cho các component khác (VD: trending) cập nhật
+    storyStore.notifyStoryUpdated(props.storyId, {
+      averageRating: averageRating.value,
+      totalRatings: totalRatings.value
+    });
   } catch (error) {
     showErrorToast(toast, error, 'Không thể đánh giá');
   } finally {
@@ -120,6 +128,12 @@ const handleDeleteRating = async () => {
     showRatingDialog.value = false;
     
     await refreshRatingFromStory();
+
+    // Thông báo cho các component khác (VD: trending) cập nhật
+    storyStore.notifyStoryUpdated(props.storyId, {
+      averageRating: averageRating.value,
+      totalRatings: totalRatings.value
+    });
   } catch (error) {
     showErrorToast(toast, error, 'Không thể xóa đánh giá');
   }
