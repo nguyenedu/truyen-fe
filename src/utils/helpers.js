@@ -29,7 +29,7 @@ export const handleAuthRequired = (authStore, router, toast, message = 'Vui lòn
     return false;
 };
 
-// Trích xuất dữ liệu từ response API (hỗ trợ cả phân trang và danh sách đơn)
+// Trích xuất dữ liệu từ response API
 export const extractData = (response) => {
     const data = response?.data?.data;
     if (data && typeof data === 'object' && 'content' in data) {

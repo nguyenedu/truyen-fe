@@ -25,6 +25,11 @@ import ViewCategory from '@/views/search/ViewCategory.vue';
 import ViewProfile from '@/views/user/ViewProfile.vue';
 import ViewFavorites from '@/views/user/ViewFavorites.vue';
 import ViewHistory from '@/views/user/ViewHistory.vue';
+import ViewWallet from '@/views/user/ViewWallet.vue';
+
+// === Trang thanh toán ===
+import ViewTopUp from '@/views/payment/ViewTopUp.vue';
+import ViewPaymentResult from '@/views/payment/ViewPaymentResult.vue';
 
 const routes = [
     {
@@ -103,6 +108,24 @@ const routes = [
         path: '/author/:id',
         name: 'Author',
         component: ViewAuthor,
+    },
+    {
+        path: '/wallet',
+        name: 'Wallet',
+        component: ViewWallet,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/top-up',
+        name: 'TopUp',
+        component: ViewTopUp,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/payment/result',
+        name: 'PaymentResult',
+        component: ViewPaymentResult,
+        meta: { requiresAuth: true },
     },
 ];
 

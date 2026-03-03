@@ -3,7 +3,9 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useWalletStore } from '@/stores/wallet';
 import { getCategories } from '@/api/category';
+import { formatNumber } from '@/utils/formatters';
 import SearchBox from '@/components/common/SearchBox.vue';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
@@ -11,6 +13,7 @@ import Menu from 'primevue/menu';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const walletStore = useWalletStore();
 
 const userMenu = ref();
 const categories = ref([]);
@@ -23,6 +26,16 @@ const userMenuItems = ref([
     label: 'Trang cá nhân',
     icon: 'pi pi-user',
     command: () => router.push('/profile')
+  },
+  {
+    label: 'Ví xu',
+    icon: 'pi pi-wallet',
+    command: () => router.push('/wallet')
+  },
+  {
+    label: 'Nạp xu',
+    icon: 'pi pi-plus-circle',
+    command: () => router.push('/top-up')
   },
   {
     separator: true
@@ -50,9 +63,15 @@ onMounted(async () => {
   } catch (error) {
     console.error('Lỗi khi tải danh sách thể loại:', error);
   }
+
+  // Tải số dư ví nếu đã đăng nhập
+  if (authStore.isAuthenticated) {
+    walletStore.fetchWallet();
+  }
 });
 
 async function handleLogout() {
+  walletStore.reset();
   await authStore.logout();
   router.replace('/');
 }
@@ -155,8 +174,14 @@ const navigateToCategory = (categoryId) => {
         <!-- Nút bên phải -->
         <div class="flex items-center gap-2 shrink-0">
           <template v-if="authStore.isAuthenticated">
+            <!-- Coin balance -->
+            <router-link to="/wallet" class="coin-balance-btn">
+              <span class="coin-emoji">🪙</span>
+              <span class="coin-count">{{ formatNumber(walletStore.balance) }}</span>
+            </router-link>
+
             <!-- Menu người dùng -->
-            <div @click="toggleUserMenu" class="cursor-pointer ml-4">
+            <div @click="toggleUserMenu" class="cursor-pointer ml-2">
               <Avatar
                 v-if="authStore.user?.avatar"
                 :image="authStore.user.avatar"
@@ -334,4 +359,29 @@ nav {
 :deep(.p-inputtext) {
     padding: 0.75rem 1rem !important;
 }
+
+/* Nút hiển thị số dư xu trên navbar */
+.coin-balance-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+    border: 1px solid #c4b5fd;
+    color: #5b21b6;
+    padding: 0.4rem 0.875rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.coin-balance-btn:hover {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    border-color: #a78bfa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
+}
+.coin-emoji { font-size: 1rem; }
+.coin-count { line-height: 1; }
 </style>
