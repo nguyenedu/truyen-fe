@@ -20,7 +20,7 @@ export const STORY_STATUS = {
     PAUSED: 'PAUSED'
 };
 
-// Tùy chọn lọc theo trạng thái (dùng cho dropdown)
+// Tùy chọn lọc theo trạng thái
 export const STORY_STATUS_OPTIONS = [
     { label: 'Tất cả', value: null },
     { label: 'Đang tiến hành', value: STORY_STATUS.ONGOING },
@@ -28,7 +28,7 @@ export const STORY_STATUS_OPTIONS = [
     { label: 'Tạm dừng', value: STORY_STATUS.PAUSED }
 ];
 
-// Tùy chọn sắp xếp truyện (dùng cho dropdown)
+// Tùy chọn sắp xếp truyện
 export const SORT_OPTIONS = [
     { label: 'Mới nhất', value: 'createdAt,desc' },
     { label: 'Cũ nhất', value: 'createdAt,asc' },
