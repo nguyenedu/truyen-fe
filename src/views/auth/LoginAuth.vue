@@ -1,26 +1,29 @@
 <script setup>
 // Trang đăng nhập - Xác thực người dùng và chuyển hướng
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-import { useUIStore } from '@/stores/ui';
 import { useToast } from 'primevue/usetoast';
 import { showErrorToast } from '@/utils/helpers';
 import { ERROR_MESSAGES } from '@/utils/errors';
 import { isRequired } from '@/utils/validation';
 import { useAuth } from '@/composables/useAuth';
 
-const uiStore = useUIStore();
+const route = useRoute();
 const toast = useToast();
 const { loginAndRedirect } = useAuth();
 
 const username = ref('');
 const password = ref('');
 const error = ref('');
+const submitting = ref(false);
+
+// Hiện banner nếu bị redirect do token hết hạn
+const isExpired = computed(() => route.query.expired === '1');
 
 const handleLogin = async () => {
   if (!isRequired(username.value) || !isRequired(password.value)) {
@@ -31,7 +34,7 @@ const handleLogin = async () => {
   error.value = '';
   
   try {
-    uiStore.startLoading();
+    submitting.value = true;
     const result = await loginAndRedirect(username.value, password.value);
     
     if (!result.success) {
@@ -40,7 +43,7 @@ const handleLogin = async () => {
   } catch (err) {
     showErrorToast(toast, err, ERROR_MESSAGES.LOGIN_FAILED);
   } finally {
-    uiStore.stopLoading();
+    submitting.value = false;
   }
 };
 </script>
@@ -50,6 +53,11 @@ const handleLogin = async () => {
     <div class="w-full max-w-md">
       <div class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-10">
         <!-- Header -->
+        <!-- Banner phiên hết hạn -->
+        <Message v-if="isExpired" severity="warn" :closable="false" class="mb-6 rounded-xl">
+          ⏳ Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.
+        </Message>
+
         <div class="text-center mb-10">
           <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">Đăng nhập</h1>
           <p class="text-slate-500 font-medium">Đăng nhập để tiếp tục đọc truyện</p>
@@ -102,9 +110,9 @@ const handleLogin = async () => {
           <!-- Submit Button -->
           <Button
             type="submit"
-            :label="uiStore.loading ? 'Đang đăng nhập...' : 'Đăng nhập'"
-            :loading="uiStore.loading"
-            :disabled="uiStore.loading"
+            :label="submitting ? 'Đang đăng nhập...' : 'Đăng nhập'"
+            :loading="submitting"
+            :disabled="submitting"
             class="w-full"
             size="large"
           />
