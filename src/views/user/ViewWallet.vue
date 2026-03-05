@@ -113,15 +113,15 @@ const onTabChange = (tab) => {
                             :key="tx.id"
                             class="tx-row"
                         >
-                            <div class="tx-icon" :class="tx.type === 'CREDIT' ? 'tx-credit' : 'tx-debit'">
-                                {{ tx.type === 'CREDIT' ? '⬆️' : '⬇️' }}
+                            <div class="tx-icon" :class="tx.type === TRANSACTION_TYPE.DEPOSIT || tx.type === TRANSACTION_TYPE.BONUS ? 'tx-credit' : 'tx-debit'">
+                                {{ tx.type === TRANSACTION_TYPE.DEPOSIT || tx.type === TRANSACTION_TYPE.BONUS ? '⬆️' : '⬇️' }}
                             </div>
                             <div class="tx-info">
                                 <span class="tx-desc">{{ tx.description }}</span>
                                 <span class="tx-time">{{ formatRelativeDate(tx.createdAt) }}</span>
                             </div>
                             <div class="tx-right">
-                                <span class="tx-amount" :class="tx.type === 'CREDIT' ? 'amount-credit' : 'amount-debit'">
+                                <span class="tx-amount" :class="tx.type === TRANSACTION_TYPE.DEPOSIT || tx.type === TRANSACTION_TYPE.BONUS ? 'amount-credit' : 'amount-debit'">
                                     {{ formatCoinAmount(tx.amount, tx.type) }}
                                 </span>
                                 <span class="tx-balance">Còn: {{ formatNumber(tx.balanceAfter) }} xu</span>

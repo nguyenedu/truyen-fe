@@ -25,13 +25,15 @@ export const PAYMENT_STATUS_SEVERITY = {
 
 // === Loại giao dịch ví ===
 export const TRANSACTION_TYPE = {
-    CREDIT: 'CREDIT',
-    DEBIT: 'DEBIT',
+    DEPOSIT: 'DEPOSIT',
+    SPEND: 'SPEND',
+    BONUS: 'BONUS'
 };
 
 export const TRANSACTION_TYPE_LABEL = {
-    CREDIT: 'Nạp xu',
-    DEBIT: 'Tiêu xu',
+    DEPOSIT: 'Nạp xu',
+    SPEND: 'Tiêu xu',
+    BONUS: 'Tặng xu'
 };
 
 // === Helper functions ===
@@ -55,7 +57,8 @@ export const formatCurrency = (amount) => {
 
 // Format số xu với dấu cộng/trừ cho transaction
 export const formatCoinAmount = (amount, type) => {
-    const prefix = type === TRANSACTION_TYPE.CREDIT ? '+' : '-';
+    const isPositive = type === TRANSACTION_TYPE.DEPOSIT || type === TRANSACTION_TYPE.BONUS;
+    const prefix = isPositive ? '+' : '-';
     return `${prefix}${formatNumber(Math.abs(amount))} xu`;
 };
 
