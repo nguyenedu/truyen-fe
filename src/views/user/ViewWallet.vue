@@ -484,4 +484,34 @@ const onTabChange = (tab) => {
     .balance-info { align-items: center; }
     .order-center { display: none; }
 }
+
+/* ===== Dark Mode ===== */
+.dark .wallet-page { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
+.dark .wallet-content > div:not(.tab-bar) { background: #1e293b; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
+.dark .tab-bar { background: #1e293b; border-bottom-color: #334155; }
+.dark .tab-btn { color: #94a3b8; }
+.dark .tab-btn:hover { color: #818cf8; background: #334155; }
+.dark .tab-btn.active { color: #818cf8; border-bottom-color: #818cf8; background: #1e293b; }
+.dark .tx-row:hover { background: #334155; }
+.dark .tx-desc { color: #e2e8f0; }
+.dark .tx-time { color: #64748b; }
+.dark .tx-balance { color: #64748b; }
+.dark .tx-credit { background: #064e3b; }
+.dark .tx-debit { background: #7f1d1d; }
+.dark .order-row { border-color: #334155; }
+.dark .order-row:hover { background: #334155; }
+.dark .order-pkg { color: #e2e8f0; }
+.dark .order-code { color: #64748b; }
+.dark .order-time { color: #64748b; }
+.dark .loading-state { color: #64748b; }
+.dark .mini-spinner { border-color: #334155; border-top-color: #818cf8; }
+.dark .empty-state p { color: #64748b; }
+.dark .link-topup { color: #818cf8; }
+.dark .page-btn { background: #1e293b; border-color: #334155; color: #94a3b8; }
+.dark .page-btn:hover { border-color: #818cf8; color: #818cf8; }
+.dark .page-btn.active { background: #4f46e5; color: white; border-color: #4f46e5; }
+.dark .status-success { background: #064e3b; color: #6ee7b7; }
+.dark .status-warn { background: #78350f; color: #fcd34d; }
+.dark .status-danger { background: #7f1d1d; color: #fca5a5; }
+.dark .status-secondary { background: #334155; color: #94a3b8; }
 </style>

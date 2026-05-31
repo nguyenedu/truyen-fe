@@ -108,7 +108,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f1f5f9]">
+  <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900">
     <Navbar />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -128,7 +128,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
         <!-- Continue Reading Section -->
         <section v-if="recentReading.length > 0" class="mb-12">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-black text-slate-800">
+            <h2 class="text-2xl font-black text-slate-800 dark:text-slate-100">
               <i class="pi pi-history text-indigo-500 mr-2"></i>
               Đọc gần đây
             </h2>
@@ -160,13 +160,13 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
               <template #content>
                 <div class="space-y-3">
                   <h3 
-                    class="font-bold text-lg text-slate-800 line-clamp-1 cursor-pointer hover:text-indigo-600 transition-colors"
+                    class="font-bold text-lg text-slate-800 dark:text-slate-100 line-clamp-1 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                     @click="viewStory(history.storyId)"
                   >
                     {{ history.storyTitle }}
                   </h3>
                   
-                  <div class="text-sm text-slate-500">
+                  <div class="text-sm text-slate-500 dark:text-slate-400">
                     <p class="mb-1">
                       <i class="pi pi-book mr-2"></i>
                       Chương {{ history.chapterNumber }}: {{ history.chapterTitle }}
@@ -191,7 +191,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
 
         <!-- Trending Stories -->
         <section v-if="filteredTrendingStories.length > 0" class="mb-12">
-          <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+          <h2 class="text-2xl font-black text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
             <i class="pi pi-chart-line text-red-500"></i>
             🔥 Truyện Trending
           </h2>
@@ -225,7 +225,7 @@ const formatDate = (dateString) => formatRelativeDate(dateString);
 
 
         <section v-if="stories.length" class="mb-12">
-          <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+          <h2 class="text-2xl font-black text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
             <i class="pi pi-book text-indigo-500"></i>
             Danh sách truyện
           </h2>

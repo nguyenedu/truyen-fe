@@ -487,4 +487,20 @@ const handleTopUp = async (pkg) => {
     .package-popular { transform: none; }
     .package-popular:hover { transform: translateY(-4px); }
 }
+
+/* ===== Dark Mode ===== */
+.dark .topup-page { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
+.dark .package-card { background: #1e293b; border-color: #334155; }
+.dark .package-card:hover { box-shadow: 0 20px 40px -8px rgba(99, 102, 241, 0.2); border-color: #818cf8; }
+.dark .package-popular { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-color: #7c3aed; }
+.dark .package-name { color: #e2e8f0; }
+.dark .coins-label { color: #94a3b8; }
+.dark .total-coins { color: #94a3b8; }
+.dark .total-coins strong { color: #e2e8f0; }
+.dark .guide-section { background: #1e293b; border-color: #334155; }
+.dark .guide-title { color: #e2e8f0; }
+.dark .guide-step { color: #94a3b8; }
+.dark .error-banner { background: #7f1d1d; border-color: #991b1b; color: #fca5a5; }
+.dark .error-close { color: #fca5a5; }
+.dark .skeleton-title, .dark .skeleton-coins, .dark .skeleton-price, .dark .skeleton-btn { background: #334155; }
 </style>

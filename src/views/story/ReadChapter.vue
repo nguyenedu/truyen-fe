@@ -15,6 +15,7 @@ import { ERROR_MESSAGES } from '@/utils/errors';
 import { getChaptersByStoryId, getChapterById } from '@/api/chapter';
 import { saveReadingHistory } from '@/api/history';
 import { FONT_OPTIONS } from '@/utils/constants';
+import { useTheme } from '@/composables/useTheme';
 
 const route = useRoute();
 const router = useRouter();
@@ -25,7 +26,7 @@ const chapter = ref(null);
 const allChapters = ref([]);
 const fontSize = ref(18);
 const fontFamily = ref('default');
-const darkMode = ref(false);
+const { isDark: darkMode, toggleTheme: toggleDarkMode } = useTheme();
 const fontOptions = FONT_OPTIONS;
 const showScrollTop = ref(false);
 const showChapterDialog = ref(false);
@@ -207,7 +208,7 @@ const backToStory = () => {
           
           <!-- Dark Mode Toggle -->
           <Button
-            @click="darkMode = !darkMode"
+            @click="toggleDarkMode"
             :icon="darkMode ? 'pi pi-sun' : 'pi pi-moon'"
             rounded
             class="w-10! h-10! border-0! shadow-md"

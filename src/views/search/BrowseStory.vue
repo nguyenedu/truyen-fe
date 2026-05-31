@@ -20,7 +20,7 @@ import { usePagination } from '@/composables/usePagination';
 import { useSearch } from '@/composables/useSearch';
 import { filterStories } from '@/api/story';
 
-const { 
+const {    
   totalRecords, 
   currentPage, 
   pageSize, 
@@ -104,21 +104,21 @@ const handlePageChange = (event) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f1f5f9]">
+  <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-4xl font-black text-slate-800 mb-8 tracking-tighter">
+      <h1 class="text-4xl font-black text-slate-800 dark:text-slate-100 mb-8 tracking-tighter">
         <i class="pi pi-filter text-indigo-500 mr-2"></i>
         Tìm kiếm nâng cao
       </h1>
       
       <!-- Filter Panel -->
-      <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 mb-8">
+      <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-slate-100 dark:border-slate-700 mb-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <!-- Keyword Search -->
           <div>
-            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label class="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Tìm kiếm
             </label>
             <InputText
@@ -131,7 +131,7 @@ const handlePageChange = (event) => {
           
           <!-- Status Filter -->
           <div>
-            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label class="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Trạng thái
             </label>
             <Dropdown
@@ -146,7 +146,7 @@ const handlePageChange = (event) => {
 
           <!-- Category Filter -->
           <div>
-            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label class="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Thể loại
             </label>
             <MultiSelect
@@ -162,7 +162,7 @@ const handlePageChange = (event) => {
 
           <!-- Sort -->
           <div>
-            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label class="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Sắp xếp
             </label>
             <Dropdown
@@ -176,7 +176,7 @@ const handlePageChange = (event) => {
           
           <!-- Min Chapters -->
           <div>
-            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label class="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Số chương tối thiểu
             </label>
             <InputNumber
@@ -189,7 +189,7 @@ const handlePageChange = (event) => {
           
           <!-- Max Chapters -->
           <div>
-            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <label class="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Số chương tối đa
             </label>
             <InputNumber
@@ -221,15 +221,15 @@ const handlePageChange = (event) => {
       
       <!-- Results -->
       <div class="mb-6">
-        <p class="text-slate-500 font-medium">
+        <p class="text-slate-500 dark:text-slate-400 font-medium">
           Tìm thấy <span class="text-indigo-600 font-black">{{ totalRecords }}</span> truyện
         </p>
       </div>
       
       <!-- No Results -->
-      <div v-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+      <div v-if="stories.length === 0" class="text-center py-32 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
         <i class="pi pi-inbox text-6xl text-slate-200 mb-4"></i>
-        <p class="text-slate-400 font-medium">Không tìm thấy truyện nào</p>
+        <p class="text-slate-400 dark:text-slate-500 font-medium">Không tìm thấy truyện nào</p>
       </div>
       
       <!-- Stories Grid -->

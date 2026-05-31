@@ -52,7 +52,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#f1f5f9]">
+    <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900">
         <Navbar />
         
         <div class="max-w-7xl mx-auto px-4 py-8">
@@ -65,13 +65,13 @@ onMounted(() => {
                 />
             </div>
 
-            <div v-if="!author && !uiStore.loading" class="text-center py-20 text-slate-500 italic">
+            <div v-if="!author && !uiStore.loading" class="text-center py-20 text-slate-500 dark:text-slate-400 italic">
                 Không tìm thấy thông tin tác giả.
             </div>
 
             <div v-else-if="author" class="space-y-8">
                 <!-- Author Profile Header -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                     <div class="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-slate-50 shadow-md shrink-0">
                         <img 
                             :src="author.avatar || AVATAR_PLACEHOLDER" 
@@ -80,9 +80,9 @@ onMounted(() => {
                         />
                     </div>
                     <div class="space-y-4 flex-1">
-                        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">{{ author.name }}</h1>
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-100">{{ author.name }}</h1>
                         <div class="prose prose-slate max-w-none">
-                            <p class="text-slate-600 leading-relaxed whitespace-pre-line">
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                                 {{ author.bio || 'Chưa có thông tin giới thiệu về tác giả này.' }}
                             </p>
                         </div>
@@ -91,7 +91,7 @@ onMounted(() => {
 
                 <!-- Author's Stories -->
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
                         <i class="pi pi-book text-indigo-500"></i>
                         Truyện của {{ author.name }}
                     </h2>
@@ -103,8 +103,8 @@ onMounted(() => {
                             :story="story" 
                         />
                     </div>
-                    <div v-else class="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                        <p class="text-slate-500 italic">Tác giả này chưa có truyện nào.</p>
+                    <div v-else class="text-center py-12 bg-slate-50 dark:bg-slate-800 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <p class="text-slate-500 dark:text-slate-400 italic">Tác giả này chưa có truyện nào.</p>
                     </div>
                 </div>
             </div>

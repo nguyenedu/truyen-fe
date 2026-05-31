@@ -111,17 +111,17 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f1f5f9]">
+  <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900">
     <Navbar />
     <ConfirmDialog />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="flex items-center justify-between mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
+      <div class="flex items-center justify-between mb-8 p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
         <div>
-          <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">
+          <h1 class="text-4xl font-black text-slate-800 dark:text-slate-100 mb-2 tracking-tighter">
             Lịch sử đọc
           </h1>
-          <p class="text-slate-500 font-medium">
+          <p class="text-slate-500 dark:text-slate-400 font-medium">
             {{ totalRecords }} truyện đã đọc
           </p>
         </div>
@@ -136,14 +136,14 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
         />
       </div>
       
-      <div v-if="histories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+      <div v-if="histories.length === 0" class="text-center py-32 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
         <div class="mb-6">
           <i class="pi pi-history text-6xl text-slate-200 opacity-50"></i>
         </div>
-        <h2 class="text-2xl font-black text-slate-800 mb-4 tracking-tighter">
+        <h2 class="text-2xl font-black text-slate-800 dark:text-slate-100 mb-4 tracking-tighter">
           Chưa có lịch sử đọc
         </h2>
-        <p class="text-slate-400 mb-6 font-medium">
+        <p class="text-slate-400 dark:text-slate-500 mb-6 font-medium">
           Bắt đầu đọc truyện để lưu lịch sử
         </p>
         <Button
@@ -170,13 +170,13 @@ const getRelativeDate = (dateString) => formatRelativeDate(dateString);
             <template #content>
               <div class="space-y-3">
                 <h3 
-                  class="font-black text-lg text-slate-800 line-clamp-2 cursor-pointer hover:text-indigo-600 transition-colors"
+                  class="font-black text-lg text-slate-800 dark:text-slate-100 line-clamp-2 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                   @click="viewStory(history.storyId)"
                 >
                   {{ history.storyTitle }}
                 </h3>
                 
-                <div class="text-sm text-slate-500">
+                <div class="text-sm text-slate-500 dark:text-slate-400">
                   <p class="mb-1">
                     <i class="pi pi-book mr-2"></i>
                     Chương {{ history.chapterNumber }}: {{ history.chapterTitle }}

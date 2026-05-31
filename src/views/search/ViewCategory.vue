@@ -52,16 +52,16 @@ const handlePageChange = (event) => onPageChange(event, loadCategoryAndStories);
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f1f5f9]">
+  <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div>
-        <div class="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
-          <h1 class="text-4xl font-black text-slate-800 mb-3 tracking-tighter">
+        <div class="mb-8 p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <h1 class="text-4xl font-black text-slate-800 dark:text-slate-100 mb-3 tracking-tighter">
             {{ category?.name || 'Thể loại' }}
           </h1>
-          <p v-if="category?.description" class="text-slate-500 text-lg mb-4 max-w-2xl">
+          <p v-if="category?.description" class="text-slate-500 dark:text-slate-400 text-lg mb-4 max-w-2xl">
             {{ category.description }}
           </p>
           <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-bold">
@@ -70,9 +70,9 @@ const handlePageChange = (event) => onPageChange(event, loadCategoryAndStories);
           </div>
         </div>
         
-        <div v-if="stories.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+        <div v-if="stories.length === 0" class="text-center py-32 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
           <i class="pi pi-book-open text-6xl text-slate-200 mb-4"></i>
-          <p class="text-slate-400 font-medium">Chưa có truyện nào trong thể loại này</p>
+          <p class="text-slate-400 dark:text-slate-500 font-medium">Chưa có truyện nào trong thể loại này</p>
         </div>
         
         <div v-else>

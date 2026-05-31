@@ -64,27 +64,27 @@ const handlePageChange = (event) => onPageChange(event, loadFavorites);
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f1f5f9]">
+  <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900">
     <Navbar />
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
-        <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">
+      <div class="mb-8 p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <h1 class="text-4xl font-black text-slate-800 dark:text-slate-100 mb-2 tracking-tighter">
           Truyện yêu thích
         </h1>
-        <p class="text-slate-500 font-medium">
+        <p class="text-slate-500 dark:text-slate-400 font-medium">
           Danh sách {{ totalRecords }} truyện bạn đã yêu thích
         </p>
       </div>
       
-      <div v-if="favorites.length === 0" class="text-center py-32 bg-white rounded-3xl border border-dashed border-slate-200">
+      <div v-if="favorites.length === 0" class="text-center py-32 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
         <div class="mb-6">
           <i class="pi pi-heart text-6xl text-slate-200 opacity-50"></i>
         </div>
-        <h2 class="text-2xl font-black text-slate-800 mb-4 tracking-tighter">
+        <h2 class="text-2xl font-black text-slate-800 dark:text-slate-100 mb-4 tracking-tighter">
           Chưa có truyện yêu thích
         </h2>
-        <p class="text-slate-400 mb-6 font-medium">
+        <p class="text-slate-400 dark:text-slate-500 mb-6 font-medium">
           Hãy thêm truyện vào danh sách yêu thích để đọc sau
         </p>
         <Button

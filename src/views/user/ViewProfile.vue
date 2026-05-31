@@ -104,11 +104,11 @@ const handleUpdateProfile = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f1f5f9] text-slate-900">
+  <div class="min-h-screen bg-[#f1f5f9] dark:bg-slate-900 text-slate-900 dark:text-slate-100">
     <Navbar />
     
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <Card v-if="user" class="shadow-xl border-0 bg-white! overflow-hidden rounded-[2rem]">
+      <Card v-if="user" class="shadow-xl border-0 bg-white! dark:bg-slate-800! overflow-hidden rounded-[2rem]">
         <template #content>
           <div class="text-center mb-12">
             <div class="relative inline-block group">
@@ -128,10 +128,10 @@ const handleUpdateProfile = async () => {
                     class="relative w-36 h-36 mb-6 bg-gradient-to-br from-indigo-500 to-indigo-700 text-white text-6xl flex items-center justify-center shadow-xl font-black"
                 />
             </div>
-            <h1 class="text-5xl font-black text-slate-900 mb-3 tracking-tighter">
+            <h1 class="text-5xl font-black text-slate-900 dark:text-slate-100 mb-3 tracking-tighter">
               {{ user?.username }}
             </h1>
-            <div class="inline-flex items-center px-6 py-2 rounded-full bg-indigo-50 text-indigo-600 text-sm font-bold uppercase tracking-widest border border-indigo-100">
+            <div class="inline-flex items-center px-6 py-2 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-sm font-bold uppercase tracking-widest border border-indigo-100 dark:border-indigo-800">
               {{ user?.role }}
             </div>
           </div>
@@ -141,24 +141,24 @@ const handleUpdateProfile = async () => {
 
           <div v-if="!isEditing" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 transition-all hover:bg-white hover:shadow-md hover:border-indigo-100">
-                    <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Tên đầy đủ</span>
-                    <span class="text-xl font-bold text-slate-800">{{ user?.fullname || 'Chưa cập nhật' }}</span>
+                <div class="p-6 bg-slate-50 dark:bg-slate-700/50 rounded-3xl border border-slate-100 dark:border-slate-600 transition-all hover:bg-white dark:hover:bg-slate-700 hover:shadow-md hover:border-indigo-100 dark:hover:border-indigo-800">
+                    <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400 mb-2">Tên đầy đủ</span>
+                    <span class="text-xl font-bold text-slate-800 dark:text-slate-100">{{ user?.fullname || 'Chưa cập nhật' }}</span>
                 </div>
                 
-                <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 transition-all hover:bg-white hover:shadow-md hover:border-indigo-100 overflow-hidden">
+                <div class="p-6 bg-slate-50 dark:bg-slate-700/50 rounded-3xl border border-slate-100 dark:border-slate-600 transition-all hover:bg-white dark:hover:bg-slate-700 hover:shadow-md hover:border-indigo-100 dark:hover:border-indigo-800 overflow-hidden">
                     <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-400 mb-2">Email</span>
-                    <span class="text-xl font-bold text-slate-800 block truncate" :title="user?.email">{{ user?.email || 'Chưa cập nhật' }}</span>
+                    <span class="text-xl font-bold text-slate-800 dark:text-slate-100 block truncate" :title="user?.email">{{ user?.email || 'Chưa cập nhật' }}</span>
                 </div>
 
-                <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 transition-all hover:bg-white hover:shadow-md hover:border-indigo-100">
-                    <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Số điện thoại</span>
-                    <span class="text-xl font-bold text-slate-800">{{ user?.phone || 'Chưa cập nhật' }}</span>
+                <div class="p-6 bg-slate-50 dark:bg-slate-700/50 rounded-3xl border border-slate-100 dark:border-slate-600 transition-all hover:bg-white dark:hover:bg-slate-700 hover:shadow-md hover:border-indigo-100 dark:hover:border-indigo-800">
+                    <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400 mb-2">Số điện thoại</span>
+                    <span class="text-xl font-bold text-slate-800 dark:text-slate-100">{{ user?.phone || 'Chưa cập nhật' }}</span>
                 </div>
 
-                <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 transition-all hover:bg-white hover:shadow-md hover:border-indigo-100">
-                    <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Ngày tham gia</span>
-                    <span class="text-xl font-bold text-slate-800">
+                <div class="p-6 bg-slate-50 dark:bg-slate-700/50 rounded-3xl border border-slate-100 dark:border-slate-600 transition-all hover:bg-white dark:hover:bg-slate-700 hover:shadow-md hover:border-indigo-100 dark:hover:border-indigo-800">
+                    <span class="block text-xs font-black uppercase tracking-[0.2em] text-indigo-500 dark:text-indigo-400 mb-2">Ngày tham gia</span>
+                    <span class="text-xl font-bold text-slate-800 dark:text-slate-100">
                         {{ user?.createdAt ? formatDate(user.createdAt) : 'Đang cập nhật...' }}
                     </span>
                 </div>
@@ -177,28 +177,28 @@ const handleUpdateProfile = async () => {
           <form v-else @submit.prevent="handleUpdateProfile" class="space-y-8 px-2">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="flex flex-col gap-3">
-                    <label for="fullname" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Họ và tên</label>
+                    <label for="fullname" class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Họ và tên</label>
                     <InputText id="fullname" v-model="formData.fullname" placeholder="Nhập họ và tên" class="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="flex flex-col gap-3">
-                    <label for="email" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Email</label>
+                    <label for="email" class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</label>
                     <InputText id="email" v-model="formData.email" type="email" placeholder="example@gmail.com" class="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="flex flex-col gap-3">
-                    <label for="phone" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Số điện thoại</label>
+                    <label for="phone" class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Số điện thoại</label>
                     <InputText id="phone" v-model="formData.phone" placeholder="Nhập số điện thoại" class="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="flex flex-col gap-3">
-                    <label for="password" class="text-sm font-bold text-slate-500 uppercase tracking-wider">Mật khẩu mới (để trống nếu không đổi)</label>
+                    <label for="password" class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Mật khẩu mới (để trống nếu không đổi)</label>
                     <Password id="password" v-model="formData.password" toggleMask :feedback="false" placeholder="••••••••" class="w-full" inputClass="w-full bg-slate-50! border-slate-200! text-slate-900! focus:border-indigo-500! rounded-xl" />
                 </div>
 
                 <div class="md:col-span-2 flex flex-col gap-3">
-                    <label class="text-sm font-bold text-slate-500 uppercase tracking-wider">Ảnh đại diện</label>
-                    <div class="flex items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                    <label class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ảnh đại diện</label>
+                    <div class="flex items-center gap-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600">
                         <FileUpload
                             mode="basic"
                             @select="onFileSelect"
@@ -236,9 +236,9 @@ const handleUpdateProfile = async () => {
         </template>
       </Card>
       
-      <div v-else class="flex flex-col items-center justify-center py-24 bg-white rounded-[2rem] shadow-sm">
-          <i class="pi pi-user-slash text-6xl text-slate-200 mb-4"></i>
-          <p class="text-slate-500 font-medium">Vui lòng đăng nhập để xem thông tin</p>
+      <div v-else class="flex flex-col items-center justify-center py-24 bg-white dark:bg-slate-800 rounded-[2rem] shadow-sm">
+          <i class="pi pi-user-slash text-6xl text-slate-200 dark:text-slate-600 mb-4"></i>
+          <p class="text-slate-500 dark:text-slate-400 font-medium">Vui lòng đăng nhập để xem thông tin</p>
           <Button label="Đăng nhập ngay" icon="pi pi-sign-in" text class="mt-4 text-indigo-600! font-bold" @click="router.push('/login')" />
       </div>
     </div>

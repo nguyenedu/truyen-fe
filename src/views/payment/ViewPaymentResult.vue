@@ -326,4 +326,19 @@ onMounted(async () => {
     .result-card { padding: 2rem 1.25rem; }
     .result-actions { flex-direction: column; }
 }
+
+/* ===== Dark Mode ===== */
+.dark .result-page { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
+.dark .result-card { background: #1e293b; border-color: #334155; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); }
+.dark .result-desc { color: #94a3b8; }
+.dark .loading-text { color: #94a3b8; }
+.dark .loading-spinner { border-color: #334155; border-top-color: #818cf8; }
+.dark .order-detail { background: #0f172a; border-color: #334155; }
+.dark .detail-row { border-bottom-color: #1e293b; }
+.dark .detail-label { color: #94a3b8; }
+.dark .detail-value { color: #e2e8f0; }
+.dark .code-value { color: #94a3b8; }
+.dark .failed-note { background: #78350f; color: #fcd34d; }
+.dark .btn-secondary { background: #334155; color: #cbd5e1; border-color: #475569; }
+.dark .btn-secondary:hover { background: #475569; color: #818cf8; }
 </style>

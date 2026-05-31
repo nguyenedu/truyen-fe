@@ -87,9 +87,9 @@ const hideSuggestions = () => {
         @focus="searchKeyword.length >= 2 && suggestions.length > 0 ? showSuggestions = true : null"
         @blur="hideSuggestions"
         placeholder="Tìm kiếm truyện..."
-        class="w-full pl-10! bg-slate-50! border-slate-200! text-slate-800! focus:bg-white! focus:border-indigo-500! rounded-2xl transition-all"
+        class="w-full pl-10! rounded-2xl transition-all search-input"
       />
-      <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+      <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"></i>
       
       <!-- Spinner khi đang tải gợi ý -->
       <i v-if="loading" class="pi pi-spin pi-spinner absolute right-4 top-1/2 -translate-y-1/2 text-indigo-500"></i>
@@ -99,17 +99,17 @@ const hideSuggestions = () => {
     <Transition name="dropdown">
       <div 
         v-if="showSuggestions && suggestions.length > 0"
-        class="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl z-[100] overflow-hidden"
+        class="search-suggestions"
       >
         <div class="py-2">
           <button
             v-for="(suggestion, index) in suggestions"
             :key="index"
             @mousedown.prevent="selectSuggestion(suggestion)"
-            class="w-full px-4 py-3 text-left hover:bg-indigo-50 transition-colors flex items-center gap-3 group"
+            class="suggestion-item"
           >
-            <i class="pi pi-search text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
-            <span class="text-slate-700 group-hover:text-indigo-600 font-medium">
+            <i class="pi pi-search text-slate-400 dark:text-slate-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"></i>
+            <span class="text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium">
               {{ suggestion }}
             </span>
           </button>
@@ -120,6 +120,69 @@ const hideSuggestions = () => {
 </template>
 
 <style scoped>
+.search-input {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+.search-input:focus {
+    background: #ffffff !important;
+    border-color: #6366f1 !important;
+}
+
+.dark .search-input {
+    background: #334155 !important;
+    border-color: #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+.dark .search-input:focus {
+    background: #1e293b !important;
+    border-color: #818cf8 !important;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.dark .search-suggestions {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.suggestion-item {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.suggestion-item:hover {
+    background: #eef2ff;
+}
+
+.dark .suggestion-item:hover {
+    background: #334155;
+}
+
 /* Hiệu ứng chuyển đổi dropdown */
 .dropdown-enter-active,
 .dropdown-leave-active {

@@ -1,10 +1,35 @@
 @import "tailwindcss";
 
+/* ===== Theme Variables ===== */
 :root {
-  color-scheme: light !important;
+  color-scheme: light;
+  --bg-primary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-input: #f8fafc;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --border-light: #f1f5f9;
+  --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
+.dark {
+  color-scheme: dark;
+  --bg-primary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --bg-input: #334155;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: #334155;
+  --border-light: #1e293b;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
 
+/* ===== Tailwind Theme ===== */
 @theme {
   --color-primary-50: #eef2ff;
   --color-primary-100: #e0e7ff;
@@ -17,4 +42,209 @@
   --color-primary-800: #3730a3;
   --color-primary-900: #312e81;
   --color-primary-950: #1e1b4b;
+}
+
+/* ===== Dark Mode Selector for Tailwind v4 ===== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== Smooth Theme Transition ===== */
+html,
+html *,
+html *::before,
+html *::after {
+  transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Tắt transition cho animation/interaction elements */
+html .no-theme-transition,
+html .no-theme-transition * {
+  transition: none !important;
+}
+
+/* ===== PrimeVue Dark Mode Overrides ===== */
+
+/* Card */
+.dark .p-card {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Input */
+.dark .p-inputtext,
+.dark .p-textarea,
+.dark .p-password-input {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark .p-inputtext::placeholder,
+.dark .p-textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+.dark .p-inputtext:focus,
+.dark .p-textarea:focus {
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2) !important;
+}
+
+/* Select / Dropdown */
+.dark .p-select,
+.dark .p-dropdown,
+.dark .p-multiselect {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark .p-select-overlay,
+.dark .p-dropdown-panel,
+.dark .p-multiselect-panel {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark .p-select-option:hover,
+.dark .p-dropdown-item:hover,
+.dark .p-multiselect-item:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+/* Button text */
+.dark .p-button-text {
+  color: var(--text-primary) !important;
+}
+
+.dark .p-button-outlined {
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Paginator */
+.dark .p-paginator {
+  background: transparent !important;
+  border: none !important;
+}
+
+.dark .p-paginator .p-paginator-page,
+.dark .p-paginator .p-paginator-first,
+.dark .p-paginator .p-paginator-prev,
+.dark .p-paginator .p-paginator-next,
+.dark .p-paginator .p-paginator-last {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+}
+
+.dark .p-paginator .p-paginator-page:hover {
+  background: var(--bg-card-hover) !important;
+  color: #818cf8 !important;
+}
+
+.dark .p-paginator .p-paginator-page.p-highlight {
+  background: #4f46e5 !important;
+  color: white !important;
+}
+
+/* Dialog */
+.dark .p-dialog {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark .p-dialog-header {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .p-dialog-content {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .p-dialog-footer {
+  background: var(--bg-card) !important;
+}
+
+/* Confirm Dialog */
+.dark .p-confirmdialog {
+  background: var(--bg-card) !important;
+}
+
+/* Menu */
+.dark .p-menu {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark .p-menu .p-menuitem-link:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+.dark .p-menu .p-menuitem-text {
+  color: var(--text-primary) !important;
+}
+
+.dark .p-menu .p-menuitem-icon {
+  color: #818cf8 !important;
+}
+
+/* Toast */
+.dark .p-toast-message {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Tag / Chip */
+.dark .p-tag {
+  opacity: 0.9;
+}
+
+.dark .p-chip {
+  background: var(--bg-card-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Message */
+.dark .p-message {
+  border-color: var(--border-color) !important;
+}
+
+/* Tooltip */
+.dark .p-tooltip .p-tooltip-text {
+  background: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+/* FileUpload */
+.dark .p-fileupload-choose {
+  background: transparent !important;
+  border-color: var(--border-color) !important;
+  color: #818cf8 !important;
+}
+
+/* Rating */
+.dark .p-rating .p-rating-icon {
+  color: #fbbf24 !important;
+}
+
+/* Password overlay */
+.dark .p-password-overlay {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Skeleton / ProgressSpinner */
+.dark .p-progressspinner-circle {
+  stroke: #818cf8 !important;
+}
+
+/* Global body dark */
+body.dark {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }

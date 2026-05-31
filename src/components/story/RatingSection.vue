@@ -152,11 +152,11 @@ const ratingText = computed(() => {
     <!-- Hiển thị điểm đánh giá -->
     <div class="flex items-center gap-4 mb-4">
       <div class="text-center">
-        <div class="text-4xl font-bold text-indigo-600">
+        <div class="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
           {{ averageRating.toFixed(1) }}
         </div>
         <Rating :modelValue="averageRating" readonly :cancel="false" class="text-yellow-500" />
-        <div class="text-sm text-gray-500 mt-1">
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
           {{ totalRatings }} đánh giá
         </div>
       </div>
@@ -173,14 +173,14 @@ const ratingText = computed(() => {
     </div>
 
     <!-- Đánh giá của tôi -->
-    <div v-if="myRating && !showRatingDialog" class="bg-indigo-500/10 border border-indigo-500/30 p-5 rounded-2xl mb-6 backdrop-blur-sm shadow-lg">
+    <div v-if="myRating && !showRatingDialog" class="bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/30 p-5 rounded-2xl mb-6 backdrop-blur-sm shadow-lg">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-3">
           <span class="font-bold text-indigo-400 uppercase tracking-wider text-xs">Đánh giá của bạn:</span>
           <Rating :modelValue="myRating.rating" readonly :cancel="false" class="text-yellow-400" />
         </div>
       </div>
-      <p v-if="myRating.review" class="text-gray-600 leading-relaxed font-medium">
+      <p v-if="myRating.review" class="text-gray-600 dark:text-gray-300 leading-relaxed font-medium">
         {{ myRating.review }}
       </p>
     </div>

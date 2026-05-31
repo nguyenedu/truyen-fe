@@ -49,9 +49,9 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-[#f1f5f9] p-4">
+  <div class="min-h-screen flex items-center justify-center bg-[#f1f5f9] dark:bg-slate-900 p-4">
     <div class="w-full max-w-md">
-      <div class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-10">
+      <div class="bg-white dark:bg-slate-800 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-700 p-10">
         <!-- Header -->
         <!-- Banner phiên hết hạn -->
         <Message v-if="isExpired" severity="warn" :closable="false" class="mb-6 rounded-xl">
@@ -59,15 +59,15 @@ const handleLogin = async () => {
         </Message>
 
         <div class="text-center mb-10">
-          <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tighter">Đăng nhập</h1>
-          <p class="text-slate-500 font-medium">Đăng nhập để tiếp tục đọc truyện</p>
+          <h1 class="text-4xl font-black text-slate-800 dark:text-slate-100 mb-2 tracking-tighter">Đăng nhập</h1>
+          <p class="text-slate-500 dark:text-slate-400 font-medium">Đăng nhập để tiếp tục đọc truyện</p>
         </div>
 
         <!-- Form -->
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Username -->
           <div class="flex flex-col gap-2">
-            <label for="username" class="text-sm font-bold text-slate-500 uppercase tracking-wider">
+            <label for="username" class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Tên đăng nhập
             </label>
             <InputText
@@ -82,7 +82,7 @@ const handleLogin = async () => {
 
           <!-- Password -->
           <div class="flex flex-col gap-2">
-            <label for="password" class="text-sm font-bold text-slate-500 uppercase tracking-wider">
+            <label for="password" class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Mật khẩu
             </label>
             <Password
@@ -120,7 +120,7 @@ const handleLogin = async () => {
 
         <!-- Footer -->
         <div class="mt-8 text-center">
-          <p class="text-slate-500 font-medium">
+          <p class="text-slate-500 dark:text-slate-400 font-medium">
             Chưa có tài khoản? 
             <router-link to="/register" class="font-bold text-indigo-600 hover:text-indigo-700">
               Đăng ký ngay

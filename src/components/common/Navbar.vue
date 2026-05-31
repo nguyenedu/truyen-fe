@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useWalletStore } from '@/stores/wallet';
+import { useTheme } from '@/composables/useTheme';
 import { getCategories } from '@/api/category';
 import { formatNumber } from '@/utils/formatters';
 import SearchBox from '@/components/common/SearchBox.vue';
@@ -14,6 +15,7 @@ import Menu from 'primevue/menu';
 const router = useRouter();
 const authStore = useAuthStore();
 const walletStore = useWalletStore();
+const { isDark, toggleTheme } = useTheme();
 
 const userMenu = ref();
 const categories = ref([]);
@@ -102,7 +104,7 @@ const navigateToCategory = (categoryId) => {
 </script>
 
 <template>
-  <nav class="bg-white! shadow-md border-b border-slate-100 sticky top-0 z-50">
+  <nav class="navbar-root">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
@@ -110,7 +112,7 @@ const navigateToCategory = (categoryId) => {
           <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
             <i class="pi pi-book text-white text-xl"></i>
           </div>
-          <span class="text-xl font-black text-slate-900! ml-2 tracking-tighter hidden sm:inline">TRUYỆN <span class="text-indigo-600">ONLINE</span></span>
+          <span class="text-xl font-black ml-2 tracking-tighter hidden sm:inline navbar-logo-text">TRUYỆN <span class="text-indigo-600 dark:text-indigo-400">ONLINE</span></span>
         </router-link>
 
         <!-- Liên kết điều hướng -->
@@ -126,7 +128,7 @@ const navigateToCategory = (categoryId) => {
               icon="pi pi-angle-down" 
               iconPos="right"
               text 
-              class="text-slate-600! hover:text-indigo-600! px-3! font-semibold" 
+              class="navbar-link-btn" 
             />
             
             <!-- Menu dropdown thể loại -->
@@ -152,16 +154,16 @@ const navigateToCategory = (categoryId) => {
           </div>
 
           <router-link to="/browse">
-            <Button label="Tìm kiếm" text class="text-slate-600! hover:text-indigo-600! px-3! font-semibold" />
+            <Button label="Tìm kiếm" text class="navbar-link-btn" />
           </router-link>
 
           <template v-if="authStore.isAuthenticated">
             <router-link to="/favorites">
-                <Button label="Yêu thích" text class="text-slate-600! hover:text-indigo-600! px-3! font-semibold hidden md:inline-flex" />
+                <Button label="Yêu thích" text class="navbar-link-btn hidden md:inline-flex" />
             </router-link>
             
             <router-link to="/history">
-                <Button label="Lịch sử" text class="text-slate-600! hover:text-indigo-600! px-3! font-semibold hidden md:inline-flex" />
+                <Button label="Lịch sử" text class="navbar-link-btn hidden md:inline-flex" />
             </router-link>
           </template>
         </div>
@@ -173,6 +175,15 @@ const navigateToCategory = (categoryId) => {
 
         <!-- Nút bên phải -->
         <div class="flex items-center gap-2 shrink-0">
+          <!-- Dark Mode Toggle -->
+          <button
+            @click="toggleTheme"
+            class="theme-toggle-btn"
+            :title="isDark ? 'Chuyển sang sáng' : 'Chuyển sang tối'"
+          >
+            <i :class="isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
+          </button>
+
           <template v-if="authStore.isAuthenticated">
             <!-- Coin balance -->
             <router-link to="/wallet" class="coin-balance-btn">
@@ -187,7 +198,7 @@ const navigateToCategory = (categoryId) => {
                 :image="authStore.user.avatar"
                 shape="circle"
                 size="large"
-                class="w-10! h-10! shadow-md hover:scale-110 transition-transform border-2 border-indigo-600"
+                class="w-10! h-10! shadow-md hover:scale-110 transition-transform border-2 border-indigo-600 dark:border-indigo-400"
               />
               <Avatar
                 v-else
@@ -203,7 +214,7 @@ const navigateToCategory = (categoryId) => {
           <template v-else>
             <div class="flex items-center gap-3 ml-4">
                 <router-link to="/login">
-                  <Button label="Đăng nhập" text class="text-slate-600! hover:text-indigo-600! font-semibold" />
+                  <Button label="Đăng nhập" text class="navbar-link-btn" />
                 </router-link>
                 <router-link to="/register">
                   <Button label="Đăng ký" class="bg-indigo-600! hover:bg-indigo-700! border-0 shadow-md px-6 rounded-xl font-bold" />
@@ -217,7 +228,88 @@ const navigateToCategory = (categoryId) => {
 </template>
 
 <style>
-/* Dropdown thể loại */
+/* ===== Navbar Root ===== */
+.navbar-root {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.dark .navbar-root {
+    background-color: #1e293b;
+    border-bottom-color: #334155;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Logo Text ===== */
+.navbar-logo-text {
+    color: #0f172a;
+}
+
+.dark .navbar-logo-text {
+    color: #f1f5f9;
+}
+
+/* ===== Nav Link Buttons ===== */
+.navbar-link-btn {
+    color: #475569 !important;
+    font-weight: 600 !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+}
+
+.navbar-link-btn:hover {
+    color: #4f46e5 !important;
+}
+
+.dark .navbar-link-btn {
+    color: #cbd5e1 !important;
+}
+
+.dark .navbar-link-btn:hover {
+    color: #818cf8 !important;
+}
+
+/* ===== Theme Toggle Button ===== */
+.theme-toggle-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-btn:hover {
+    background: #eef2ff;
+    border-color: #818cf8;
+    color: #4f46e5;
+    transform: rotate(15deg) scale(1.1);
+}
+
+.dark .theme-toggle-btn {
+    border-color: #475569;
+    background: #334155;
+    color: #fbbf24;
+}
+
+.dark .theme-toggle-btn:hover {
+    background: #475569;
+    border-color: #fbbf24;
+    color: #f59e0b;
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* ===== Dropdown thể loại ===== */
 .category-dropdown-container {
     position: relative;
 }
@@ -236,6 +328,12 @@ const navigateToCategory = (categoryId) => {
     min-width: 600px;
     max-width: 800px;
     z-index: 1000;
+}
+
+.dark .category-dropdown {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
 }
 
 .category-grid {
@@ -266,6 +364,18 @@ const navigateToCategory = (categoryId) => {
     color: #4f46e5;
     transform: translateY(-2px);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .category-item {
+    background-color: #334155;
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+.dark .category-item:hover {
+    background-color: #475569;
+    border-color: #818cf8;
+    color: #a5b4fc;
 }
 
 /* Hiệu ứng chuyển đổi dropdown */
@@ -300,7 +410,7 @@ const navigateToCategory = (categoryId) => {
     }
 }
 
-/* Menu dropdown người dùng */
+/* ===== Menu dropdown người dùng ===== */
 .p-menu.user-dropdown-menu {
     background-color: #ffffff !important;
     border: 1px solid rgba(79, 70, 229, 0.1) !important;
@@ -311,6 +421,12 @@ const navigateToCategory = (categoryId) => {
     overflow: hidden !important;
     transform: translateX(-130px) !important;
     margin-top: 0.75rem !important;
+}
+
+.dark .p-menu.user-dropdown-menu {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
 }
 
 .user-dropdown-menu .p-menuitem-link {
@@ -325,10 +441,18 @@ const navigateToCategory = (categoryId) => {
     background-color: #f5f3ff !important;
 }
 
+.dark .user-dropdown-menu .p-menuitem-link:hover {
+    background-color: #334155 !important;
+}
+
 .user-dropdown-menu .p-menuitem-text {
     color: #4b5563 !important;
     font-weight: 600 !important;
     font-size: 0.9rem !important;
+}
+
+.dark .user-dropdown-menu .p-menuitem-text {
+    color: #cbd5e1 !important;
 }
 
 .user-dropdown-menu .p-menuitem-icon {
@@ -337,8 +461,16 @@ const navigateToCategory = (categoryId) => {
     margin-right: 0.75rem !important;
 }
 
+.dark .user-dropdown-menu .p-menuitem-icon {
+    color: #818cf8 !important;
+}
+
 .user-dropdown-menu .p-menuitem-link:hover .p-menuitem-text {
     color: #4f46e5 !important;
+}
+
+.dark .user-dropdown-menu .p-menuitem-link:hover .p-menuitem-text {
+    color: #a5b4fc !important;
 }
 
 .user-dropdown-menu .p-menuitem-link:hover .p-menuitem-icon {
@@ -349,13 +481,13 @@ const navigateToCategory = (categoryId) => {
     border-top: 1px solid #f3f4f6 !important;
     margin: 0.4rem 0 !important;
 }
+
+.dark .user-dropdown-menu .p-divider {
+    border-top-color: #334155 !important;
+}
 </style>
 
 <style scoped>
-nav {
-    background-color: #ffffff !important;
-}
-
 :deep(.p-inputtext) {
     padding: 0.75rem 1rem !important;
 }
@@ -382,6 +514,18 @@ nav {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
 }
+
+.dark .coin-balance-btn {
+    background: linear-gradient(135deg, #312e81, #3730a3);
+    border-color: #6366f1;
+    color: #c4b5fd;
+}
+
+.dark .coin-balance-btn:hover {
+    background: linear-gradient(135deg, #3730a3, #4338ca);
+    border-color: #818cf8;
+}
+
 .coin-emoji { font-size: 1rem; }
 .coin-count { line-height: 1; }
 </style>

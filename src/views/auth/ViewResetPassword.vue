@@ -64,11 +64,11 @@ const handleResetPassword = async () => {
 </script>
 
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl">
+    <div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-xl border border-transparent dark:border-slate-700">
             <div class="text-center">
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Đặt lại mật khẩu</h2>
-                <p class="mt-2 text-sm text-slate-600">
+                <h2 class="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Đặt lại mật khẩu</h2>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                     Vui lòng nhập mật khẩu mới cho tài khoản của bạn
                 </p>
             </div>
@@ -76,7 +76,7 @@ const handleResetPassword = async () => {
             <form v-if="token" class="mt-8 space-y-6" @submit.prevent="handleResetPassword">
                 <div class="space-y-4">
                     <div class="flex flex-col gap-2">
-                        <label for="newPassword" class="text-sm font-bold text-slate-700">Mật khẩu mới</label>
+                        <label for="newPassword" class="text-sm font-bold text-slate-700 dark:text-slate-300">Mật khẩu mới</label>
                         <Password
                             id="newPassword"
                             v-model="newPassword"
@@ -89,7 +89,7 @@ const handleResetPassword = async () => {
                     </div>
 
                     <div class="flex flex-col gap-2">
-                        <label for="confirmPassword" class="text-sm font-bold text-slate-700">Xác nhận mật khẩu mới</label>
+                        <label for="confirmPassword" class="text-sm font-bold text-slate-700 dark:text-slate-300">Xác nhận mật khẩu mới</label>
                         <InputText
                             id="confirmPassword"
                             v-model="confirmPassword"

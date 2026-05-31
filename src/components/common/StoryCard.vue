@@ -73,21 +73,21 @@ const authorId = computed(() => {
       <template #content>
         <div class="space-y-1">
           <router-link :to="`/story/${story.id}`" class="block">
-            <h3 class="font-bold text-sm text-slate-800 min-h-[2.5rem] leading-tight hover:text-indigo-600 transition-colors">
+            <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100 min-h-[2.5rem] leading-tight hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               {{ story.title }}
             </h3>
           </router-link>
           
           <router-link 
             :to="`/author/${authorId}`" 
-            class="text-xs text-slate-500 truncate block hover:text-indigo-600 transition-colors"
+            class="text-xs text-slate-500 dark:text-slate-400 truncate block hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
           >
             <i class="pi pi-user text-xs mr-1"></i>
             {{ authorName }}
           </router-link>
 
           <router-link :to="`/story/${story.id}`" class="block">
-            <div class="flex items-center justify-between text-xs text-slate-400 pt-1 border-t border-slate-100">
+            <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 pt-1 border-t border-slate-100 dark:border-slate-700">
               <span class="flex items-center gap-1">
                 <i class="pi pi-eye text-xs"></i>
                 {{ formattedViews }}
@@ -99,16 +99,16 @@ const authorId = computed(() => {
             </div>
             
             <!-- Phần đánh giá sao -->
-            <div class="flex items-center gap-1 pt-2 border-t border-slate-100 mt-2">
+            <div class="flex items-center gap-1 pt-2 border-t border-slate-100 dark:border-slate-700 mt-2">
               <Rating 
                 :modelValue="averageRating" 
                 readonly 
                 :cancel="false"
                 class="text-xs"
               />
-              <span class="text-xs text-slate-500 ml-1">
+              <span class="text-xs text-slate-500 dark:text-slate-400 ml-1">
                 {{ averageRating.toFixed(1) }}
-                <span v-if="totalRatings > 0" class="text-slate-400">({{ totalRatings }})</span>
+                <span v-if="totalRatings > 0" class="text-slate-400 dark:text-slate-500">({{ totalRatings }})</span>
               </span>
             </div>
           </router-link>

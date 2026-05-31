@@ -75,11 +75,11 @@ const handleForgotPassword = async () => {
 </script>
 
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl">
+    <div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-10 rounded-2xl shadow-xl border border-transparent dark:border-slate-700">
             <div class="text-center">
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Quên mật khẩu</h2>
-                <p class="mt-2 text-sm text-slate-600">
+                <h2 class="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Quên mật khẩu</h2>
+                <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
                     Nhập email của bạn để nhận hướng dẫn khôi phục mật khẩu
                 </p>
             </div>
@@ -88,7 +88,7 @@ const handleForgotPassword = async () => {
                 <form class="mt-8 space-y-6" @submit.prevent="handleForgotPassword">
                     <div class="rounded-md shadow-sm space-y-4">
                         <div class="flex flex-col gap-2">
-                            <label for="email" class="text-sm font-bold text-slate-700">Email</label>
+                            <label for="email" class="text-sm font-bold text-slate-700 dark:text-slate-300">Email</label>
                             <InputText
                                 id="email"
                                 v-model="email"
@@ -127,8 +127,8 @@ const handleForgotPassword = async () => {
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <p class="text-lg font-bold text-slate-900">Kiểm tra email của bạn</p>
-                    <p class="text-slate-600 text-sm">
+                    <p class="text-lg font-bold text-slate-900 dark:text-slate-100">Kiểm tra email của bạn</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">
                         Chúng tôi đã gửi link khôi phục mật khẩu đến <strong>{{ email }}</strong>. 
                         Vui lòng kiểm tra hộp thư (bao gồm cả thư rác).
                     </p>
